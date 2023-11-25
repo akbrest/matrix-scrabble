@@ -1,7 +1,13 @@
 import './App.css';
+import GameBoard from './components/GameBoard';
 
 function App() {
-  return <div className="app">Welcome to Matrix Scrabble game!</div>;
+  return (
+    <div className="app">
+      <h1>Welcome to Matrix Scrabble game!</h1>
+      <GameBoard />
+    </div>
+  );
 }
 
 export default App;
