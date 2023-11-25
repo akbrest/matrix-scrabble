@@ -1,7 +1,7 @@
 import React from 'react';
 import WordForm from './WordForm';
 
-const RectanglePlayground = ({ word }) => {
+const RectanglePlayground = ({ word}) => {
   const letters = word.toUpperCase().split('');
   const reversedLetters = letters.reverse();
   const countDisabledLetters = 2;
