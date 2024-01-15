@@ -1,4 +1,3 @@
-import React from 'react';
 import RectanglePlayground from './RectanglePlayground';
 
 const GameBoard = () => {
