@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState } from 'react';
 import OneLetterDisabledInput from './UI/OneLetterDisabledInput';
 
@@ -10,7 +9,7 @@ const WordForm = ({ firstLetter, lastLetter, middleSubwordLength }) => {
 
   const farInputMaxSize = 5;
 
-  const handleSubmith = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (middleSubword) setIsDisabled(true);
@@ -18,7 +17,7 @@ const WordForm = ({ firstLetter, lastLetter, middleSubwordLength }) => {
   };
 
   return (
-    <form onSubmit={handleSubmith}>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
         value={firstSubword}
@@ -45,7 +44,7 @@ const WordForm = ({ firstLetter, lastLetter, middleSubwordLength }) => {
         size={farInputMaxSize}
         disabled={isDisabled}
       />
-      <button type="submith" className="ml-20" disabled={isDisabled}>
+      <button type="submit" className="ml-20" disabled={isDisabled}>
         Confirm
       </button>
     </form>
