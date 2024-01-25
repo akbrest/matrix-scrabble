@@ -1,0 +1,6 @@
+@MatrixScrabble.Server_HostAddress = http://localhost:5032
+
+GET {{MatrixScrabble.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
