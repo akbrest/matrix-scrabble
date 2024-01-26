@@ -12,7 +12,7 @@ class Main extends Component {
 
     render() {
         return (
-          <div>sadsad</div>
+          <div></div>
         )
     }
 

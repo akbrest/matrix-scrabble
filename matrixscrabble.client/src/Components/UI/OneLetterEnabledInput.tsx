@@ -1,8 +1,63 @@
-import React from 'react';
+import React from "react";
 
-const OneLetterEnabledInput = () => {
-  return <div className="one-symbol-enabled-block"><input className="simpleInput" type="text" size={1}/></div>;
+interface MyComponentProps {
+  Language: string;
+  x: number,
+  y: number,
+  UpdateField: (x: number, y: number, value:string) => any;
+}
 
-};
+interface State {
+  Language: string;
+  x: number,
+  y: number,
+  UpdateField: (x: number, y: number, value:string) => any;
+}
+
+class OneLetterEnabledInput extends  React.Component<MyComponentProps, State> {
+
+  Language;
+  AllowedLetters = {
+    "en":['a','b','c','d', 'e'],
+    "ru" :["а", "б" ,"в", "ш"]    
+  };
+
+  constructor(props:  MyComponentProps ){
+    super(props);
+
+    this.state = {
+      Language: props.Language,
+      x: props.x,
+      y: props.y,
+      UpdateField: this.props.UpdateField
+    };
+
+    this.Language = props.Language;
+  }
+
+  CheckValidity() {
+    return true;
+  }
+
+  onChange = (e) => {
+   
+    this.props.UpdateField(this.props.x, this.props.y, e.target.value);
+  };
+
+  render() {
+    return (
+      <div className="one-symbol-enabled-block">
+        <input
+          onChange={this.onChange}
+          onInput={(e) => this.CheckValidity()}
+          maxLength={1}
+          className="simpleInput"
+          type="text"
+          size={1}
+        />
+      </div>
+    );
+  }
+}
 
 export default OneLetterEnabledInput;
