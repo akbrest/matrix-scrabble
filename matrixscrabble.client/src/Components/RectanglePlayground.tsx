@@ -1,92 +1,137 @@
-import WordForm from './WordForm';
-import DictionaryService from '../Services/DictionaryService';
-import RussianService from '../Services/RussianService';
-//import EnglishService from '../Services/EnglishService';
-import React from 'react';
+import DictionaryService from "../Services/DictionaryService";
+import RussianService from "../Services/RussianService";
+import EnglishService from "../Services/EnglishService";
+import Main from "../components/Main";
+import React from "react";
+import WordFormClass from "../components/WordFormClass";
 
-interface RectanglePlaygroundProps {
-    word: string;
-}
+type Props = {
+  Word: string;
+  UpdateField: (x: number, y: number, value: string) => any;
+};
 
-//const TestEnglish = (e) => {
-//    var item = {
-//        word: 'Man',
-//        length: 'Man'.length,
-//        status: '',
-//    };
+type State = {
+  Word: string;
+  UpdateField: (x: number, y: number, value: string) => any;
+  FirstLetter: string;
+  LastLetter: string;
+  MiddleSubwordLength: number;
+};
 
-//    var item2 = {
-//        word: 'Red',
-//        length: 'Red'.length,
-//        status: '',
-//    };
-
-//    var item3 = {
-//        word: 'Onion',
-//        length: 'Onion'.length,
-//        status: '',
-//    };
-
-//    var item4 = {
-//        word: 'asdlsadksad',
-//        length: 'asdlsadksad'.length,
-//        status: '',
-//    };
-
-//    const items = [item, item2, item3, item4];
-
-//    dictionaryService.CheckWords(items);
-
-//    console.log(items);
-//};
-
-const TestRussian = () => {
-    const item = {
-        word: ' ‡Ú‡ÒÚÓÙ‡',
-        length: ' ‡Ú‡ÒÚÓÙ‡'.length,
-        status: '',
+class RectanglePlayground extends React.Component<Props, State> {
+  TestEnglish = (e) => {
+    var item = {
+      word: "Man",
+      length: "Man".length,
+      status: "",
     };
 
-    const item2 = {
-        word: '‚˚‚Ù‚',
-        length: '‚˚‚Ù‚'.length,
-        status: '',
+    var item2 = {
+      word: "Red",
+      length: "Red".length,
+      status: "",
+    };
+
+    var item3 = {
+      word: "Onion",
+      length: "Onion".length,
+      status: "",
+    };
+
+    var item4 = {
+      word: "asdlsadksad",
+      length: "asdlsadksad".length,
+      status: "",
+    };
+
+    const items = [item, item2, item3, item4];
+
+    this.dictionaryService.CheckWords(items);
+  };
+
+  TestRussian = (e) => {
+    var item = {
+      word: "–ö–∞—Ç–∞—Å—Ç—Ä–æ—Ñ–∞",
+      length: "–ö–∞—Ç–∞—Å—Ç—Ä–æ—Ñ–∞".length,
+      status: "",
+    };
+
+    var item2 = {
+      word: "–≤—ã–≤—Ñ–≤",
+      length: "–≤—ã–≤—Ñ–≤".length,
+      status: "",
     };
 
     const items = [item, item2];
 
-    dictionaryService.CheckWords(items);
+    this.dictionaryService.CheckWords(items);
+  };
 
-    console.log(items);
-};
+  apiService = new RussianService();
+  dictionaryService = new DictionaryService(this.apiService);
 
-const apiService = new RussianService();
+  render() {
+    var word = this.props.Word;
 
-const dictionaryService = new DictionaryService(apiService);
+    if (word == null) {
+      word = "";
+    }
 
-const RectanglePlayground: React.FC<RectanglePlaygroundProps> = ({ word }) => {
-    const letters = word.toUpperCase().split('');
+    const letters = word.toUpperCase().split("");
     const reversedLetters = letters.slice().reverse();
-    console.log(letters);
     const countDisabledLetters = 2;
 
     return (
-        <div>
-            <button type="submit" className="ml-20" onClick={TestRussian}>
-                Confirm
-            </button>
-            {letters.map((element, index) => {
-                return (
-                    <WordForm
-                        key={index}
-                        firstLetter={element}
-                        lastLetter={reversedLetters[index]}
-                        middleSubwordLength={word.length - countDisabledLetters}
-                    />
-                );
-            })}
-        </div>
+      <div>
+        <Main></Main>
+        <button type="submit" className="ml-20" onClick={this.TestRussian}>
+          Confirm
+        </button>
+        {letters.map((element, index) => {
+          if (index === 0) {
+            return (
+              <WordFormClass
+                key={"WordFormClass" + index}
+                y={0}
+                x={index}
+                FirstLetter={element}
+                LastLetter={reversedLetters[index]}
+                MiddleSubwordLength={word.length - countDisabledLetters}
+                UpdateField={this.props.UpdateField}
+                Word=""
+              />
+            );
+          } else if (index === letters.length - 1) {
+            return (
+              <WordFormClass
+                key={"WordFormClass" + index}
+                y={index}
+                x={index}
+                UpdateField={this.props.UpdateField}
+                FirstLetter={reversedLetters[0]}
+                LastLetter={letters[0]}
+                Word=""
+                MiddleSubwordLength={word.length - countDisabledLetters}
+              />
+            );
+          } else {
+            return (
+              <WordFormClass
+                key={"WordFormClass" + index}
+                Word=""
+                UpdateField={this.props.UpdateField}
+                y={index}
+                x={index}
+                FirstLetter={letters[index]}
+                LastLetter={reversedLetters[index]}
+                MiddleSubwordLength={word.length - countDisabledLetters}
+              />
+            );
+          }
+        })}
+      </div>
     );
-};
+  }
+}
 
 export default RectanglePlayground;
