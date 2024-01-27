@@ -5,7 +5,7 @@ class FieldGenerator {
     "3":{"en":['god','sky','fat','leg', 'art'], "ru" :["дом", "бог","фон", "мир"] },
     "4":{"en":['wine','crew','food','tray', 'game'], "ru" :["блог","град", "кран","клад", "фарт"] },
     "5":{"en":['cruel','blood','award','style', 'stick'], "ru" :["потоп","сталь", "ферзь","пласт", "арена"] },
-    "6":{"en":['cruel','blood','award','style', 'stick'], "ru" :["потоп","сталь", "ферзь","пласт", "арена"] },
+    "6":{"en":['square','finish','skynet','unique', 'skynet'], "ru" :["корова","груздь", "фитиль","планер", "кобель"] },
     "7":{"en":['stomach','tragedy',], "ru" :["колбаса", "вентиль"] }
   }
 
