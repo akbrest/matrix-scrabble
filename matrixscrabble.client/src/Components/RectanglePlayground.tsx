@@ -1,9 +1,8 @@
 import DictionaryService from "../Services/DictionaryService";
 import RussianService from "../Services/RussianService";
-import EnglishService from "../Services/EnglishService";
-import Main from "../components/Main";
+// import EnglishService from "../Services/EnglishService"; 
 import React from "react";
-import WordFormClass from "../components/WordFormClass";
+import WordFormClass from "../Components/WordFormClass";
 
 type Props = {
   Word: string;
@@ -19,7 +18,7 @@ type State = {
 };
 
 class RectanglePlayground extends React.Component<Props, State> {
-  TestEnglish = (e) => {
+  TestEnglish = () => {
     var item = {
       word: "Man",
       length: "Man".length,
@@ -44,12 +43,12 @@ class RectanglePlayground extends React.Component<Props, State> {
       status: "",
     };
 
-    const items = [item, item2, item3, item4];
+    var items = [item, item2, item3, item4];
 
     this.dictionaryService.CheckWords(items);
   };
 
-  TestRussian = (e) => {
+  TestRussian = () => {
     var item = {
       word: "Катастрофа",
       length: "Катастрофа".length,
@@ -83,7 +82,6 @@ class RectanglePlayground extends React.Component<Props, State> {
 
     return (
       <div>
-        <Main></Main>
         <button type="submit" className="ml-20" onClick={this.TestRussian}>
           Confirm
         </button>

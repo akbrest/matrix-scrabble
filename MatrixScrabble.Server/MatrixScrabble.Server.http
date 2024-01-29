@@ -3,4 +3,6 @@
 GET {{MatrixScrabble.Server_HostAddress}}/weatherforecast/
 Accept: application/json
 
+POST {{MatrixScrabble.Server_HostAddress}}/word/
+Accept: application/json
 ###

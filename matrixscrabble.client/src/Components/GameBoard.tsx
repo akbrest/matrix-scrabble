@@ -1,9 +1,9 @@
 import React from "react";
 import RectanglePlayground from "./RectanglePlayground";
 import FieldGenerator from "../Services/FieldGenerator";
+import GameService from "../Services/GameService";
 
 export interface Props {
-  startTimeInSeconds: string;
 }
 
 type State = {
@@ -11,15 +11,16 @@ type State = {
 };
 
 class GameBoard extends React.Component<Props, State> {
-  Word;
-  GameWordField;
+    Word: string = "";
+    GameWordField: String[][] = [];
 
-  Field: FieldGenerator = new FieldGenerator();
+    Field: FieldGenerator = new FieldGenerator();
+    GameService: GameService = new GameService();
 
   UpdateField = (x: number, y: number, value: string) => {
     this.GameWordField[x][y] = value;
-    console.log(JSON.stringify({ main: this.GameWordField}));
-
+      console.log(JSON.stringify({ main: this.GameWordField }));
+      this.GameService.ConfirmGame(this.GameWordField);
   };
 
   InitialField() {
@@ -57,11 +58,11 @@ class GameBoard extends React.Component<Props, State> {
     return (
       <div className="game-field">
         <div>
-          <button onClick={(e) => this.StartGame(3)}>3 Letters</button>
-          <button onClick={(e) => this.StartGame(4)}>4 Letters</button>
-          <button onClick={(e) => this.StartGame(5)}>5 Letters</button>
-          <button onClick={(e) => this.StartGame(6)}>6 Letters</button>
-          <button onClick={(e) => this.StartGame(7)}>7 Letters</button>
+          <button onClick={() => this.StartGame(3)}>3 Letters</button>
+          <button onClick={() => this.StartGame(4)}>4 Letters</button>
+          <button onClick={() => this.StartGame(5)}>5 Letters</button>
+          <button onClick={() => this.StartGame(6)}>6 Letters</button>
+          <button onClick={() => this.StartGame(7)}>7 Letters</button>
         </div>
         <div>
           <RectanglePlayground UpdateField={this.UpdateField} Word={word} />

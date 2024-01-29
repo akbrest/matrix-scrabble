@@ -39,7 +39,7 @@ class OneLetterEnabledInput extends  React.Component<MyComponentProps, State> {
     return true;
   }
 
-  onChange = (e) => {
+  onChange = (e:any) => {
    
     this.props.UpdateField(this.props.x, this.props.y, e.target.value);
   };
@@ -49,7 +49,7 @@ class OneLetterEnabledInput extends  React.Component<MyComponentProps, State> {
       <div className="one-symbol-enabled-block">
         <input
           onChange={this.onChange}
-          onInput={(e) => this.CheckValidity()}
+          onInput={() => this.CheckValidity()}
           maxLength={1}
           className="simpleInput"
           type="text"
