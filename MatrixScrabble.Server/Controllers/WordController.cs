@@ -1,6 +1,5 @@
 using MatrixScrabble.Server.Models;
 using MatrixScrabble.Server.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MatrixScrabble.Server.Controllers
@@ -23,21 +22,27 @@ namespace MatrixScrabble.Server.Controllers
 
         [Route("ConfirmGame")]
         [HttpPost]
-        public ActionResult<Board> ConfirmGame(Board value)
+        public ActionResult<Game> ConfirmGame(Game value)
         {
-
-            var val = new Board();
-            val.Name = "Post:" + Guid.NewGuid().ToString();
+            var val = new Game();
+            //val.Name = "Post:" + Guid.NewGuid().ToString();
 
             return Ok(value);
         }
 
         [Route("CreateGame")]
         [HttpPost]
-        public ActionResult<Board> CreateGame(CreateGame word)
+        public ActionResult<Game> CreateGame(CreateGame createGame)
         {
-            var val = new Board();
-            val.Name = "Post:" + Guid.NewGuid().ToString();
+            // check game??
+
+            var val = new Game();
+            val.ID = Guid.NewGuid();
+            string[,] numbers = { { "d", "d", "d" }, { "d", "d", "" } };
+
+            List<List<string>> board = new List<List<string>>();
+
+            val.Board = board;
 
             return Ok(val);
         }
