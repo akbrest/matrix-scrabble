@@ -1,8 +1,9 @@
-import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from './Reducers/GameReducer';
+import { applyMiddleware, combineReducers, createStore } from "redux";
 
-export const store = configureStore({
-    reducer: {
-        counter: counterReducer,
-    },
+import { GameReducer } from "./Store/Game/reducers/reducer";
+import thunk from "redux-thunk";
+
+const combinedReducer = combineReducers({
+    gameReducer: GameReducer
 });
+export const store = createStore(combinedReducer, applyMiddleware(thunk));

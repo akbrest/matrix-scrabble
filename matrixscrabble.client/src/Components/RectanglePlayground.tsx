@@ -1,17 +1,17 @@
 import DictionaryService from "../Services/DictionaryService";
 import RussianService from "../Services/RussianService";
-// import EnglishService from "../Services/EnglishService"; 
+// import EnglishService from "../Services/EnglishService";
 import React from "react";
 import WordFormClass from "../Components/WordFormClass";
 
 type Props = {
   Word: string;
-  UpdateField: (x: number, y: number, value: string) => any;
+  UpdateField: (x: number, y: number, type: string, value: string) => void;
 };
 
 type State = {
   Word: string;
-  UpdateField: (x: number, y: number, value: string) => any;
+  UpdateField: (x: number, y: number, type: string, value: string) => void;
   FirstLetter: string;
   LastLetter: string;
   MiddleSubwordLength: number;
@@ -82,9 +82,6 @@ class RectanglePlayground extends React.Component<Props, State> {
 
     return (
       <div>
-        <button type="submit" className="ml-20" onClick={this.TestRussian}>
-          Confirm
-        </button>
         {letters.map((element, index) => {
           if (index === 0) {
             return (

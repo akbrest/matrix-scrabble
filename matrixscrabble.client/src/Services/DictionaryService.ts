@@ -7,14 +7,14 @@ class DictionaryService {
     this.LanguageService = ILanguageService;
   }
 
-    public async CheckWords( data:  []) {
-
-    await data.forEach(async (element) => {
-        element.status = await this.LanguageService.GetWordStatus(element.word);
-        element.length = element.word.length;
-    });
-
-    return false;
+    public async CheckWords( data: []) {
+        /*
+        await data.forEach(async (element) => {
+            element.status = await this.LanguageService.GetWordStatus(element.word);
+            element.length = element.word.length;
+        });
+        */
+        return false;
   }
 }
 

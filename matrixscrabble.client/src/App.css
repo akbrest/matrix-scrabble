@@ -1,22 +1,32 @@
 .app {
   text-align: center;
- 
 }
 
 .ml-20 {
   margin-left: 20px;
 }
 
-div.one-symbol-block {
-  display: block;
-  width:50px;
-  height:50px;
+div.board-field {
+  margin: 0 auto;
+  width: 800px;
 }
 
-div.one-symbol-enabled-block {
+div.game-field-line-left {
+  width: 400px;
+  float: right;
+}
+
+div.one-symbol-block {
   display: block;
-  width:50px;
-  height:50px;
+  width: 50px;
+  height: 50px;
+}
+
+div.one-symbol-enabled-block-left {
+  display: block;
+  width: 50px;
+  height: 50px;
+  float: right;
 }
 
 div.one-symbol-enabled-block {
@@ -25,11 +35,11 @@ div.one-symbol-enabled-block {
   height: 50px;
   border: 1px solid black;
   margin: 2px;
-  background-color:white;
+  background-color: white;
 }
 
 div.one-symbol-input input {
-  border:0px;
+  border: 0px;
 }
 
 div.game-field {

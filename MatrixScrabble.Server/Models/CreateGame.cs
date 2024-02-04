@@ -2,6 +2,5 @@
 
 public class CreateGame
 {
-    public string Word { get; set; }
-  
+    public string? Word { get; set; }
 }

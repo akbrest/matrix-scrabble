@@ -1,10 +1,11 @@
+import EnabledInput from "./UI/EnabledInput";
 import OneLetterDisabledInput from "./UI/OneLetterDisabledInput";
 import OneLetterEnabledInput from "./UI/OneLetterEnabledInput";
 import React from "react";
 
 type Props = {
   Word: string;
-  UpdateField: (x: number, y: number, value: string) => any;
+  UpdateField: (x: number, y: number, type: string, value: string) => any;
   FirstLetter: string;
   LastLetter: string;
   MiddleSubwordLength: number;
@@ -13,7 +14,7 @@ type Props = {
 };
 
 type State = {
-  UpdateField: (x: number, y: number, value: string) => any;
+  UpdateField: (x: number, y: number, type: string, value: string) => any;
   FirstLetter: string;
   LastLetter: string;
   MiddleSubwordLength: number;
@@ -41,28 +42,48 @@ class WordFormClass extends React.Component<Props, State> {
       condition++;
     }
 
-    return (
-      <div className="game-field-line">
-        <OneLetterDisabledInput letter={firstLetter} />
-        {items.map((element, index) => {
-          return (
-            <OneLetterEnabledInput
-              key={"FooClass" + index}
-              UpdateField={updateField}
-              Language="en"
-              x={this.props.x}
-              y={index}
-            />
-          );
-        })}
-        <OneLetterDisabledInput letter={lastLetter} />
+      return (
+          <div>
+              <div className="game-field-line">
+                    <div className="game-field-line-left">
+                        <EnabledInput
+                            key={"FooClass_"} 
+                            UpdateField={updateField}
+                            Language="en"
+                            type={'left'}
+                            row={this.props.x}
+                          />
+                    </div>
+                    <OneLetterDisabledInput letter={firstLetter} />
+                  {items.map(({ }, index) => {
+                      return (
+                        <OneLetterEnabledInput
+                          key={"FooClass" + index}
+                          UpdateField={updateField}
+                          Language="en"
+                          x={this.props.x}
+                          y={index}
+                        />
+                      );
+                    })}
+                    <OneLetterDisabledInput letter={lastLetter} />
+                        <div className="game-field-line">
+                            <EnabledInput
+                                key={"FooClass_"}
+                                UpdateField={updateField}
+                                Language="en"
+                                type={'right'}
+                                row={this.props.x}
+                            />
+                        <div>
+                    <button type="submit" className="ml-20">
+                    Confirm
+                    </button>
+                    </div>
+                  </div>
+              </div>
+          </div>
 
-        <div>
-          <button type="submit" className="ml-20">
-            Confirm
-          </button>
-        </div>
-      </div>
     );
   }
 }

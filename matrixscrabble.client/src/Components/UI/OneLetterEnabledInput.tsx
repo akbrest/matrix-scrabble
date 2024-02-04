@@ -4,14 +4,14 @@ interface MyComponentProps {
   Language: string;
   x: number,
   y: number,
-  UpdateField: (x: number, y: number, value:string) => any;
+  UpdateField: (x: number, y: number,type:string, value:string) => void;
 }
 
 interface State {
   Language: string;
   x: number,
   y: number,
-  UpdateField: (x: number, y: number, value:string) => any;
+  UpdateField: (x: number, y: number,type:string, value: string) => void;
 }
 
 class OneLetterEnabledInput extends  React.Component<MyComponentProps, State> {
@@ -40,8 +40,7 @@ class OneLetterEnabledInput extends  React.Component<MyComponentProps, State> {
   }
 
   onChange = (e:any) => {
-   
-    this.props.UpdateField(this.props.x, this.props.y, e.target.value);
+    this.props.UpdateField(this.props.x, this.props.y, "main", e.target.value);
   };
 
   render() {

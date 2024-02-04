@@ -9,6 +9,6 @@
     <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\Components\UI\" />
+    <Folder Include="src\Reducers\" />
   </ItemGroup>
 </Project>
