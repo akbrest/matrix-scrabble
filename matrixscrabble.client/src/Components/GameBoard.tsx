@@ -1,25 +1,34 @@
 import React from "react";
 import RectanglePlayground from "./RectanglePlayground";
 import FieldGenerator from "../Services/FieldGenerator";
+import GameService from "../Services/GameService";
+import { connect } from "react-redux";
+import { CreateGame } from "../Store/Game/reducers/services";
 
-export interface Props {
-  startTimeInSeconds: string;
+interface State {}
+
+interface OwnProps {}
+
+interface DispatchProps {
+  CreateGame: (word: string) => void;
 }
 
-type State = {
-  GameWord: string;
-};
+type Props = OwnProps & DispatchProps;
 
 class GameBoard extends React.Component<Props, State> {
-  Word;
-  GameWordField;
+  Word: string = "";
+  GameWordField: string[][] = [];
 
   Field: FieldGenerator = new FieldGenerator();
+  GameService: GameService = new GameService();
 
-  UpdateField = (x: number, y: number, value: string) => {
+  UpdateField = (x: number, y: number, type: string, value: string) => {
+    if (type == "left" || type == "right") {
+      console.log("left or right part");
+    }
+
     this.GameWordField[x][y] = value;
-    console.log(JSON.stringify({ main: this.GameWordField}));
-
+    console.log(JSON.stringify({ main: this.GameWordField }));
   };
 
   InitialField() {
@@ -47,28 +56,47 @@ class GameBoard extends React.Component<Props, State> {
   StartGame = (count: number) => {
     var word = this.Field.GetRandomWord(count);
     this.Word = word;
-
+    this.props.CreateGame(word);
     this.InitialField();
-    this.setState({ GameWord: this.Word });
+
+    //this.setState({ GameWord: this.Word });
   };
 
   render() {
     var word = this.Word;
     return (
       <div className="game-field">
-        <div>
-          <button onClick={(e) => this.StartGame(3)}>3 Letters</button>
-          <button onClick={(e) => this.StartGame(4)}>4 Letters</button>
-          <button onClick={(e) => this.StartGame(5)}>5 Letters</button>
-          <button onClick={(e) => this.StartGame(6)}>6 Letters</button>
-          <button onClick={(e) => this.StartGame(7)}>7 Letters</button>
-        </div>
-        <div>
-          <RectanglePlayground UpdateField={this.UpdateField} Word={word} />
+        <div className="board-field">
+          <div>
+            <button onClick={() => this.StartGame(3)}>3 Letters</button>
+            <button onClick={() => this.StartGame(4)}>4 Letters</button>
+            <button onClick={() => this.StartGame(5)}>5 Letters</button>
+            <button onClick={() => this.StartGame(6)}>6 Letters</button>
+            <button onClick={() => this.StartGame(7)}>7 Letters</button>
+          </div>
+          <div>
+            <RectanglePlayground UpdateField={this.UpdateField} Word={word} />
+          </div>
+          <button type="submit" className="ml-20">
+            Confirm
+          </button>
         </div>
       </div>
     );
   }
 }
 
-export default GameBoard;
+const mapStateToProps = (state: any) => {
+  return {
+    loading: state.gameReducer.loading,
+    data: state.gameReducer.data,
+    error: state.gameReducer.error,
+  };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    CreateGame: () => dispatch(CreateGame()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);

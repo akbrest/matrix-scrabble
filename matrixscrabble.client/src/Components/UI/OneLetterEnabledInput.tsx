@@ -4,14 +4,14 @@ interface MyComponentProps {
   Language: string;
   x: number,
   y: number,
-  UpdateField: (x: number, y: number, value:string) => any;
+  UpdateField: (x: number, y: number,type:string, value:string) => void;
 }
 
 interface State {
   Language: string;
   x: number,
   y: number,
-  UpdateField: (x: number, y: number, value:string) => any;
+  UpdateField: (x: number, y: number,type:string, value: string) => void;
 }
 
 class OneLetterEnabledInput extends  React.Component<MyComponentProps, State> {
@@ -39,9 +39,8 @@ class OneLetterEnabledInput extends  React.Component<MyComponentProps, State> {
     return true;
   }
 
-  onChange = (e) => {
-   
-    this.props.UpdateField(this.props.x, this.props.y, e.target.value);
+  onChange = (e:any) => {
+    this.props.UpdateField(this.props.x, this.props.y, "main", e.target.value);
   };
 
   render() {
@@ -49,7 +48,7 @@ class OneLetterEnabledInput extends  React.Component<MyComponentProps, State> {
       <div className="one-symbol-enabled-block">
         <input
           onChange={this.onChange}
-          onInput={(e) => this.CheckValidity()}
+          onInput={() => this.CheckValidity()}
           maxLength={1}
           className="simpleInput"
           type="text"
