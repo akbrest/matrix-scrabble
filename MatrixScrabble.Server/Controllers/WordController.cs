@@ -11,9 +11,9 @@ public class WordController : ControllerBase
 {
     private readonly IGameService gameService;
 
-    private readonly ILogger<TestController> _logger;
+    private readonly ILogger<WordController> _logger;
 
-    public WordController(ILogger<TestController> logger, IGameService gameService, IDictionaryService dictionaryService)
+    public WordController(ILogger<WordController> logger, IGameService gameService, IDictionaryService dictionaryService)
     {
         this.gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
 
