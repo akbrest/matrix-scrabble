@@ -4,88 +4,106 @@ using MatrixScrabble.Server.Mappers;
 using MatrixScrabble.Server.Dtos;
 using MatrixScrabble.Server.Repositories;
 
-namespace MatrixScrabble.Server.Services
+namespace MatrixScrabble.Server.Services;
+
+public class GameService : IGameService
 {
-    public class GameService : IGameService
+    private readonly IRepository<Game> gameRepository;
+    private readonly IGameMapper gameMapper;
+
+    public GameService(IRepository<Game> gameRepository,
+        IGameMapper gameMapper)
     {
-        private readonly IRepository<Game> gameRepository;
-        private readonly IGameMapper gameMapper;
+        this.gameRepository = gameRepository
+            ?? throw new ArgumentNullException(nameof(gameRepository));
+        this.gameMapper = gameMapper
+            ?? throw new ArgumentNullException(nameof(gameMapper));
+    }
 
-        public GameService(IRepository<Game> gameRepository,
-            IGameMapper gameMapper)
-        {
-            this.gameRepository = gameRepository
-                ?? throw new ArgumentNullException(nameof(gameRepository));
-            this.gameMapper = gameMapper
-                ?? throw new ArgumentNullException(nameof(gameMapper));
-        }
+    async Task<IEnumerable<GameDto>> IGameService.GetAsync()
+    {
+        var games = await gameRepository.GetAllAsync();
 
-        async Task<IEnumerable<GameDto>> IGameService.GetAsync()
-        {
-            var games = await gameRepository.GetAllAsync();
+        return games.Select(gameMapper.Map);
+    }
 
-            return games.Select(gameMapper.Map);
-        }
+    async Task<GameDto?> IGameService.GetAsync(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
 
-        async Task<GameDto?> IGameService.GetAsync(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
+        var game = await gameRepository.GetAsync(id);
 
-            var game = await gameRepository.GetAsync(id);
+        if (game is null)
+            throw new ResourceNotFoundException();
 
-            if (game is null)
-                throw new ResourceNotFoundException();
+        return gameMapper.Map(game);
+    }
 
-            return gameMapper.Map(game);
-        }
+    async Task<GameDto> IGameService.CreateAsync(GameDto gameDto)
+    {
+        if (gameDto is null)
+            throw new ArgumentNullException(nameof(gameDto));
 
-        async Task<GameDto> IGameService.CreateAsync(GameDto gameDto)
-        {
-            if (gameDto is null)
-                throw new ArgumentNullException(nameof(gameDto));
+        var game = gameMapper.Map(gameDto);
 
-            var game = gameMapper.Map(gameDto);
+        // TODO use Factory
+        game.CreatedAt = DateTime.UtcNow;
+        game.IsCompleted = false;
 
-            // TODO use Factory
-            game.CreatedAt = DateTime.UtcNow;
-            game.IsCompleted = false;
+        var createdGame = await gameRepository.CreateAsync(game);
 
-            var createdGame = await gameRepository.CreateAsync(game);
+        return gameMapper.Map(createdGame);
+    }
 
-            return gameMapper.Map(createdGame);
-        }
+    async Task<GameDto> IGameService.ConfirmGame(GameDto gameDto)
+    {
+        var existingGame = await gameRepository.GetAsync(gameDto.Id);
 
-        async Task<GameDto> IGameService.UpdateAsync(string id, GameDto gameDto)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
-            if (gameDto is null)
-                throw new ArgumentNullException(nameof(gameDto));
+        if (existingGame is null)
+            throw new ResourceNotFoundException();
 
-            var existingGame = await gameRepository.GetAsync(id);
+        existingGame.Word = gameDto.Word;
+        existingGame.IsCompleted = true;
+        existingGame.Field = new Field() { };
+        existingGame.Field.Right = gameDto.Game.Right;
+        existingGame.Field.Left = gameDto.Game.Left;
+        existingGame.Field.Main = gameDto.Game.Board;
 
-            if (existingGame is null)
-                throw new ResourceNotFoundException();
+        var updatedGame = await gameRepository.UpdateAsync(existingGame);
 
-            existingGame.Word = gameDto.Word;
+        return gameMapper.Map(updatedGame);
+    }
 
-            var updatedGame = await gameRepository.UpdateAsync(existingGame);
+    async Task<GameDto> IGameService.UpdateAsync(string id, GameDto gameDto)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
+        if (gameDto is null)
+            throw new ArgumentNullException(nameof(gameDto));
 
-            return gameMapper.Map(updatedGame);
-        }
+        var existingGame = await gameRepository.GetAsync(id);
 
-        async Task IGameService.RemoveAsync(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
+        if (existingGame is null)
+            throw new ResourceNotFoundException();
 
-            var existingGame = await gameRepository.GetAsync(id);
+        existingGame.Word = gameDto.Word;
 
-            if (existingGame is null)
-                throw new ResourceNotFoundException();
+        var updatedGame = await gameRepository.UpdateAsync(existingGame);
 
-            await gameRepository.DeleteAsync(id);
-        }
+        return gameMapper.Map(updatedGame);
+    }
+
+    async Task IGameService.RemoveAsync(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
+
+        var existingGame = await gameRepository.GetAsync(id);
+
+        if (existingGame is null)
+            throw new ResourceNotFoundException();
+
+        await gameRepository.DeleteAsync(id);
     }
 }

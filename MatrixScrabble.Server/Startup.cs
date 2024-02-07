@@ -21,9 +21,10 @@ namespace MatrixScrabble.Server
             services.Configure<MongoDbSettings>(mongoDbSettings);
 
             // Add services to the container.
-            services.AddScoped<IDbContext, DbContext>();
+            services.AddSingleton<IDbContext, DbContext>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IGameService, GameService>();
+            services.AddSingleton<IDictionaryService, DictionaryService>();
             services.AddScoped<IGameMapper, GameMapper>();
 
             services.AddControllers();

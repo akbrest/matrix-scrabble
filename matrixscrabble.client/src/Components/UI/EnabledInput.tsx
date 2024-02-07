@@ -9,33 +9,33 @@ interface MyComponentProps {
 
 interface State {
     Language: string;
-    width:number
+    width: number
 }
 
 class EnabledInput extends React.Component<MyComponentProps, State> {
 
-    ClassName: string ="";
+    ClassName: string = "";
     Language;
     AllowedLetters = {
-        "en":['a','b','c','d', 'e'],
-        "ru" :["а", "б" ,"в", "ш"]    
+        "en": ['a', 'b', 'c', 'd', 'e'],
+        "ru": ["а", "б", "в", "ш"]
     };
 
     Width: number;
 
-    constructor(props: MyComponentProps){
+    constructor(props: MyComponentProps) {
         super(props);
         this.Width = 100;
-        this.ClassName =  this.props.type ?'one-symbol-enabled-block-'+ this.props.type: ''
-  
+        this.ClassName = this.props.type ? 'one-symbol-enabled-block-' + this.props.type : ''
+
         this.state = {
             Language: this.props.Language,
-            width:100,
+            width: 100,
             //UpdateField: this.props.UpdateField
         };
 
         this.Language = props.Language;
-        }
+    }
 
     CheckValidity() {
         return true;

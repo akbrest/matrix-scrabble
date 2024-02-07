@@ -4,73 +4,73 @@ using MatrixScrabble.Server.Exceptions;
 using MatrixScrabble.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MatrixScrabble.Server.Controllers
+namespace MatrixScrabble.Server.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+[NotFoundOnException(typeof(ResourceNotFoundException))]
+public class GamesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    [NotFoundOnException(typeof(ResourceNotFoundException))]
-
-    public class GamesController : ControllerBase
+    private readonly IGameService gameService;
+    public GamesController(IGameService gameService, IDictionaryService dictionaryService)
     {
-        private readonly IGameService gameService;
-        public GamesController(IGameService gameService)
-        {
-            this.gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
-        }
+        this.gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameDto>>> GetAll()
-        {
-            var games = await gameService.GetAsync();
+        var items = dictionaryService.GetAllAsync();
+    }
 
-            return Ok(games);
-        }
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<GameDto>>> GetAll()
+    {
+        var games = await gameService.GetAsync();
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<GameDto>> Get(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
+        return Ok(games);
+    }
 
-            var game = await gameService.GetAsync(id);
+    [HttpGet("{id}")]
+    public async Task<ActionResult<GameDto>> Get(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
 
-            return Ok(game);
-        }
+        var game = await gameService.GetAsync(id);
 
-        [HttpPost]
-        public async Task<IActionResult> Create(GameDto game)
-        {
-            if (game is null)
-                throw new ArgumentNullException(nameof(game));
+        return Ok(game);
+    }
 
-            var createdGame = await gameService.CreateAsync(game);
+    [HttpPost]
+    public async Task<IActionResult> Create(GameDto game)
+    {
+        if (game is null)
+            throw new ArgumentNullException(nameof(game));
 
-            return CreatedAtAction(nameof(Get), new { id = createdGame.Id }, createdGame);
-        }
+        var createdGame = await gameService.CreateAsync(game);
+
+        return CreatedAtAction(nameof(Get), new { id = createdGame.Id }, createdGame);
+    }
 
 
-        [HttpPut("{id:length(24)}")]
-        public async Task<IActionResult> Update(string id, GameDto updatedGame)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
-            if (updatedGame is null)
-                throw new ArgumentNullException(nameof(updatedGame));
+    [HttpPut("{id:length(24)}")]
+    public async Task<IActionResult> Update(string id, GameDto updatedGame)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
+        if (updatedGame is null)
+            throw new ArgumentNullException(nameof(updatedGame));
 
-            var game = await gameService.UpdateAsync(id, updatedGame);
+        var game = await gameService.UpdateAsync(id, updatedGame);
 
-            return Ok(game);
-        }
+        return Ok(game);
+    }
 
-        [HttpDelete("{id:length(24)}")]
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (string.IsNullOrWhiteSpace(id))
-                throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
-            
-            await gameService.RemoveAsync(id);
+    [HttpDelete("{id:length(24)}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        if (string.IsNullOrWhiteSpace(id))
+            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
 
-            return NoContent();
-        }
+        await gameService.RemoveAsync(id);
+
+        return NoContent();
     }
 }

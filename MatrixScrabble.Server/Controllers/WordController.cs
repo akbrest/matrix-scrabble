@@ -1,50 +1,49 @@
+using MatrixScrabble.Server.Dtos;
 using MatrixScrabble.Server.Models;
 using MatrixScrabble.Server.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MatrixScrabble.Server.Controllers
+namespace MatrixScrabble.Server.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class WordController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class WordController : ControllerBase
+    private readonly IGameService gameService;
+
+    private readonly ILogger<TestController> _logger;
+
+    public WordController(ILogger<TestController> logger, IGameService gameService, IDictionaryService dictionaryService)
     {
-        private static readonly string[] Summaries = new[]
+        this.gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
+
+        _logger = logger;
+    }
+
+    [Route("ConfirmGame")]
+    [HttpPost]
+    public async Task<ActionResult<Game>> ConfirmGame(Game game)
+    {
+        if (string.IsNullOrWhiteSpace(game.ID))
+            throw new ArgumentException($"'{nameof(game.ID)}' cannot be null or whitespace.", nameof(game.ID));
+
+        GameDto gameDto = new GameDto()
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+            CreatedAt = DateTime.UtcNow,
+            Id = game.ID,
+            IsCompleted = true,
+            Word = "",
+            Game = new Game()
+            {
+                Board = game.Board,
+                Left = game.Left,
+                Right = game.Right,
+            }
         };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        var completedGame = await gameService.ConfirmGame(gameDto);
 
-        public WordController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
-        }
+        return Ok(game);
 
-        [Route("ConfirmGame")]
-        [HttpPost]
-        public ActionResult<Game> ConfirmGame(Game value)
-        {
-            var val = new Game();
-            //val.Name = "Post:" + Guid.NewGuid().ToString();
-
-            return Ok(value);
-        }
-
-        [Route("CreateGame")]
-        [HttpPost]
-        public ActionResult<Game> CreateGame(CreateGame createGame)
-        {
-            // check game??
-
-            var val = new Game();
-            val.ID = Guid.NewGuid();
-            string[,] numbers = { { "d", "d", "d" }, { "d", "d", "" } };
-
-            List<List<string>> board = new List<List<string>>();
-
-            val.Board = board;
-
-            return Ok(val);
-        }
     }
 }
