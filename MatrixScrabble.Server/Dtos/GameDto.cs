@@ -7,7 +7,8 @@ public class GameDto
     public string? Id { get; set; }
     public required string Word { get; set; }
     public bool IsCompleted { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public Game Game { get; set; }
+    public DateTime? CreatedAt { get; set; }
+    public Game? Game { get; set; }
+    public string? Language { get; set; }
 }
 

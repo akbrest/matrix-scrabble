@@ -9,16 +9,17 @@ namespace MatrixScrabble.Server.Services;
 public class GameService : IGameService
 {
     private readonly IRepository<Game> gameRepository;
-    private readonly IGameMapper gameMapper;
+	
+	 private readonly IGameMapper gameMapper;
 
-    public GameService(IRepository<Game> gameRepository,
-        IGameMapper gameMapper)
+    public GameService(IRepository<Game> gameRepository, IGameMapper gameMapper)
     {
         this.gameRepository = gameRepository
             ?? throw new ArgumentNullException(nameof(gameRepository));
         this.gameMapper = gameMapper
             ?? throw new ArgumentNullException(nameof(gameMapper));
-    }
+		
+	}
 
     async Task<IEnumerable<GameDto>> IGameService.GetAsync()
     {
@@ -60,8 +61,38 @@ public class GameService : IGameService
     {
         var existingGame = await gameRepository.GetAsync(gameDto.Id);
 
-        if (existingGame is null)
+		List<string> wordList = new List<string>();
+
+		int length = 4;
+
+		int counter = 0;
+
+		while (counter < length)
+		{
+			wordList.Add(String.Concat(gameDto.Game.Left[counter], existingGame.Word[counter], gameDto.Game.Board[counter], existingGame.Word[existingGame.Word.Length - counter], gameDto.Game.Right[counter]));
+			counter++;
+		}
+
+		if (wordList.Contains(existingGame.Word))
+		{
+			throw new SameWordUsedException();
+		}
+
+		if (wordList.Distinct().Count() != wordList.Count)
+		{
+			throw new SameWordUsedException();
+		}
+
+		
+
+
+
+		if (existingGame is null)
             throw new ResourceNotFoundException();
+
+
+
+
 
         existingGame.Word = gameDto.Word;
         existingGame.IsCompleted = true;

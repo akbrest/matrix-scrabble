@@ -6,17 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MatrixScrabble.Server.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("[controller]")]
 [NotFoundOnException(typeof(ResourceNotFoundException))]
 public class GamesController : ControllerBase
 {
     private readonly IGameService gameService;
-    public GamesController(IGameService gameService, IDictionaryService dictionaryService)
+    public GamesController(IGameService gameService)
     {
         this.gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
 
-        var items = dictionaryService.GetAllAsync();
     }
 
     [HttpGet]

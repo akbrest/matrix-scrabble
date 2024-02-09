@@ -1,20 +1,22 @@
 ﻿namespace MatrixScrabble.Server.Services;
-
-public class DictionaryService : IDictionaryService
+    
+public static class DictionaryService 
 {
-
+	           
     private static List<String> _items;
 
-    private String _basePath;
-
-    public DictionaryService(IWebHostEnvironment _webHostEnvironment)
+    static DictionaryService()
     {
-        _basePath = _webHostEnvironment.ContentRootPath;
+		//_basePath = _webHostEnvironment.ContentRootPath;
+		GetAllAsync();
     }
 
-    public async Task<IList<string>> GetAllAsync()
+    public static IList<string> GetAllAsync()
     {
-        if (_items != null)
+
+		var _basePath = "";
+
+		if (_items != null)
             return _items;
 
         _items = new List<string>();
@@ -30,4 +32,7 @@ public class DictionaryService : IDictionaryService
 
         return _items;
     }
+
+
+
 }
