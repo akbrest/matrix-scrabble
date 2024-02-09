@@ -1,29 +1,26 @@
 import axios from "axios";
 import { GAME_ACTIONS } from "../../Game/reducers/action";
 
-export const CreateGame = (word: string) => {
+export const CreateGame = (word: string, language: string) => {
     return (dispatch: any) => {
 
         dispatch({ type: GAME_ACTIONS.CREATE_GAME_REQUEST });
-
         const headers = {
             "Content-Type": "application/json",
         };
         axios
-            .post("word/CreateGame", { word: word }, { headers })
+            .post("Games", { word: word, language: language, Game : null }, { headers })
             .then((result) => {
-                console.log(result);
-                console.log('sadsad');
 
-                dispatch({
-                    type: GAME_ACTIONS.CREATE_GAME_SUCCESS,
-                    payload: result.data,
-                });
+                setTimeout(() => {
+                    dispatch({
+                        type: GAME_ACTIONS.CREATE_GAME_SUCCESS,
+                        payload: result.data,
+                    });
+                }, 8000);               
 
-                console.log('sasas');
             })
             .catch(() => {
-                console.log("went wrong");
 
                 dispatch({
                     type: GAME_ACTIONS.CREATE_GAME_FAILURE,

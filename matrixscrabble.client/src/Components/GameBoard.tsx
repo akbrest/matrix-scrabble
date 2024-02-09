@@ -10,6 +10,7 @@ class GameBoard extends React.Component<any, any> {
     GameWordField: string[][] = [];
     Left: string[] = [];
     Right: string[] = [];
+    Language: string = "";
 
     Field: FieldGenerator = new FieldGenerator();
     GameService: GameService = new GameService();
@@ -60,9 +61,11 @@ class GameBoard extends React.Component<any, any> {
     }
 
     StartGame = (count: number) => {
+
         var word = this.Field.GetRandomWord(count);
+
         this.Word = word;
-        this.props.CreateGame(word);
+        this.props.CreateGame(word, "ru");
         this.InitialField();
     };
 
@@ -72,27 +75,39 @@ class GameBoard extends React.Component<any, any> {
 
     render() {
         var word = this.Word;
+        var loading = this.props.loading;
+        var id = this.props.id;
 
-        return (
+        if (loading) {
+            return (<div>loading..</div>);
+        }
 
-            <div className="game-field">
-                <div className="board-field">
-                    <div>
-                        <button onClick={() => this.StartGame(3)}>3 Letters</button>
-                        <button onClick={() => this.StartGame(4)}>4 Letters</button>
-                        <button onClick={() => this.StartGame(5)}>5 Letters</button>
-                        <button onClick={() => this.StartGame(6)}>6 Letters</button>
-                        <button onClick={() => this.StartGame(7)}>7 Letters</button>
+        else {
+            if (!id) {
+                return (
+                <div>
+                    <button onClick={() => this.StartGame(3)}>3 Letters</button>
+                    <button onClick={() => this.StartGame(4)}>4 Letters</button>
+                    <button onClick={() => this.StartGame(5)}>5 Letters</button>
+                    <button onClick={() => this.StartGame(6)}>6 Letters</button>
+                    <button onClick={() => this.StartGame(7)}>7 Letters</button>
                     </div>
-                    <div>
-                        <RectanglePlayground UpdateField={this.UpdateField} Word={word} />
+                )
+            } else {
+                return (
+                    <div className="game-field">
+                        <div className="board-field">
+                            <div>
+                                <RectanglePlayground Language={"ru"} UpdateField={this.UpdateField} Word={word} />
+                            </div>
+                            <button onClick={() => this.ConfirmGame()} type="submit" className="ml-20">
+                                Confirm
+                            </button>
+                        </div>
                     </div>
-                    <button onClick={() => this.ConfirmGame()} type="submit" className="ml-20">
-                        Confirm
-                    </button>
-                </div>
-            </div>
-        );
+                );
+            }
+        }
     }
 }
 
@@ -101,13 +116,14 @@ const mapStateToProps = (state: any) => {
         loading: state.gameReducer.loading,
         data: state.gameReducer.data,
         error: state.gameReducer.error,
-        id: state.gameReducer.id
+        id: state.gameReducer.id,
+        language: state.gameReducer.language
     };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        CreateGame: () => dispatch(CreateGame("test")),
+        CreateGame: (word: string, language:string) => dispatch(CreateGame(word, language)),
         UpdateGame: () => dispatch(UpdateGame()),
         ConfirmGame: (id: string, left: [], right: [], board: []) => dispatch(ConfirmGame(id, left, right, board)),
     };

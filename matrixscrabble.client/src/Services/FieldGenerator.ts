@@ -1,5 +1,5 @@
 class FieldGenerator {
-    Language = "en";
+    Language = "ru";
     AllowedWords = {
         "3": {
             en: ["god", "sky", "fat", "leg", "art"],

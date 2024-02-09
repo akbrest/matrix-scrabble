@@ -11,6 +11,8 @@ type Props = {
     MiddleSubwordLength: number;
     x: number;
     y: number;
+    Language: string;
+
 };
 
 type State = {
@@ -18,6 +20,7 @@ type State = {
     FirstLetter: string;
     LastLetter: string;
     MiddleSubwordLength: number;
+    Language: string;
     x: number;
     y: number;
 };
@@ -29,7 +32,9 @@ class WordFormClass extends React.Component<Props, State> {
         var firstLetter = this.props.FirstLetter;
         var lastLetter = this.props.LastLetter;
         var updateField = this.props.UpdateField;
+        var language = this.props.Language;
 
+        
         if (word == null) {
             word = "";
         }
@@ -49,7 +54,7 @@ class WordFormClass extends React.Component<Props, State> {
                         <EnabledInput
                             key={"FooClass_"}
                             UpdateField={updateField}
-                            Language="en"
+                            Language={language}
                             type={'left'}
                             row={this.props.x}
                         />
@@ -71,7 +76,7 @@ class WordFormClass extends React.Component<Props, State> {
                         <EnabledInput
                             key={"FooClass_"}
                             UpdateField={updateField}
-                            Language="en"
+                            Language={language }
                             type={'right'}
                             row={this.props.x}
                         />

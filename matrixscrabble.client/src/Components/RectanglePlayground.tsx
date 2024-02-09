@@ -7,6 +7,7 @@ import WordFormClass from "../Components/WordFormClass";
 type Props = {
     Word: string;
     UpdateField: (x: number, y: number, type: string, value: string) => void;
+    Language: string;
 };
 
 type State = {
@@ -93,6 +94,7 @@ class RectanglePlayground extends React.Component<Props, State> {
                                 LastLetter={reversedLetters[index]}
                                 MiddleSubwordLength={word.length - countDisabledLetters}
                                 UpdateField={this.props.UpdateField}
+                                Language={this.props.Language}
                                 Word=""
                             />
                         );
@@ -106,6 +108,7 @@ class RectanglePlayground extends React.Component<Props, State> {
                                 FirstLetter={reversedLetters[0]}
                                 LastLetter={letters[0]}
                                 Word=""
+                                Language={this.props.Language}
                                 MiddleSubwordLength={word.length - countDisabledLetters}
                             />
                         );
@@ -119,6 +122,7 @@ class RectanglePlayground extends React.Component<Props, State> {
                                 x={index}
                                 FirstLetter={letters[index]}
                                 LastLetter={reversedLetters[index]}
+                                Language={this.props.Language}
                                 MiddleSubwordLength={word.length - countDisabledLetters}
                             />
                         );

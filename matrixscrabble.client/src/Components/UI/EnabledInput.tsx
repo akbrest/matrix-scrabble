@@ -17,8 +17,8 @@ class EnabledInput extends React.Component<MyComponentProps, State> {
     ClassName: string = "";
     Language;
     AllowedLetters = {
-        "en": ['a', 'b', 'c', 'd', 'e'],
-        "ru": ["а", "б", "в", "ш"]
+        'en': ['а', 'b', 'c', 'd', 'e'],
+        'ru': "абвш"
     };
 
     Width: number;
@@ -37,12 +37,28 @@ class EnabledInput extends React.Component<MyComponentProps, State> {
         this.Language = props.Language;
     }
 
-    CheckValidity() {
+    CheckValidity = (e: any) => {
+       
+        var letter = e.nativeEvent.data;
+        var allowedChars = this.AllowedLetters[this.Language];
+        console.log(e.key)
+        console.log(allowedChars)
+
+        if (allowedChars.indexOf(e.key) >= 0) {
+        } else {
+            if (e.key == "Delete" || e.key == "Backspace") {
+
+            } else {
+                e.preventDefault();
+                return false;
+            }
+        }
+
         return true;
     }
 
     onChange = (e: any) => {
-        console.log(e.target.value)
+        
         var length = e.target.value.length;
         this.setState({ width: length * 20 });
 
@@ -56,9 +72,9 @@ class EnabledInput extends React.Component<MyComponentProps, State> {
 
         return (
             <div style={{ width: width }} className={className}>
-                <input style={{ width: width }}
+                <input  style={{ width: width }}
                     onChange={this.onChange}
-                    onInput={() => this.CheckValidity()}
+                    onKeyDown={this.CheckValidity}
                     className="simpleInput"
                     type="text"
                 />
