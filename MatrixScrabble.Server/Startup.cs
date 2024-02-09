@@ -24,7 +24,7 @@ namespace MatrixScrabble.Server
             services.AddSingleton<IDbContext, DbContext>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IGameService, GameService>();
-            services.AddSingleton<IDictionaryService, DictionaryService>();
+            
             services.AddScoped<IGameMapper, GameMapper>();
 
             services.AddControllers();
