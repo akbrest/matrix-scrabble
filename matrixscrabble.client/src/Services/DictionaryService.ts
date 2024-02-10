@@ -1,13 +1,13 @@
 import ILanguageService from './LanguageService';
 
 class DictionaryService {
-  LanguageService;
+    LanguageService;
 
-  public constructor(ILanguageService: ILanguageService) {
-    this.LanguageService = ILanguageService;
-  }
+    public constructor(ILanguageService: ILanguageService) {
+        this.LanguageService = ILanguageService;
+    }
 
-    public async CheckWords( data: []) {
+    public async CheckWords() {
         /*
         await data.forEach(async (element) => {
             element.status = await this.LanguageService.GetWordStatus(element.word);
@@ -15,7 +15,7 @@ class DictionaryService {
         });
         */
         return false;
-  }
+    }
 }
 
 export default DictionaryService;

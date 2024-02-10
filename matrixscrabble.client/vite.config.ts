@@ -53,6 +53,10 @@ export default defineConfig({
             '^/word': {
                 target: 'http://localhost:5032/',
                 secure: false
+            },
+            '^/Games': {
+                target: 'http://localhost:5032/',
+                secure: false
             }
         },
         port: 5173,

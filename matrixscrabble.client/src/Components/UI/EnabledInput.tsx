@@ -9,40 +9,56 @@ interface MyComponentProps {
 
 interface State {
     Language: string;
-    width:number
+    width: number
 }
 
 class EnabledInput extends React.Component<MyComponentProps, State> {
 
-    ClassName: string ="";
+    ClassName: string = "";
     Language;
     AllowedLetters = {
-        "en":['a','b','c','d', 'e'],
-        "ru" :["а", "б" ,"в", "ш"]    
+        'en': ['а', 'b', 'c', 'd', 'e'],
+        'ru': "абвш"
     };
 
     Width: number;
 
-    constructor(props: MyComponentProps){
+    constructor(props: MyComponentProps) {
         super(props);
         this.Width = 100;
-        this.ClassName =  this.props.type ?'one-symbol-enabled-block-'+ this.props.type: ''
-  
+        this.ClassName = this.props.type ? 'one-symbol-enabled-block-' + this.props.type : ''
+
         this.state = {
             Language: this.props.Language,
-            width:100,
+            width: 100,
             //UpdateField: this.props.UpdateField
         };
 
         this.Language = props.Language;
+    }
+
+    CheckValidity = (e: any) => {
+       
+        var letter = e.nativeEvent.data;
+        var allowedChars = this.AllowedLetters[this.Language];
+        console.log(e.key)
+        console.log(allowedChars)
+
+        if (allowedChars.indexOf(e.key) >= 0) {
+        } else {
+            if (e.key == "Delete" || e.key == "Backspace") {
+
+            } else {
+                e.preventDefault();
+                return false;
+            }
         }
 
-    CheckValidity() {
         return true;
     }
 
     onChange = (e: any) => {
-        console.log(e.target.value)
+        
         var length = e.target.value.length;
         this.setState({ width: length * 20 });
 
@@ -56,9 +72,9 @@ class EnabledInput extends React.Component<MyComponentProps, State> {
 
         return (
             <div style={{ width: width }} className={className}>
-                <input style={{ width: width }}
+                <input  style={{ width: width }}
                     onChange={this.onChange}
-                    onInput={() => this.CheckValidity()}
+                    onKeyDown={this.CheckValidity}
                     className="simpleInput"
                     type="text"
                 />

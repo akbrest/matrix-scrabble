@@ -29,7 +29,16 @@ namespace MatrixScrabble.Server.Mappers
                 Id = gameDto.Id,
                 Word = gameDto.Word,
                 IsCompleted = gameDto.IsCompleted,
-                CreatedAt = gameDto.CreatedAt
+                CreatedAt = gameDto.CreatedAt.HasValue?gameDto.CreatedAt.Value : DateTime.Now,
+				Field = new Field()
+				{
+					ID = null,
+					Left = gameDto.Game?.Left,
+					Right = gameDto.Game?.Right,
+					Main = gameDto.Game?.Board,
+				},
+			
+
             };
         }
     }
