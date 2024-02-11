@@ -1,5 +1,5 @@
-﻿using MatrixScrabble.Server.DataLayer.Entities;
-using MatrixScrabble.Server.Dtos;
+﻿using MatrixScrabble.Server.Dtos;
+using MatrixScrabble.Server.Models.context;
 
 namespace MatrixScrabble.Server.Mappers
 {
@@ -14,8 +14,9 @@ namespace MatrixScrabble.Server.Mappers
             {
                 Id = game.Id,
                 Word = game.Word,
-                IsCompleted = game.IsCompleted,
-                CreatedAt = game.CreatedAt
+                IsCompleted = game.IsCompleted.Value,
+				Language = game.Language,
+				CreatedAt = game.DateCreated
             };
         }
 
@@ -24,21 +25,14 @@ namespace MatrixScrabble.Server.Mappers
             if (gameDto is null)
                 throw new ArgumentNullException(nameof(gameDto));
 
-            return new Game
-            {
-                Id = gameDto.Id,
-                Word = gameDto.Word,
-                IsCompleted = gameDto.IsCompleted,
-                CreatedAt = gameDto.CreatedAt.HasValue?gameDto.CreatedAt.Value : DateTime.Now,
-				Field = new Field()
-				{
-					ID = null,
-					Left = gameDto.Game?.Left,
-					Right = gameDto.Game?.Right,
-					Main = gameDto.Game?.Board,
-				},
-			
-
+			return new Game
+			{
+				Id =  Guid.NewGuid(),
+				Word = gameDto.Word,
+				Language = gameDto.Language,
+				IsCompleted = gameDto.IsCompleted,
+				DateCreated = gameDto.CreatedAt.HasValue ? gameDto.CreatedAt.Value : DateTime.Now,
+				Game1 = ""
             };
         }
     }

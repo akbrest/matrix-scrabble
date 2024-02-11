@@ -1,5 +1,6 @@
-﻿using MatrixScrabble.Server.DataLayer.Entities;
+﻿
 using MatrixScrabble.Server.Dtos;
+using MatrixScrabble.Server.Models.context;
 
 namespace MatrixScrabble.Server.Mappers
 {

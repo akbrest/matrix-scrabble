@@ -27,20 +27,19 @@ public partial class ScrabbleContext : DbContext
     {
         modelBuilder.Entity<Game>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Game");
-
+            entity.ToTable("Game");
+			entity.HasKey(entity => entity.Id);
+            entity.Property(e => e.Id)
+                .HasDefaultValueSql("(newsequentialid())")
+                .HasColumnName("id");
             entity.Property(e => e.DateCreated)
                 .HasColumnType("datetime")
                 .HasColumnName("date_created");
             entity.Property(e => e.Game1).HasColumnName("game");
-            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
             entity.Property(e => e.Language).HasColumnName("language");
             entity.Property(e => e.Word)
-                .HasMaxLength(10)
-                .IsFixedLength()
+                .HasMaxLength(50)
                 .HasColumnName("word");
         });
 
@@ -54,7 +53,7 @@ public partial class ScrabbleContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("date_created");
             entity.Property(e => e.Game).HasColumnName("game");
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.GameId).HasColumnName("game_id");
         });
 
         OnModelCreatingPartial(modelBuilder);
