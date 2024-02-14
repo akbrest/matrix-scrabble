@@ -2,20 +2,18 @@
     
 public static class DictionaryService 
 {
-	           
-    private static List<String> _items;
 
-    static DictionaryService()
+	private static List<string> _items;
+	private static string _basePath;
+
+	static DictionaryService()
     {
-		//_basePath = _webHostEnvironment.ContentRootPath;
+		_basePath = System.Environment.CurrentDirectory;
 		GetAllAsync();
     }
 
-    public static IList<string> GetAllAsync()
+    private static IList<string> GetAllAsync()
     {
-
-		var _basePath = "";
-
 		if (_items != null)
             return _items;
 
@@ -33,6 +31,13 @@ public static class DictionaryService
         return _items;
     }
 
+	public static bool WordExists(string word)
+	{
+		if (_items.Contains(word))
+		{
+			return true;
+		}
 
-
+		return false;
+	}
 }

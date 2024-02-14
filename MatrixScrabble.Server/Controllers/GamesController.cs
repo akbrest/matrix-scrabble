@@ -47,17 +47,16 @@ public class GamesController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = createdGame.Id }, createdGame);
     }
 
-
-    [HttpPut("{id:length(36)}")]
+    [HttpPut]
     public async Task<IActionResult> Update(GameDto updatedGame)
     {
 		
         if (updatedGame is null)
             throw new ArgumentNullException(nameof(updatedGame));
 
-        var game = await gameService.UpdateAsync(updatedGame.Id.Value, updatedGame);
+		GameDetailsDto gameDetails = await gameService.UpdateAsync(updatedGame.Id.Value, updatedGame);
 
-        return Ok(game);
+        return Ok(gameDetails);
     }
 
     [HttpDelete("{id:length(36)}")]

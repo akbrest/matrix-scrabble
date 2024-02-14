@@ -4,6 +4,7 @@ import FieldGenerator from "../Services/FieldGenerator";
 import GameService from "../Services/GameService";
 import { connect } from "react-redux";
 import { CreateGame, UpdateGame, ConfirmGame } from "../Store/Game/reducers/services";
+import { FaBeer } from 'react-icons/fa';
 
 class GameBoard extends React.Component<any, any> {
     Word: string = "";
@@ -16,7 +17,7 @@ class GameBoard extends React.Component<any, any> {
     GameService: GameService = new GameService();
 
     UpdateField = (x: number, y: number, type: string, value: string) => {
-
+       
         if (type == "left" || type == "right") {
             console.log("left or right part");
 
@@ -27,6 +28,9 @@ class GameBoard extends React.Component<any, any> {
         } else {
             this.GameWordField[x][y] = value;
         }
+
+        this.props.UpdateGame(this.props.id, this.Left, this.Right, this.GameWordField);
+
     };
 
     InitialField() {
@@ -70,7 +74,7 @@ class GameBoard extends React.Component<any, any> {
     };
 
     ConfirmGame = () => {
-        this.props.ConfirmGame("65bfde72be020dfc9fbbdfc0", this.Left, this.Right, this.GameWordField);
+        this.props.ConfirmGame(this.props.id, this.Left, this.Right, this.GameWordField);
     };
 
     render() {
@@ -79,7 +83,7 @@ class GameBoard extends React.Component<any, any> {
         var id = this.props.id;
 
         if (loading) {
-            return (<div>loading..</div>);
+            return (<div>loading..<FaBeer /></div>);
         }
 
         else {
@@ -124,7 +128,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return {
         CreateGame: (word: string, language:string) => dispatch(CreateGame(word, language)),
-        UpdateGame: () => dispatch(UpdateGame()),
+        UpdateGame: (id: string, left: [], right: [], board: []) => dispatch(UpdateGame(id, left, right, board)),
         ConfirmGame: (id: string, left: [], right: [], board: []) => dispatch(ConfirmGame(id, left, right, board)),
     };
 };

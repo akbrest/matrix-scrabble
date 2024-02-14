@@ -186,7 +186,10 @@ using (StreamReader sr = File.OpenText("C:\\Nortal\\scrabble\\matrix-scrabble\\D
             if (secondWord.Contains(toFind[0]) || secondWord.Contains(toFind[1]) || secondWord.Contains(toFind[2]))
             {
                 firstWord = firstWord.TrimEnd(digits);
+                if(firstWord == "вспоможение")
+                {
 
+                }
                 words.Add(firstWord);
 
             }
