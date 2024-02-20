@@ -1,9 +1,11 @@
-﻿namespace MatrixScrabble.Server.Services;
+﻿using Microsoft.AspNetCore.Razor.Hosting;
+
+namespace MatrixScrabble.Server.Services;
     
 public static class DictionaryService 
 {
-
-	private static List<string> _items;
+	private static List<string> _itemsRu;
+	private static List<string> _itemsEn;
 	private static string _basePath;
 
 	static DictionaryService()
@@ -12,30 +14,57 @@ public static class DictionaryService
 		GetAllAsync();
     }
 
-    private static IList<string> GetAllAsync()
+    private static void GetAllAsync()
     {
-		if (_items != null)
-            return _items;
-
-        _items = new List<string>();
-
-        using (var streamReader = File.OpenText($"{_basePath}\\Dictionary\\dictionary.txt"))
-        {
-            var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
-            {
-                _items.Add(line.Trim());
-            }        
-        }    
-
-        return _items;
-    }
-
-	public static bool WordExists(string word)
-	{
-		if (_items.Contains(word))
+		if (_itemsRu == null)
 		{
-			return true;
+			_itemsRu = new List<string>();
+			using (var streamReader = File.OpenText($"{_basePath}\\Dictionary\\dictionary.ru.txt"))
+			{
+				var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+				foreach (var line in lines)
+				{
+					_itemsRu.Add(line.Trim());
+				}
+			}
+		}
+
+		if (_itemsEn == null)
+		{
+			_itemsEn = new List<string>();
+
+			using (var streamReader = File.OpenText($"{_basePath}\\Dictionary\\dictionary.en.txt"))
+			{
+				var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+				foreach (var line in lines)
+				{
+					_itemsEn.Add(line.Trim());
+				}
+			}
+		}
+	}
+
+	public static bool WordExists(string word, string language)
+	{
+		if (language == "ru" || language == "en")
+		{
+			throw new Exception("NO LANGUAGE");
+		}
+		
+		if (language == "ru")
+		{
+			if (_itemsRu.Contains(word))
+			{
+				return true;
+			}
+		}
+
+		if (language == "en")
+		{
+			if (_itemsEn.Contains(word))
+			{
+				return true;
+			}
 		}
 
 		return false;

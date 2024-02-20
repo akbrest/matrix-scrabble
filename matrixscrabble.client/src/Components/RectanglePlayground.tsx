@@ -20,50 +20,10 @@ type State = {
 
 class RectanglePlayground extends React.Component<Props, State> {
     TestEnglish = () => {
-        var item = {
-            word: "Man",
-            length: "Man".length,
-            status: "",
-        };
-
-        var item2 = {
-            word: "Red",
-            length: "Red".length,
-            status: "",
-        };
-
-        var item3 = {
-            word: "Onion",
-            length: "Onion".length,
-            status: "",
-        };
-
-        var item4 = {
-            word: "asdlsadksad",
-            length: "asdlsadksad".length,
-            status: "",
-        };
-
-        var items = [item, item2, item3, item4];
-
         this.dictionaryService.CheckWords();
     };
 
     TestRussian = () => {
-        var item = {
-            word: "Катастрофа",
-            length: "Катастрофа".length,
-            status: "",
-        };
-
-        var item2 = {
-            word: "вывфв",
-            length: "вывфв".length,
-            status: "",
-        };
-
-        const items = [item, item2];
-
         this.dictionaryService.CheckWords();
     };
 

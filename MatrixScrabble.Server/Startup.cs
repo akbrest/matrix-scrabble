@@ -20,16 +20,16 @@ namespace MatrixScrabble.Server
         // This method gets called by runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var mongoDbSettings = Configuration.GetSection("MongoDbSettings");
-            services.Configure<MongoDbSettings>(mongoDbSettings);
+			//services.Configure<MongoDbSettings>(mongoDbSettings);
 
 			// Add services to the container.
 			//services.AddSingleton<IDbContext, DbContext>();
 
 			services.AddDbContext<ScrabbleContext>(options =>
 			{
-				var sqlConnection = new SqlConnection("Data Source=LT-NB-334\\SQLEXPRESS;Initial Catalog=Scrabble;Integrated Security=True;Trust Server Certificate=True");
+				var sqlConnection = new SqlConnection(Configuration.GetSection("SqlSettings:ConnectionString").Value);
 				options.UseSqlServer(sqlConnection).EnableSensitiveDataLogging(false);
+			
 			}, ServiceLifetime.Transient);
 
 			services.AddScoped(typeof(ISqlRepository<>), typeof(SqlRepository<>));

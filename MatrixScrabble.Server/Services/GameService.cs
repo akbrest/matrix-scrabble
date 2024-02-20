@@ -105,6 +105,7 @@ public class GameService : IGameService
             throw new ArgumentNullException(nameof(gameDto));
 
         var existingGame = await gameRepository.GetAsync(id);
+		var language = existingGame.Language;
 
         if (existingGame is null)
             throw new ResourceNotFoundException();
@@ -141,7 +142,7 @@ public class GameService : IGameService
 
 			if (item.Length > 2)
 			{
-				if(DictionaryService.WordExists(item)) confirmations.Add(true);
+				if (DictionaryService.WordExists(item, language)) confirmations.Add(true);
 				else confirmations.Add(false);
 
 				if (left.Length== 0 && right.Length == 0 && item.Length == length)
@@ -162,7 +163,7 @@ public class GameService : IGameService
 				}
 				else
 				{
-					if (DictionaryService.WordExists(item)) confirmations.Add(true);
+					if (DictionaryService.WordExists(item, language)) confirmations.Add(true);
 					else confirmations.Add(false);
 
 					points.Add(((length - word.Length) + left.Length + right.Length) * -1);
@@ -174,10 +175,10 @@ public class GameService : IGameService
 		var updatedGame = await gameRepository.UpdateAsync(existingGame);
 		GameDetailsDto gameDetailsDto = new GameDetailsDto();
 
-		gameDetailsDto.game = gameMapper.Map(updatedGame);
-		gameDetailsDto.detail = new Details();
-		gameDetailsDto.detail.confirmations = confirmations;
-		gameDetailsDto.detail.points = points;
+		gameDetailsDto.Game = gameMapper.Map(updatedGame);
+		gameDetailsDto.Details = new Details();
+		gameDetailsDto.Details.Confirmations = confirmations;
+		gameDetailsDto.Details.Points = points;
 
 		return gameDetailsDto;
     }
