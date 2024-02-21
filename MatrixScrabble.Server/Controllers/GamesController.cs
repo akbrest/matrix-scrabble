@@ -15,7 +15,6 @@ public class GamesController : ControllerBase
     public GamesController(IGameService gameService)
     {
         this.gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
-
     }
 
     [HttpGet]
@@ -27,9 +26,9 @@ public class GamesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<GameDto>> Get(string id)
+    public async Task<ActionResult<GameDto>> Get(Guid id)
     {
-        if (string.IsNullOrWhiteSpace(id))
+        if (string.IsNullOrWhiteSpace(id.ToString()))
             throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
 
         var game = await gameService.GetAsync(id);
@@ -49,24 +48,23 @@ public class GamesController : ControllerBase
     }
 
 
-    [HttpPut("{id:length(24)}")]
-    public async Task<IActionResult> Update(string id, GameDto updatedGame)
+    [HttpPut("{id:length(36)}")]
+    public async Task<IActionResult> Update(GameDto updatedGame)
     {
-        if (string.IsNullOrWhiteSpace(id))
-            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
+		
         if (updatedGame is null)
             throw new ArgumentNullException(nameof(updatedGame));
 
-        var game = await gameService.UpdateAsync(id, updatedGame);
+        var game = await gameService.UpdateAsync(updatedGame.Id.Value, updatedGame);
 
         return Ok(game);
     }
 
-    [HttpDelete("{id:length(24)}")]
-    public async Task<IActionResult> Delete(string id)
+    [HttpDelete("{id:length(36)}")]
+    public async Task<IActionResult> Delete(Guid id)
     {
-        if (string.IsNullOrWhiteSpace(id))
-            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
+        if (id == null)
+            throw new ArgumentException($"'{nameof(id.ToString)}' cannot be null or whitespace.", nameof(id.ToString));
 
         await gameService.RemoveAsync(id);
 

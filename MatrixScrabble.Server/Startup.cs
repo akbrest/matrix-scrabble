@@ -2,6 +2,9 @@
 using MatrixScrabble.Server.Services;
 using MatrixScrabble.Server.Mappers;
 using MatrixScrabble.Server.Repositories;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using MatrixScrabble.Server.Models.context;
 
 namespace MatrixScrabble.Server
 {
@@ -20,9 +23,16 @@ namespace MatrixScrabble.Server
             var mongoDbSettings = Configuration.GetSection("MongoDbSettings");
             services.Configure<MongoDbSettings>(mongoDbSettings);
 
-            // Add services to the container.
-            services.AddSingleton<IDbContext, DbContext>();
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+			// Add services to the container.
+			//services.AddSingleton<IDbContext, DbContext>();
+
+			services.AddDbContext<ScrabbleContext>(options =>
+			{
+				var sqlConnection = new SqlConnection("Data Source=LT-NB-334\\SQLEXPRESS;Initial Catalog=Scrabble;Integrated Security=True;Trust Server Certificate=True");
+				options.UseSqlServer(sqlConnection).EnableSensitiveDataLogging(false);
+			}, ServiceLifetime.Transient);
+
+			services.AddScoped(typeof(ISqlRepository<>), typeof(SqlRepository<>));
             services.AddScoped<IGameService, GameService>();
             
             services.AddScoped<IGameMapper, GameMapper>();

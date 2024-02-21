@@ -5,8 +5,6 @@ namespace MatrixScrabble.Server.Models.context;
 
 public partial class Game
 {
-    public long? Id { get; set; }
-
     public string? Language { get; set; }
 
     public string? Game1 { get; set; }
@@ -16,4 +14,6 @@ public partial class Game
     public string? Word { get; set; }
 
     public DateTime? DateCreated { get; set; }
+
+    public Guid Id { get; set; }
 }

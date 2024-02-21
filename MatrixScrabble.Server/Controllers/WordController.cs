@@ -9,11 +9,10 @@ namespace MatrixScrabble.Server.Controllers;
 [Route("[controller]")]
 public class WordController : ControllerBase
 {
-    private readonly IGameService gameService;
-
+    private readonly IGameService gameService; 
     private readonly ILogger<WordController> _logger;
 
-    public WordController(ILogger<WordController> logger, IGameService gameService, IDictionaryService dictionaryService)   
+    public WordController(ILogger<WordController> logger, IGameService gameService)   
     {
         this.gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
 
@@ -22,26 +21,12 @@ public class WordController : ControllerBase
 
     [Route("ConfirmGame")]
     [HttpPost]
-    public async Task<ActionResult<Game>> ConfirmGame(Game game)
+    public async Task<ActionResult<Game>> ConfirmGame(GameDto game)
     {
-        if (string.IsNullOrWhiteSpace(game.ID))
-            throw new ArgumentException($"'{nameof(game.ID)}' cannot be null or whitespace.", nameof(game.ID));
-
-        GameDto gameDto = new GameDto()
-        {
-            CreatedAt = DateTime.UtcNow,
-            Id = game.ID,
-            IsCompleted = true,
-            Word = "",
-            Game = new Game()
-            {
-                Board = game.Board,
-                Left = game.Left,
-                Right = game.Right,
-            }
-        };
-
-        var completedGame = await gameService.ConfirmGame(gameDto);
+        if (game.Id == null)
+            throw new ArgumentException($"'{nameof(game.Id)}' cannot be null or whitespace.", nameof(game.Id));
+		
+		var completedGame = await gameService.ConfirmGame(game);
 
         return Ok(game);
 
