@@ -19,7 +19,6 @@ class GameBoard extends React.Component<any, any> {
     UpdateField = (x: number, y: number, type: string, value: string) => {
        
         if (type == "left" || type == "right") {
-            console.log("left or right part");
 
             if (type == "left")
                 this.Left[x] = value;

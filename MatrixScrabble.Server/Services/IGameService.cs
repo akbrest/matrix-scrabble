@@ -9,6 +9,5 @@ public interface IGameService
     Task<GameDto> CreateAsync(GameDto game);
     Task<GameDetailsDto> UpdateAsync(Guid id, GameDto game);
     Task<GameDto> ConfirmGame(GameDto gameDto);
-
     Task RemoveAsync(Guid id);
 }

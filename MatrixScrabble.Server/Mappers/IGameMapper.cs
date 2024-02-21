@@ -1,12 +1,10 @@
-﻿
-using MatrixScrabble.Server.Dtos;
+﻿using MatrixScrabble.Server.Dtos;
 using MatrixScrabble.Server.Models.context;
 
-namespace MatrixScrabble.Server.Mappers
+namespace MatrixScrabble.Server.Mappers;
+
+public interface IGameMapper
 {
-    public interface IGameMapper
-    {
-        GameDto Map(Game game);
-        Game Map(GameDto gameDto);
-    }
+    GameDto Map(Game game);
+    Game Map(GameDto gameDto);
 }

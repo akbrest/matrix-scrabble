@@ -48,6 +48,10 @@ public static class DictionaryService
 	{
 		if (language == "ru" || language == "en")
 		{
+			
+		}
+		else
+		{
 			throw new Exception("NO LANGUAGE");
 		}
 		

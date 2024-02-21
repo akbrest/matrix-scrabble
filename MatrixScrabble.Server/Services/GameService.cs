@@ -4,10 +4,6 @@ using MatrixScrabble.Server.Dtos;
 using MatrixScrabble.Server.Repositories;
 using MatrixScrabble.Server.Models.context;
 using System.Text.Json;
-using MongoDB.Driver.Core.Clusters.ServerSelectors;
-using System.Linq;
-using System.Drawing;
-using System.Reflection;
 
 namespace MatrixScrabble.Server.Services;
 
@@ -185,10 +181,6 @@ public class GameService : IGameService
 
     async Task IGameService.RemoveAsync(Guid id)
     {
-
-		if (id == null)
-			throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
-
 		if (string.IsNullOrWhiteSpace(id.ToString()))
             throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
 

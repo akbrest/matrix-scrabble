@@ -12,6 +12,7 @@ namespace MatrixScrabble.Server.Controllers;
 public class GamesController : ControllerBase
 {
     private readonly IGameService gameService;
+
     public GamesController(IGameService gameService)
     {
         this.gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
@@ -47,14 +48,13 @@ public class GamesController : ControllerBase
         return CreatedAtAction(nameof(Get), new { id = createdGame.Id }, createdGame);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> Update(GameDto updatedGame)
+    [HttpPut("{id:length(36)}")]
+    public async Task<IActionResult> Update(Guid id, GameDto updatedGame)
     {
-		
         if (updatedGame is null)
             throw new ArgumentNullException(nameof(updatedGame));
 
-		GameDetailsDto gameDetails = await gameService.UpdateAsync(updatedGame.Id.Value, updatedGame);
+		GameDetailsDto gameDetails = await gameService.UpdateAsync(id, updatedGame);
 
         return Ok(gameDetails);
     }

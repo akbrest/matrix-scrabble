@@ -1,6 +1,3 @@
-import DictionaryService from "../Services/DictionaryService";
-import RussianService from "../Services/RussianService";
-// import EnglishService from "../Services/EnglishService";
 import React from "react";
 import WordFormClass from "../Components/WordFormClass";
 
@@ -19,17 +16,7 @@ type State = {
 };
 
 class RectanglePlayground extends React.Component<Props, State> {
-    TestEnglish = () => {
-        this.dictionaryService.CheckWords();
-    };
-
-    TestRussian = () => {
-        this.dictionaryService.CheckWords();
-    };
-
-    apiService = new RussianService();
-    dictionaryService = new DictionaryService(this.apiService);
-
+  
     render() {
         var word = this.props.Word;
 

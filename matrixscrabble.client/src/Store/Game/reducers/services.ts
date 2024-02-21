@@ -55,7 +55,7 @@ export const UpdateGame = (id: string, left: [], right: [], board: []) => {
                 }                    
              , { headers })
             .then(result => {
-               
+                console.log(result)
                 dispatch({
                     type: GAME_ACTIONS.UPDATE_GAME_SUCCESS
                  });
