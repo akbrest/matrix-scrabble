@@ -71,8 +71,6 @@ const GameForm = () => {
             value={word}
             onChange={handleChangeWord}
           />
-          {/* Todo create enum for radio buttons */}
-          {/* Todo enum for radio buttons */}
         </div>
         <button type="submit">Create</button>
       </form>
