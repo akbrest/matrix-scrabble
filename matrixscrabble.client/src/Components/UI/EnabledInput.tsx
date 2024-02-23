@@ -1,18 +1,18 @@
-import React from "react";
+//import React from "react";
 
-interface MyComponentProps {
-    Language: string;
-    row: number,
-    type: string,
-    UpdateField: (x: number, y: number, type: string, value: string) => void;
-}
+//interface MyComponentProps {
+//    Language: string;
+//    row: number,
+//    type: string,
+//    UpdateField: (x: number, y: number, type: string, value: string) => void;
+//}
 
 interface State {
     Language: string;
     width: number
 }
 
-class EnabledInput extends React.Component<MyComponentProps, State> {
+//class EnabledInput extends React.Component<MyComponentProps, State> {
 
     ClassName: string = "";
     Language;
@@ -21,7 +21,7 @@ class EnabledInput extends React.Component<MyComponentProps, State> {
         'ru': "абвш"
     };
 
-    Width: number;
+//    Width: number;
 
     constructor(props: MyComponentProps) {
         super(props);
@@ -61,13 +61,13 @@ class EnabledInput extends React.Component<MyComponentProps, State> {
         var length = e.target.value.length;
         this.setState({ width: length * 20 });
 
-        this.props.UpdateField(this.props.row, 0, this.props.type, e.target.value);
-    };
+//        this.props.UpdateField(this.props.row, 0, this.props.type, e.target.value);
+//    };
 
-    render() {
+//    render() {
 
-        var width = this.state.width;
-        var className = this.ClassName;
+//        var width = this.state.width;
+//        var className = this.ClassName;
 
         return (
             <div style={{ width: width }} className={className}>
@@ -82,4 +82,4 @@ class EnabledInput extends React.Component<MyComponentProps, State> {
     }
 }
 
-export default EnabledInput;
+//export default EnabledInput;
