@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createGame } from '../../redux/games/actionCreators';
 import {
   EnglishAlphabetRegex,
   RussianAlphabetRegex,
@@ -8,6 +10,7 @@ import {
 const GameForm = () => {
   const [language, setLanguage] = useState(Language.EN);
   const [word, setWord] = useState('');
+  const dispatch = useDispatch();
 
   const handleChangeWord = (e: React.ChangeEvent<HTMLInputElement>) => {
     let regex = EnglishAlphabetRegex;
@@ -30,9 +33,14 @@ const GameForm = () => {
     e.preventDefault();
 
     if (word) {
-      alert(
-        'Game ' + JSON.stringify({ lang: language, word: word }) + ' created!'
-      );
+      const game = {
+        language: language,
+        word: word,
+      };
+
+      console.log(createGame(game));
+      dispatch(createGame(game));
+
       setWord('');
     }
   };
