@@ -11,15 +11,18 @@ export const GameReducer = (
 ) => {
     switch (actions.type) {
         case GAME_ACTIONS.CREATE_GAME_REQUEST: {
+            
             return {
                 ...state,
+                id: actions.payload,
                 loading: true,
             };
         }
         case GAME_ACTIONS.CREATE_GAME_SUCCESS: {
+
             return {
                 ...state,
-                id: actions.payload,
+                id: actions.payload.id,
                 loading: false,
             };
         }

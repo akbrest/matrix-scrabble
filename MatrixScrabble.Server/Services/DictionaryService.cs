@@ -1,38 +1,76 @@
-﻿namespace MatrixScrabble.Server.Services;
+﻿using Microsoft.AspNetCore.Razor.Hosting;
+
+namespace MatrixScrabble.Server.Services;
     
 public static class DictionaryService 
 {
-	           
-    private static List<String> _items;
+	private static List<string> _itemsRu;
+	private static List<string> _itemsEn;
+	private static string _basePath;
 
-    static DictionaryService()
+	static DictionaryService()
     {
-		//_basePath = _webHostEnvironment.ContentRootPath;
+		_basePath = System.Environment.CurrentDirectory;
 		GetAllAsync();
     }
 
-    public static IList<string> GetAllAsync()
+    private static void GetAllAsync()
     {
+		if (_itemsRu == null)
+		{
+			_itemsRu = new List<string>();
+			using (var streamReader = File.OpenText($"{_basePath}\\Dictionary\\dictionary.ru.txt"))
+			{
+				var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+				foreach (var line in lines)
+				{
+					_itemsRu.Add(line.Trim());
+				}
+			}
+		}
 
-		var _basePath = "";
+		if (_itemsEn == null)
+		{
+			_itemsEn = new List<string>();
 
-		if (_items != null)
-            return _items;
+			using (var streamReader = File.OpenText($"{_basePath}\\Dictionary\\dictionary.en.txt"))
+			{
+				var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+				foreach (var line in lines)
+				{
+					_itemsEn.Add(line.Trim());
+				}
+			}
+		}
+	}
 
-        _items = new List<string>();
+	public static bool WordExists(string word, string language)
+	{
+		if (language == "ru" || language == "en")
+		{
+			
+		}
+		else
+		{
+			throw new Exception("NO LANGUAGE");
+		}
+		
+		if (language == "ru")
+		{
+			if (_itemsRu.Contains(word))
+			{
+				return true;
+			}
+		}
 
-        using (var streamReader = File.OpenText($"{_basePath}\\Dictionary\\dictionary.txt"))
-        {
-            var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-            foreach (var line in lines)
-            {
-                _items.Add(line.Trim());
-            }        
-        }    
+		if (language == "en")
+		{
+			if (_itemsEn.Contains(word))
+			{
+				return true;
+			}
+		}
 
-        return _items;
-    }
-
-
-
+		return false;
+	}
 }

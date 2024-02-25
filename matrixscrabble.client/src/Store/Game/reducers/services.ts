@@ -5,6 +5,7 @@ export const CreateGame = (word: string, language: string) => {
     return (dispatch: any) => {
 
         dispatch({ type: GAME_ACTIONS.CREATE_GAME_REQUEST });
+
         const headers = {
             "Content-Type": "application/json",
         };
@@ -17,7 +18,7 @@ export const CreateGame = (word: string, language: string) => {
                         type: GAME_ACTIONS.CREATE_GAME_SUCCESS,
                         payload: result.data,
                     });
-                }, 8000);               
+                }, 1000);               
 
             })
             .catch(() => {
@@ -30,7 +31,7 @@ export const CreateGame = (word: string, language: string) => {
     };
 };
 
-export const UpdateGame = () => {
+export const UpdateGame = (id: string, left: [], right: [], board: []) => {
 
     return (dispatch: any) => {
         console.log("starting querying");
@@ -40,13 +41,24 @@ export const UpdateGame = () => {
             "Content-Type": "application/json",
         };
         axios
-            .post("word/UpdateGame", { word: "ddd" }, { headers })
-            .then((result) => {
-                console.log(result);
+            .put("Games", {
+               
+                    game: {
+                        id: id,
+                        Left: left,
+                        Right: right,
+                        Board: board,
+                    },
+                    word: '',
+                    id: id
+              
+                }                    
+             , { headers })
+            .then(result => {
+                console.log(result)
                 dispatch({
-                    type: GAME_ACTIONS.UPDATE_GAME_SUCCESS,
-                    payload: result.data,
-                });
+                    type: GAME_ACTIONS.UPDATE_GAME_SUCCESS
+                 });
             })
             .catch(() => {
                 console.log("went wrong");
@@ -63,7 +75,6 @@ export const ConfirmGame = (id: string, left: [], right: [], board: []) => {
 
     return (dispatch: any) => {
        
-        console.log("starting querying");
         dispatch({ type: GAME_ACTIONS.CREATE_GAME_REQUEST });
 
         var dataToSend = JSON.stringify({
@@ -72,12 +83,23 @@ export const ConfirmGame = (id: string, left: [], right: [], board: []) => {
             Board: board,
             id: id
         });
+        console.log(dataToSend)
 
         const headers = {
             "Content-Type": "application/json",
         };
         axios
-            .post("word/ConfirmGame", dataToSend, { headers })
+            .post("word/ConfirmGame", {
+                game: {
+                    id: id,
+                    Left: left,
+                    Right: right,
+                    Board: board,
+                },
+                word: '',
+                
+                id: id
+            }, { headers })
             .then((result) => {
 
                 dispatch({

@@ -39,7 +39,6 @@ class EnabledInput extends React.Component<MyComponentProps, State> {
 
     CheckValidity = (e: any) => {
        
-        var letter = e.nativeEvent.data;
         var allowedChars = this.AllowedLetters[this.Language];
         console.log(e.key)
         console.log(allowedChars)

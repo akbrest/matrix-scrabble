@@ -20,7 +20,7 @@ class FieldGenerator {
         "7": { en: ["stomach", "tragedy"], ru: ["колбаса", "вентиль"] },
     };
 
-    public GetRandomWord(count) {
+    public GetRandomWord(count: number) {
         try {
             if (count < 3 || count > 7) {
                 throw new Error("Wrong Count");
@@ -35,7 +35,7 @@ class FieldGenerator {
         }
     }
 
-    async CheckWord(word) {
+    async CheckWord(word: string) {
         try {
             if (word == null) {
                 throw new Error("Wrong Word");

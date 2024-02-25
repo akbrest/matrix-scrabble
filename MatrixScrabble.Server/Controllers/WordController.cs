@@ -28,7 +28,7 @@ public class WordController : ControllerBase
 		
 		var completedGame = await gameService.ConfirmGame(game);
 
-        return Ok(game);
+        return Ok(completedGame);
 
     }
 }

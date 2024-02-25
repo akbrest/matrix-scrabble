@@ -69,10 +69,10 @@ public class GameService : IGameService
 
 		List<string> wordList = new List<string>();
 
-		int length = 4;
+		int length = existingGame.Word.Length ;
 
 		int counter = 0;
-		/*
+		
 		while (counter < length)
 		{
 			wordList.Add(String.Concat(gameDto.Game.Left[counter], existingGame.Word[counter], gameDto.Game.Board[counter], existingGame.Word[existingGame.Word.Length - counter], gameDto.Game.Right[counter]));
@@ -83,49 +83,104 @@ public class GameService : IGameService
 		{
 			throw new SameWordUsedException();
 		}
-		*/
 
 		if (existingGame is null)
             throw new ResourceNotFoundException();
 
         existingGame.IsCompleted = true;
 		existingGame.Game1 = JsonSerializer.Serialize(gameDto.Game);
-		/*
-			existingGame.Field = new Field() { };
-			existingGame.Field.Right = gameDto.Game.Right;
-			existingGame.Field.Left = gameDto.Game.Left;
-			existingGame.Field.Main = gameDto.Game.Board;
-		*/
+		
 		var updatedGame = await gameRepository.UpdateAsync(existingGame);
 
         return gameMapper.Map(updatedGame);
     }
 
-    async Task<GameDto> IGameService.UpdateAsync(Guid id, GameDto gameDto)
+    async Task<GameDetailsDto> IGameService.UpdateAsync(Guid id, GameDto gameDto)
     {
-        if (id == null)
-            throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
         if (gameDto is null)
             throw new ArgumentNullException(nameof(gameDto));
 
         var existingGame = await gameRepository.GetAsync(id);
+		var language = existingGame.Language;
 
         if (existingGame is null)
             throw new ResourceNotFoundException();
 
-        existingGame.Word = gameDto.Word;
+		List<string> wordList = new List<string>();
 
-        var updatedGame = await gameRepository.UpdateAsync(existingGame);
+		int length = existingGame.Word.Length;
 
-        return gameMapper.Map(updatedGame);
+		int counter = 0;
+
+		while (counter < length)
+		{
+			var center = "";
+
+			foreach(var itm in gameDto.Game.Board[counter])
+			{
+				center += itm;
+			}
+
+			wordList.Add(String.Concat(gameDto.Game.Left[counter], existingGame.Word[counter], center, existingGame.Word[existingGame.Word.Length - 1 - counter], gameDto.Game.Right[counter]));
+			counter++;
+		}
+
+		List<bool> confirmations = new List<bool>();
+		List<int> points = new List<int>();
+
+		int looper = 0;
+
+		foreach (var item in wordList)
+		{
+			var left = gameDto?.Game?.Left[looper];
+			var right = gameDto?.Game?.Right[looper];
+			string word = string.Concat(existingGame.Word[looper], string.Join("", gameDto.Game.Board[looper]), existingGame.Word[existingGame.Word.Length - 1 - looper]);
+
+			if (item.Length > 2)
+			{
+				if (DictionaryService.WordExists(item, language)) confirmations.Add(true);
+				else confirmations.Add(false);
+
+				if (left.Length== 0 && right.Length == 0 && item.Length == length)
+				{
+					points.Add(0);
+				}
+				else
+				{
+					points.Add(((length - word.Length) + left.Length + right.Length) * -1);
+				}
+			}
+			else
+			{
+				if (word == item)
+				{
+					confirmations.Add(true);
+					points.Add(length - 2);
+				}
+				else
+				{
+					if (DictionaryService.WordExists(item, language)) confirmations.Add(true);
+					else confirmations.Add(false);
+
+					points.Add(((length - word.Length) + left.Length + right.Length) * -1);
+
+				}
+			}
+		}
+
+		var updatedGame = await gameRepository.UpdateAsync(existingGame);
+		GameDetailsDto gameDetailsDto = new GameDetailsDto();
+
+		gameDetailsDto.Game = gameMapper.Map(updatedGame);
+		gameDetailsDto.Details = new Details();
+		gameDetailsDto.Details.Confirmations = confirmations;
+		gameDetailsDto.Details.Points = points;
+
+		return gameDetailsDto;
     }
 
     async Task IGameService.RemoveAsync(Guid id)
     {
-
-		if (id == null)
-			throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
-
 		if (string.IsNullOrWhiteSpace(id.ToString()))
             throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
 
