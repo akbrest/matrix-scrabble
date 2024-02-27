@@ -1,98 +1,81 @@
-// I think we can remove this file
+import EnabledInput from "./UI/EnabledInput";
+import OneLetterDisabledInput from "./UI/OneLetterDisabledInput";
+import OneLetterEnabledInput from "./UI/OneLetterEnabledInput";
+import React, { useState } from "react";
+import { FaCheck } from 'react-icons/fa';
+import { FaBeer } from 'react-icons/fa';
 
-//import EnabledInput from "./UI/EnabledInput";
-//import OneLetterDisabledInput from "./UI/OneLetterDisabledInput";
-//import OneLetterEnabledInput from "./UI/OneLetterEnabledInput";
-//import React from "react";
+interface WordForm {
+    middleSubwordLength: number;
+    word: string;
+    confirmation: boolean;
+    language: string;
+    x: number;
+    y: number;
+    UpdateField: (x: number, y: number, type: string, value: string) => any;
+    firstLetter: string;
+    lastLetter: string;
+}
 
-//type Props = {
-//    Word: string;
-//    UpdateField: (x: number, y: number, type: string, value: string) => any;
-//    FirstLetter: string;
-//    LastLetter: string;
-//    MiddleSubwordLength: number;
-//    x: number;
-//    y: number;
-//    Language: string;
+const WordFormClass: React.FC<WordForm> = ({ x, y, language, UpdateField, firstLetter, lastLetter, middleSubwordLength, confirmation }) => {
+    const [lang, setLanguage] = useState(language);
+    const [xx, setX] = useState(x);
+    const [yy, setY] = useState(y);
 
-//};
+    const items = [""];
 
-//type State = {
-//    UpdateField: (x: number, y: number, type: string, value: string) => any;
-//    FirstLetter: string;
-//    LastLetter: string;
-//    MiddleSubwordLength: number;
-//    Language: string;
-//    x: number;
-//    y: number;
-//};
+    var condition = 0;
+    while (condition < middleSubwordLength - 1) {
+        items.push("");
+        condition++;
+    }
 
-//class WordFormClass extends React.Component<Props, State> {
-//    render() {
-//        var word = this.props.Word;
-//        var middleSubwordLength = this.props.MiddleSubwordLength;
-//        var firstLetter = this.props.FirstLetter;
-//        var lastLetter = this.props.LastLetter;
-//        var updateField = this.props.UpdateField;
-//        var language = this.props.Language;
+    return <div>
+        <div className="game-field-line">
+            <div className="game-field-line-left">
+                <EnabledInput
+                    key={"FooClass_"}
+                    UpdateField={UpdateField}
+                    language={lang}
+                    type={'left'}
+                    row={x}
+                />
+            </div>
 
-        
-//        if (word == null) {
-//            word = "";
-//        }
+            <OneLetterDisabledInput letter={firstLetter} />
+            {items.map(({ }, index) => {
+                return (
+                    <OneLetterEnabledInput 
+                        key={"FooClass" + index}
+                        UpdateField={UpdateField}
+                        language={lang}
+                        x={x}
+                        y={index}
+                    />
+                );
+            })}
 
-//        const items = [""];
-
-//        var condition = 0;
-//        while (condition < middleSubwordLength - 1) {
-//            items.push("");
-//            condition++;
-//        }
-
-//        return (
-//            <div>
-//                <div className="game-field-line">
-//                    <div className="game-field-line-left">
-//                        <EnabledInput
-//                            key={"FooClass_"}
-//                            UpdateField={updateField}
-//                            Language={language}
-//                            type={'left'}
-//                            row={this.props.x}
-//                        />
-//                    </div>
-//                    <OneLetterDisabledInput letter={firstLetter} />
-//                    {items.map(({ }, index) => {
-//                        return (
-//                            <OneLetterEnabledInput
-//                                key={"FooClass" + index}
-//                                UpdateField={updateField}
-//                                Language="en"
-//                                x={this.props.x}
-//                                y={index}
-//                            />
-//                        );
-//                    })}
-//                    <OneLetterDisabledInput letter={lastLetter} />
-//                    <div className="game-field-line">
-//                        <EnabledInput
-//                            key={"FooClass_"}
-//                            UpdateField={updateField}
-//                            Language={language }
-//                            type={'right'}
-//                            row={this.props.x}
-//                        />
-//                        <div>
-//                            <button type="submit" className="ml-20">
-//                                Confirm
-//                            </button>
-//                        </div>
-//                    </div>
-//                </div>
-//            </div>
-
-//        );
-//    }
-//}
+            <OneLetterDisabledInput letter={lastLetter} />
+            <div className="game-field-line">
+                <EnabledInput
+                    key={"FooClass_"}
+                    UpdateField={UpdateField}
+                    language={lang}
+                    type={'right'}
+                    row={x}
+                />
+                <div className="confirmation-block">
+                    <span >
+                        {confirmation ? (
+                            <FaCheck />
+                        ) : (
+                            <FaBeer />
+                        )}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+};
 
 //export default WordFormClass;

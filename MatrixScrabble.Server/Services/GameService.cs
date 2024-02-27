@@ -136,7 +136,7 @@ public class GameService : IGameService
 			var right = gameDto?.Game?.Right[looper];
 			string word = string.Concat(existingGame.Word[looper], string.Join("", gameDto.Game.Board[looper]), existingGame.Word[existingGame.Word.Length - 1 - looper]);
 
-			if (item.Length > 2)
+			if (item.Length >= 2)
 			{
 				if (DictionaryService.WordExists(item, language)) confirmations.Add(true);
 				else confirmations.Add(false);

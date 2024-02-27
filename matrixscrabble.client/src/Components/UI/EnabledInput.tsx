@@ -1,85 +1,62 @@
-//import React from "react";
+import React, { useState } from "react";
 
-//interface MyComponentProps {
-//    Language: string;
-//    row: number,
-//    type: string,
-//    UpdateField: (x: number, y: number, type: string, value: string) => void;
-//}
+interface OneLetterEnabledInputProps {
+    language: string;
+    UpdateField: (x: number, y: number, type: string, value: string) => void;
+    row: number;
+    type:string
+}
 
-//interface State {
-//    Language: string;
-//    width: number
-//}
+const AllowedLetters = {
+    'en': "AaBbCcDdEeFfGgHIihJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz",
+    'ru': "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя"
+}
 
-//class EnabledInput extends React.Component<MyComponentProps, State> {
+const AllLetters = ['а', 'Б', 'б', 'В', 'в', 'Г', 'г', 'Д', 'д', 'Е', 'е', 'Ё', 'ё', 'Ж', 'ж', 'З', 'з', 'И', 'и', 'Й', 'й', 'К', 'к', 'Л', 'л', 'М', 'м', 'Н', 'н', 'О', 'о', 'П', 'п', 'Р', 'р', 'С', 'с', 'Т', 'т', 'У', 'у', 'Ф', 'ф', 'Х', 'х', 'Ц', 'ц', 'Ч', 'ч', 'Ш', 'ш', 'Щ', 'щ', 'Ъ', 'ъ', 'Ы', 'ы', 'Ь', 'ь',
+    'Э',
+    'э',
+    'Ю',
+    'ю',
+    'Я',
+    'я'];
 
-//    ClassName: string = "";
-//    Language;
-//    AllowedLetters = {
-//        'en': ['а', 'b', 'c', 'd', 'e'],
-//        'ru': "абвш"
-//    };
 
-//    Width: number;
+const EnabledInput: React.FC<OneLetterEnabledInputProps> = ({ row, type, language, UpdateField }) => {
+    const [lang, setLanguage] = useState(language);
+    const [value, setValue] = useState("");
+    const [width, setWidth] = useState("");
+    const [rowValue, setRowValue] = useState(row);
+    const [typeX, setType] = useState(type);
+    let textInput = React.createRef();
 
-//    constructor(props: MyComponentProps) {
-//        super(props);
-//        this.Width = 100;
-//        this.ClassName = this.props.type ? 'one-symbol-enabled-block-' + this.props.type : ''
+    function checkValidity(e: any) {
+        var elem = e.key;
+        var allowedChars = AllowedLetters[lang];
+        if (allowedChars.indexOf(elem) >= 0) {
+            setValue(elem);
+        } else {
+            if (elem == "Delete" || elem == "Backspace") {
 
-//        this.state = {
-//            Language: this.props.Language,
-//            width: 100,
-//            UpdateField: this.props.UpdateField
-//        };
+        return true;
+    }
 
-//        this.Language = props.Language;
-//    }
+        return true;
+    }
 
-//    CheckValidity = (e: any) => {
-       
-//        var allowedChars = this.AllowedLetters[this.Language];
-//        console.log(e.key)
-//        console.log(allowedChars)
+    function onChange(e: any) {
+        var length = e.target.value.length;
+        var w = length * 20;
+        setWidth(111);
+    }
 
-//        if (allowedChars.indexOf(e.key) >= 0) {
-//        } else {
-//            if (e.key == "Delete" || e.key == "Backspace") {
+    return <div style={{ width: '100px' }} className={'ddd'}>
+        <input ref={textInput} 
+            onChange={() => UpdateField(rowValue, 0, typeX, textInput.current.value)}
+            onKeyDown={(e) => checkValidity(e)}
+            className="simpleInput"
+            type="text"
+        />
+    </div>
+};
 
-//            } else {
-//                e.preventDefault();
-//                return false;
-//            }
-//        }
-
-//        return true;
-//    }
-
-//    onChange = (e: any) => {
-        
-//        var length = e.target.value.length;
-//        this.setState({ width: length * 20 });
-
-//        this.props.UpdateField(this.props.row, 0, this.props.type, e.target.value);
-//    };
-
-//    render() {
-
-//        var width = this.state.width;
-//        var className = this.ClassName;
-
-//        return (
-//            <div style={{ width: width }} className={className}>
-//                <input  style={{ width: width }}
-//                    onChange={this.onChange}
-//                    onKeyDown={this.CheckValidity}
-//                    className="simpleInput"
-//                    type="text"
-//                />
-//            </div>
-//        );
-//    }
-//}
-
-//export default EnabledInput;
+export default EnabledInput;

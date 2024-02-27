@@ -3,7 +3,10 @@ interface OneLetterDisabledInputProps {
 }
 
 const OneLetterDisabledInput: React.FC<OneLetterDisabledInputProps> = ({ letter }) => {
-    return <input type="text" value={letter} size={1} disabled />;
+    return <div className="one-symbol-enabled-block">
+        <div className="word-block">{letter}</div>
+        </div>
+    
 };
 
 export default OneLetterDisabledInput;

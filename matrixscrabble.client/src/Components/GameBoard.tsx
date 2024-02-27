@@ -1,136 +1,201 @@
-// Delete or use in future
+import React from "react";
+import RectanglePlayground from "./RectanglePlayground";
+import FieldGenerator from "../Services/FieldGenerator";
+import GameService from "../Services/GameService";
+import { connect } from "react-redux";
+import { CreateGame, UpdateGame, ConfirmGame, Test, CloseModal } from "../Store/Game/reducers/services";
+import { FaBeer } from 'react-icons/fa';
+import Modal from "react-bootstrap/esm/Modal";
+import Button from "react-bootstrap/esm/Button";
 
-//import React from "react";
-//import RectanglePlayground from "./RectanglePlayground";
-//import FieldGenerator from "../Services/FieldGenerator";
-//import GameService from "../Services/GameService";
-//import { connect } from "react-redux";
-//import { CreateGame, UpdateGame, ConfirmGame } from "../Store/Game/reducers/services";
-//import { FaBeer } from 'react-icons/fa';
+class GameBoard extends React.Component<any, any> {
+    Word: string = "";
+    GameWordField: string[][] = [];
+    Left: string[] = [];
+    Right: string[] = [];
+    ñonfirmations: boolean[] = [true, false, true, false];
+    Language: string = "";
+    Show: boolean = false;
+    Field: FieldGenerator = new FieldGenerator();
+    GameService: GameService = new GameService();
 
-//class GameBoard extends React.Component<any, any> {
-//    Word: string = "";
-//    GameWordField: string[][] = [];
-//    Left: string[] = [];
-//    Right: string[] = [];
-//    Language: string = "";
+    GameBoard() {
+    }
 
-//    Field: FieldGenerator = new FieldGenerator();
-//    GameService: GameService = new GameService();
+    HandleClose = () => {
+        this.props.CloseModal();
+    }
 
-//    UpdateField = (x: number, y: number, type: string, value: string) => {
-       
-//        if (type == "left" || type == "right") {
+    HandleShow = () => {
+        this.props.Test();
+    }
 
-//            if (type == "left")
-//                this.Left[x] = value;
-//            else (type == "right")
-//                this.Right[x] = value
-//        } else {
-//            this.GameWordField[x][y] = value;
-//        }
+    UpdateField = (x: number, y: number, type: string, value: string) => {
+      
+        if (type == "left" || type == "right") {
+            if (type == "left") {
+                this.Left[x] = value;
+            }
+            else if (type == "right") {
+                this.Right[x] = value
+            }
+        } else {
+            this.GameWordField[x][y] = value;
+        }
+        
+        this.props.UpdateGame(this.props.id, this.Left, this.Right, this.GameWordField);
+    };
 
-//        this.props.UpdateGame(this.props.id, this.Left, this.Right, this.GameWordField);
+    InitialField() {
 
-//    };
+        var counter = 0;
+        var count = this.Word ? this.Word.length : 0;
 
-//    InitialField() {
+        while (counter < count) {
+            this.Right.push("");
+            this.Left.push("")
 
-//        var counter = 0;
-//        var count = this.Word ? this.Word.length : 0;
+            counter++;
+        }
 
-//        while (counter < count) {
-//            this.Right.push("");
-//            this.Left.push("")
+        const col: string[][] = [];
+        var i = 0;
+        var j = 0;
 
-//            counter++;
-//        }
+        while (j < count) {
+            i = 0;
+            var row: string[] = [];
+            while (i < count - 2) {
+                row.push("");
+                i++;
+            }
 
-//        const col: string[][] = [];
-//        var i = 0;
-//        var j = 0;
+            col.push(row);
+            j++;
+        }
 
-//        while (j < count) {
-//            i = 0;
-//            var row: string[] = [];
-//            while (i < count - 2) {
-//                row.push("");
-//                i++;
-//            }
+        this.GameWordField = col;
+    }
 
-//            col.push(row);
-//            j++;
-//        }
+    StartGame = (count: number) => {
 
-//        this.GameWordField = col;
-//    }
+        var word = this.Field.GetRandomWord(count);
 
-//    StartGame = (count: number) => {
+        this.Word = word;
+        this.props.CreateGame(word, "ru");
+        this.InitialField();
+    };
 
-//        var word = this.Field.GetRandomWord(count);
+    ConfirmGame = () => {
+        this.props.ConfirmGame(this.props.id, this.Left, this.Right, this.GameWordField);
+    };
 
-//        this.Word = word;
-//        this.props.CreateGame(word, "ru");
-//        this.InitialField();
-//    };
+    render() {
+        var word = this.Word;
+        var loading = this.props.loading;
+        var id = this.props.id;
+        var index = -1;
+        var show = this.props.show;
+        var confirmations = this.props.confirmations;
+      
+        if (loading) {
+            return (<div>loading..<FaBeer /></div>);
+        }
 
-//    ConfirmGame = () => {
-//        this.props.ConfirmGame(this.props.id, this.Left, this.Right, this.GameWordField);
-//    };
+        else {
+            if (!id) {
+                return (
+                <div>
+                    <button onClick={() => this.StartGame(3)}>3 Letters</button>
+                    <button onClick={() => this.StartGame(4)}>4 Letters</button>
+                    <button onClick={() => this.StartGame(5)}>5 Letters</button>
+                    <button onClick={() => this.StartGame(6)}>6 Letters</button>
+                    <button onClick={() => this.StartGame(7)}>7 Letters</button>
+                    </div>
+                )
+            } else {
+                return (
+                    <div className="game-field">
 
-//    render() {
-//        var word = this.Word;
-//        var loading = this.props.loading;
-//        var id = this.props.id;
+                        <div className="board-field">
+                            <div>
+                                <RectanglePlayground confirmation={confirmations} language={"ru"} UpdateField={this.UpdateField} word={word} />
+                            </div>
+                            <button onClick={() => this.ConfirmGame()} type="submit" className="ml-20">
+                                Confirm
+                            </button>
+                        </div>
+                  
 
-//        if (loading) {
-//            return (<div>loading..<FaBeer /></div>);
-//        }
+                     <Button variant="primary" onClick={this.HandleShow}>
+                        Launch static backdrop modal
+                      </Button>
 
-//        else {
-//            if (!id) {
-//                return (
-//                <div>
-//                    <button onClick={() => this.StartGame(3)}>3 Letters</button>
-//                    <button onClick={() => this.StartGame(4)}>4 Letters</button>
-//                    <button onClick={() => this.StartGame(5)}>5 Letters</button>
-//                    <button onClick={() => this.StartGame(6)}>6 Letters</button>
-//                    <button onClick={() => this.StartGame(7)}>7 Letters</button>
-//                    </div>
-//                )
-//            } else {
-//                return (
-//                    <div className="game-field">
-//                        <div className="board-field">
-//                            <div>
-//                                <RectanglePlayground Language={"ru"} UpdateField={this.UpdateField} Word={word} />
-//                            </div>
-//                            <button onClick={() => this.ConfirmGame()} type="submit" className="ml-20">
-//                                Confirm
-//                            </button>
-//                        </div>
-//                    </div>
-//                );
-//            }
-//        }
-//    }
-//}
+                        <Modal show={show} onHide={this.HandleClose}>
+                            <Modal.Header closeButton>
+                                <Modal.Title>Confirming Game</Modal.Title>
+                            </Modal.Header>
+                            <Modal.Body>
+                                <div className="modal-container">
+                                    <div>
+                                        {   
+                                            Object.keys(this.GameWordField).map(keyOuter => {
+                                                index++;
+                                                return <div className="modal-field-line">
+                                                    <div className="modal-field">{word[index]}</div>
 
-//const mapStateToProps = (state: any) => {
-//    return {
-//        loading: state.gameReducer.loading,
-//        data: state.gameReducer.data,
-//        error: state.gameReducer.error,
-//        id: state.gameReducer.id,
-//        language: state.gameReducer.language
-//    };
-//};
 
-//const mapDispatchToProps = (dispatch: any) => {
-//    return {
-//        CreateGame: (word: string, language:string) => dispatch(CreateGame(word, language)),
-//        UpdateGame: (id: string, left: [], right: [], board: []) => dispatch(UpdateGame(id, left, right, board)),
-//        ConfirmGame: (id: string, left: [], right: [], board: []) => dispatch(ConfirmGame(id, left, right, board)),
-//    };
-//};
-//export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);
+
+                                                    {Object.keys(this.GameWordField[keyOuter]).map(keyInner => {
+                                                        return (
+                                                            <div className="modal-field" key={`${keyInner}-${keyOuter}`}>{this.GameWordField[keyOuter][keyInner]}</div>
+                                                        );
+
+                                                    })}
+                                                    <div className="modal-field">{word[index]}</div>
+                                                </div>
+                                            })
+
+                                        }
+                                    </div>
+
+                                </div>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button variant="secondary" onClick={this.HandleClose}>
+                                    Close
+                                </Button>
+                                <Button variant="primary" onClick={this.HandleClose}>
+                                    Save Changes
+                                </Button>
+                            </Modal.Footer>
+                        </Modal>
+                    </div>
+                );
+            }
+        }
+    }
+}
+
+const mapStateToProps = (state: any) => {
+    return {
+        loading: state.gameReducer.loading,
+        data: state.gameReducer.data,
+        error: state.gameReducer.error,
+        id: state.gameReducer.id,
+        language: state.gameReducer.language,
+        confirmations: state.gameReducer.confirmations,
+        show: state.gameReducer.show
+    };
+};
+
+const mapDispatchToProps = (dispatch: any) => {
+    return {
+        CreateGame: (word: string, language:string) => dispatch(CreateGame(word, language)),
+        UpdateGame: (id: string, left: [], right: [], board: []) => dispatch(UpdateGame(id, left, right, board)),
+        ConfirmGame: (id: string, left: [], right: [], board: []) => dispatch(ConfirmGame(id, left, right, board)),
+        Test: () => dispatch(Test()),
+        CloseModal: () => dispatch(CloseModal()),
+    };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(GameBoard);
