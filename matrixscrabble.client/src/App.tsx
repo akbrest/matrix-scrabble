@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="app">
+    <div className="app container">
       <BrowserRouter>
         <AppRouter />
       </BrowserRouter>
