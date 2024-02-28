@@ -49,7 +49,7 @@ const GameForm = () => {
     <div>
       <h2>Create a new game</h2>
       <form onSubmit={handleSubmith}>
-        <div>
+        <div className="mb-3 row">
           <legend>Select language:</legend>
           <div>
             <label>
@@ -72,15 +72,16 @@ const GameForm = () => {
             </label>
           </div>
 
-          <label htmlFor="title">Word: </label>
+          <label htmlFor="title" className="form-label">Word: </label>
           <input
             type="text"
+            className="form-control"
             id="word"
             value={word}
             onChange={handleChangeWord}
           />
         </div>
-        <button type="submit">Create</button>
+        <button type="submit" className="btn btn-primary">Create</button>
       </form>
     </div>
   );
