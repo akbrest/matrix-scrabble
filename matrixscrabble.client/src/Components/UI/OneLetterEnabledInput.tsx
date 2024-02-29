@@ -1,51 +1,61 @@
-//import React, { useState } from "react";
+import React from "react";
 
-//interface OneLetterDisabledInputProps {
-//    language: string;
-//    UpdateField: (x: number, y: number, type: string, value: string) => void;
-//    x: number;
-//    y: number;
-//}
+interface MyComponentProps {
+    Language: string;
+    x: number;
+    y: number;
+    UpdateField: (x: number, y: number, type: string, value: string) => void;
+}
 
-//const AllowedLetters = {
-//    'en': "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuWwVvXxYYZz",
-//    'ru': "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя"
-//}
+interface State {
+    Language: string;
+    x: number;
+    y: number;
+    UpdateField: (x: number, y: number, type: string, value: string) => void;
+}
 
-//const OneLetterEnabledInput: React.FC<OneLetterDisabledInputProps> = ({x, y,  language, UpdateField }) => {
-//    const [lang, setLanguage] = useState(language);
-//    const [value, setValue] = useState("");
-//    const [xx, setX] = useState(x);
-//    const [yy, setY] = useState(y);
+class OneLetterEnabledInput extends React.Component<MyComponentProps, State> {
+    Language;
+    AllowedLetters = {
+        en: ["a", "b", "c", "d", "e"],
+        ru: ["а", "б", "в", "ш"],
+    };
 
-//    function checkValidity(e: any) {
-//        var elem = e.key;
-//        var allowedChars = AllowedLetters[lang];
-        
-//        if (allowedChars.indexOf(elem) >= 0) {
-//            setValue(elem);
-//        } else {
-//            if (elem == "Delete" || elem == "Backspace") {
+    constructor(props: MyComponentProps) {
+        super(props);
 
-//            } else {
-//                e.preventDefault();
-//                return false;
-//            }
-//        }
+        this.state = {
+            Language: props.Language,
+            x: props.x,
+            y: props.y,
+            UpdateField: this.props.UpdateField,
+        };
 
-//        return true;
-//    }
+        this.Language = props.Language;
+    }
 
-//    return <div className="one-symbol-enabled-block">
-//        <input
-//            onChange={() => UpdateField(xx, yy, "main", value)}
-//            onKeyDown={(e) => checkValidity(e)}
-//            maxLength={1}
-//            className="simpleInput"
-//            type="text"
-//            size={1}
-//        />
-//    </div>
+    CheckValidity() {
+        return true;
+    }
 
-//};
-//export default OneLetterEnabledInput;
+    onChange = (e: any) => {
+        this.props.UpdateField(this.props.x, this.props.y, "main", e.target.value);
+    };
+
+    render() {
+        return (
+            <div className="one-symbol-enabled-block">
+                <input
+                    onChange={this.onChange}
+                    onInput={() => this.CheckValidity()}
+                    maxLength={1}
+                    className="simpleInput"
+                    type="text"
+                    size={1}
+                />
+            </div>
+        );
+    }
+}
+
+export default OneLetterEnabledInput;

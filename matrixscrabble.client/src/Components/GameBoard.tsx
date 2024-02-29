@@ -13,7 +13,7 @@
 //    GameWordField: string[][] = [];
 //    Left: string[] = [];
 //    Right: string[] = [];
-//    Òonfirmations: boolean[] = [true, false, true, false];
+//    —Åonfirmations: boolean[] = [true, false, true, false];
 //    Language: string = "";
 //    Show: boolean = false;
 //    Field: FieldGenerator = new FieldGenerator();

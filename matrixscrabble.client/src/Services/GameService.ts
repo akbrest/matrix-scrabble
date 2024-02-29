@@ -2,7 +2,7 @@ class GameService {
 
     async getExample() {
 
-        var dataToSend = JSON.stringify({ id: "value1", name: "value2" });
+        const dataToSend = JSON.stringify({ id: "value1", name: "value2" });
 
         const requestOptions = {
             method: 'POST',
@@ -14,9 +14,9 @@ class GameService {
             .then(data => console.log(data));
     }
 
-    async PostExample(word: String[][]) {
+    async PostExample(word: string[][]) {
 
-        var dataToSend = JSON.stringify({ "Main": word, "name": "value2" });
+        const dataToSend = JSON.stringify({ "Main": word, "name": "value2" });
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
