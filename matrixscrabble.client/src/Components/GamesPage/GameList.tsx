@@ -1,20 +1,31 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchGames } from '../../redux/slices/gamesSlice';
+import { useEffect } from 'react';
+import { RootState, AppDispatch } from '../../redux/store';
+import { Game } from '../../redux/slices/gamesSlice';
 
 const GameList = () => {
-  const games = useSelector((state: any) => state.games);
+  const dispatch = useDispatch<AppDispatch>();
+  const games = useSelector((state: RootState) => state.games.games);
+  const isLoading = useSelector((state: RootState) => state.games.isLoading);
+
+  useEffect(() => {
+    dispatch(fetchGames());
+  }, [dispatch]);
 
   return (
     <div>
       <h2>Game List</h2>
-      {games.length === 0 ? (
-        <p>No games available</p>
+      {isLoading ? (
+        <div>Loading...</div>
       ) : (
         <ul>
-          {games.map((game: any) => (
-            <li key={game.word}>
+          {games.map((game: Game) => (
+            <li key={game.id}>
               <div>
                 Language: <small>{game.language}</small> Word:{' '}
-                <strong>{game.word}</strong> Answers: 0/{game.word.length}
+                <strong>{game.word}</strong> Is Completed:{' '}
+                {game.isCompleted.toString()}
               </div>
             </li>
           ))}
