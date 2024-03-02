@@ -1,15 +1,20 @@
 import { useState } from 'react';
-//import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import {
   EnglishAlphabetRegex,
   RussianAlphabetRegex,
   Language,
 } from '../../constants';
+import { AppDispatch } from '../../redux/store';
+import { Game } from '../../redux/models/Game';
+import { createGame } from '../../redux/actions/gamesActions';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 const GameForm = () => {
   const [language, setLanguage] = useState(Language.EN);
   const [word, setWord] = useState('');
-  //const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleChangeWord = (e: React.ChangeEvent<HTMLInputElement>) => {
     let regex = EnglishAlphabetRegex;
@@ -32,57 +37,49 @@ const GameForm = () => {
     e.preventDefault();
 
     if (word) {
-      const game = {
+      const game: Game = {
         language: language,
         word: word,
       };
 
-      console.log(game);
-      //dispatch(createGame(game));
+      dispatch(createGame(game));
 
       setWord('');
     }
   };
 
   return (
-    <div>
-      <h2>Create a new game</h2>
-      <form onSubmit={handleSubmith}>
-        <div className="mb-3 row">
-          <legend>Select language:</legend>
-          <div>
-            <label>
-              <input
-                type="radio"
-                value={Language.EN}
-                checked={language === Language.EN}
-                onChange={handleChangeLanguage}
-              />
-              English
-            </label>
-            <label>
-              <input
-                type="radio"
-                value={Language.RU}
-                checked={language === Language.RU}
-                onChange={handleChangeLanguage}
-              />
-              Russian
-            </label>
-          </div>
-
-          <label htmlFor="title" className="form-label">Word: </label>
-          <input
-            type="text"
-            className="form-control"
-            id="word"
-            value={word}
-            onChange={handleChangeWord}
+    <Form onSubmit={handleSubmith}>
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <div>
+          <Form.Check
+            inline
+            type="radio"
+            value={Language.EN}
+            checked={language === Language.EN}
+            onChange={handleChangeLanguage}
+            label="English"
+          />
+          <Form.Check
+            inline
+            type="radio"
+            value={Language.RU}
+            checked={language === Language.RU}
+            onChange={handleChangeLanguage}
+            label="Russian"
           />
         </div>
-        <button type="submit" className="btn btn-primary">Create</button>
-      </form>
-    </div>
+        <Form.Control
+          type="text"
+          placeholder="Enter word"
+          value={word}
+          onChange={handleChangeWord}
+        />
+      </Form.Group>
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+    </Form>
   );
 };
 

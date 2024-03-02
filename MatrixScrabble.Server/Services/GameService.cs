@@ -30,7 +30,7 @@ public class GameService : IGameService
 
     async Task<GameDto?> IGameService.GetAsync(Guid id)
     {
-        if ((id == null))
+        if (id == null)
             throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
 
         var game = await gameRepository.GetAsync(id);

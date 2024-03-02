@@ -1,8 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchGames } from '../../redux/slices/gamesSlice';
 import { useEffect } from 'react';
 import { RootState, AppDispatch } from '../../redux/store';
-import { Game } from '../../redux/slices/gamesSlice';
+import { fetchGames } from '../../redux/actions/gamesActions';
+import { Game } from '../../redux/models/Game';
 
 const GameList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,7 +14,7 @@ const GameList = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div className="mt-5">
       <h2>Game List</h2>
       {isLoading ? (
         <div>Loading...</div>
@@ -25,7 +25,7 @@ const GameList = () => {
               <div>
                 Language: <small>{game.language}</small> Word:{' '}
                 <strong>{game.word}</strong> Is Completed:{' '}
-                {game.isCompleted.toString()}
+                {game.isCompleted?.toString()}
               </div>
             </li>
           ))}

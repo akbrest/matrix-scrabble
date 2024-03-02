@@ -6,7 +6,6 @@ const GamePage = () => {
     <div>
       <h2>Welcome to Game page!</h2>
       <GameForm />
-      <div>List games</div>
       <GameList />
     </div>
   );

@@ -1,20 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
-
-export interface Game {
-  id: string;
-  word: string;
-  isCompleted: boolean;
-  language: string;
-}
-
-export const fetchGames = createAsyncThunk<Game[]>(
-  'games/fetchGames',
-  async () => {
-    const response = await axios.get('http://localhost:5032/games');
-    return response.data;
-  }
-);
+import { createSlice } from '@reduxjs/toolkit';
+import { fetchGames, createGame } from '../actions/gamesActions';
+import { Game } from '../models/Game';
 
 const gamesSlice = createSlice({
   name: 'games',
@@ -32,6 +18,16 @@ const gamesSlice = createSlice({
       state.games = action.payload;
     });
     builder.addCase(fetchGames.rejected, (state) => {
+      state.isLoading = false;
+    });
+    builder.addCase(createGame.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(createGame.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.games.push(action.payload);
+    });
+    builder.addCase(createGame.rejected, (state) => {
       state.isLoading = false;
     });
   },

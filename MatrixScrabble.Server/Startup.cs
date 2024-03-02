@@ -9,6 +9,8 @@ namespace MatrixScrabble.Server
 {
 	public class Startup
 	{
+		const string ReactAppOrigins = "ReactAppOrigins";
+
 		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -41,10 +43,16 @@ namespace MatrixScrabble.Server
 			services.AddEndpointsApiExplorer();
 			services.AddSwaggerGen();
 
-			services.AddCors(options => options.AddDefaultPolicy(policy =>
+			services.AddCors(options =>
 			{
-				policy.WithOrigins("https://localhost:5173");
-			}));
+				options.AddPolicy(ReactAppOrigins,
+					policy =>
+					{
+						policy.WithOrigins("https://localhost:5173")
+							.AllowAnyHeader()
+							.AllowAnyMethod();
+					});
+			});
 		}
 
 		// This method gets called by runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +72,7 @@ namespace MatrixScrabble.Server
 
 			app.UseAuthorization();
 
-			app.UseCors();
+			app.UseCors(ReactAppOrigins);
 
 			app.UseEndpoints(endpoint =>
 			{
