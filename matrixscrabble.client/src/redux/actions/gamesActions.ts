@@ -13,8 +13,16 @@ export const fetchGames = createAsyncThunk<Game[]>(
   }
 );
 
+export const fetchSingleGame = createAsyncThunk<Game, string>(
+  'games/fetchSingleGame',
+  async (id: string) => {
+    const response = await axios.get(apiUrl + '/games/' + id);
+    return response.data;
+  }
+);
+
 export const createGame = createAsyncThunk<Game, Game>(
-  'games/createGames',
+  'games/createGame',
   async (game: Game) => {
     const response = await axios.post(apiUrl + '/games', game);
     return response.data;

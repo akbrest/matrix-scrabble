@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { RootState, AppDispatch } from '../../redux/store';
 import { fetchGames } from '../../redux/actions/gamesActions';
 import { Game } from '../../redux/models/Game';
+import { Link } from 'react-router-dom';
 
 const GameList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,11 +23,11 @@ const GameList = () => {
         <ul>
           {games.map((game: Game) => (
             <li key={game.id}>
-              <div>
+              <Link to={game.id!}>
                 Language: <small>{game.language}</small> Word:{' '}
                 <strong>{game.word}</strong> Is Completed:{' '}
                 {game.isCompleted?.toString()}
-              </div>
+              </Link>
             </li>
           ))}
         </ul>

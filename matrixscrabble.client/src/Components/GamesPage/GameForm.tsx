@@ -10,11 +10,13 @@ import { Game } from '../../redux/models/Game';
 import { createGame } from '../../redux/actions/gamesActions';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
 const GameForm = () => {
   const [language, setLanguage] = useState(Language.EN);
   const [word, setWord] = useState('');
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const handleChangeWord = (e: React.ChangeEvent<HTMLInputElement>) => {
     let regex = EnglishAlphabetRegex;
@@ -33,7 +35,7 @@ const GameForm = () => {
     setLanguage(selectedLanguage);
   };
 
-  const handleSubmith = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmith = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (word) {
@@ -42,9 +44,8 @@ const GameForm = () => {
         word: word,
       };
 
-      dispatch(createGame(game));
-
-      setWord('');
+      const createdGame = (await dispatch(createGame(game))).payload as Game;
+      navigate('/games/' + createdGame.id);
     }
   };
 
