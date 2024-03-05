@@ -8,6 +8,24 @@ import {
 import { Game } from '../models/Game';
 import { GameModel } from '../models/GameModel';
 
+
+export interface GameModel {
+    game: Game;
+    details: GameDetails
+}
+
+export interface GameBoardModel {
+    id: string;
+    left: string[],
+    right: string[],
+    board: string[][],
+}
+
+export interface GameDetails {
+    confirmations: boolean[],
+    point: string[]
+}
+
 const gamesSlice = createSlice({
   name: 'games',
   initialState: {
