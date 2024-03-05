@@ -46,7 +46,7 @@ const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLett
                     <OneLetterEnabledInput
                         key={"FooClass" + index}
                         UpdateField={UpdateField}
-                        language={'en'}
+                        language={lang}
                         x={x}
                         y={index}
                     />
