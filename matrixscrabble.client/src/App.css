@@ -28,6 +28,9 @@ div.game-field-line-left {
     flex: 1; /* Allow boxes to grow to fill remaining space */
     display: flex;
 }
+div.modal-field-first{
+    background-color: #b4b4b4
+}
 
 div.game-field-line-right {
     flex: 1; /* Allow boxes to grow to fill remaining space */
