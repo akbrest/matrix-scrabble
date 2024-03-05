@@ -14,7 +14,7 @@ namespace MatrixScrabble.Server.Mappers
             {
                 Id = game.Id,
                 Word = game.Word,
-                IsCompleted = game.IsCompleted,
+                IsCompleted = game.IsCompleted.Value,
 				Language = game.Language,
 				CreatedAt = game.DateCreated
             };

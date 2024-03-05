@@ -1,6 +1,7 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { Game } from '../models/Game';
+import { GameBoardModel, GameModel } from '../slices/gamesSlice';
 
 //TODO move to env variables
 const apiUrl = 'http://localhost:5032';
