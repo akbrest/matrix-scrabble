@@ -3,8 +3,27 @@ import {
   fetchGames,
   createGame,
   fetchSingleGame,
+  updateGame
 } from '../actions/gamesActions';
 import { Game } from '../models/Game';
+
+
+export interface GameModel {
+    game: Game;
+    details: GameDetails
+}
+
+export interface GameBoardModel {
+    id: string;
+    left: string[],
+    right: string[],
+    board: string[][],
+}
+
+export interface GameDetails {
+    confirmations: boolean[],
+    point: string[]
+}
 
 const gamesSlice = createSlice({
   name: 'games',
@@ -51,7 +70,30 @@ const gamesSlice = createSlice({
     builder.addCase(createGame.rejected, (state) => {
       state.isLoading = false;
     });
-  },
+    builder.addCase(updateGame.pending, (state) => {
+        state.isLoading = true;
+    });
+
+    builder.addCase(updateGame.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const index = state.games.findIndex(
+            (game) => game.id === action.payload.game.id
+        );
+
+        if (index !== -1) {
+            state.games[index].id = action.payload.game.id;
+            state.games[index].word = action.payload.game.word;
+            state.games[index].details = action.payload.details;
+        } else {
+            state.games.push(action.payload.game);
+            state.games[0].details = action.payload.details;
+        }
+    });
+
+        builder.addCase(updateGame.rejected, (state) => {
+            state.isLoading = false;
+        });
+    },
 });
 
 export default gamesSlice.reducer;

@@ -12,16 +12,22 @@ namespace MatrixScrabble.Server.Controllers;
 public class GamesController : ControllerBase
 {
 	private readonly IGameService gameService;
+	private Guid _userId;
 
 	public GamesController(IGameService gameService)
 	{
 		this.gameService = gameService ?? throw new ArgumentNullException(nameof(gameService));
+
+		if (_userId == Guid.Empty)
+		{
+			_userId = Guid.NewGuid();
+		}
 	}
 
 	[HttpGet]
 	public async Task<ActionResult<IEnumerable<GameDto>>> GetAll()
 	{
-		var games = await gameService.GetAsync();
+		var games = await gameService.GetAllAsync(_userId);
 
 		return Ok(games);
 	}
@@ -32,7 +38,7 @@ public class GamesController : ControllerBase
 		if (string.IsNullOrWhiteSpace(id.ToString()))
 			throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
 
-		var game = await gameService.GetAsync(id);
+		var game = await gameService.GetAsync(id, _userId);
 
 		return Ok(game);
 	}
@@ -43,18 +49,18 @@ public class GamesController : ControllerBase
 		if (game is null)
 			throw new ArgumentNullException(nameof(game));
 
-		var createdGame = await gameService.CreateAsync(game);
+		var createdGame = await gameService.CreateAsync(game, _userId);
 
 		return CreatedAtAction(nameof(Get), new { id = createdGame.Id }, createdGame);
 	}
 
-	[HttpPut("{id:length(36)}")]
-	public async Task<IActionResult> Update(Guid id, GameDto updatedGame)
+	[HttpPut]
+	public async Task<IActionResult> Update(GameDto updatedGame)
 	{
 		if (updatedGame is null)
 			throw new ArgumentNullException(nameof(updatedGame));
 
-		GameDetailsDto gameDetails = await gameService.UpdateAsync(id, updatedGame);
+		GameDetailsDto gameDetails = await gameService.UpdateAsync(updatedGame.Id.Value, updatedGame, _userId);
 
 		return Ok(gameDetails);
 	}
@@ -65,7 +71,7 @@ public class GamesController : ControllerBase
 		if (string.IsNullOrWhiteSpace(id.ToString()))
 			throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
 
-		await gameService.RemoveAsync(id);
+		await gameService.RemoveAsync(id, _userId);
 
 		return NoContent();
 	}

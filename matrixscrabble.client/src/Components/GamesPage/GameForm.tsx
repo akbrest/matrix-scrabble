@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
-  EnglishAlphabetRegex,
-  RussianAlphabetRegex,
-  Language,
+    EnglishAlphabetRegex,
+    RussianAlphabetRegex,
+    Language,
 } from '../../constants';
 import { AppDispatch } from '../../redux/store';
 import { Game } from '../../redux/models/Game';
@@ -11,37 +11,38 @@ import { createGame } from '../../redux/actions/gamesActions';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-
+ 
 const GameForm = () => {
   const [language, setLanguage] = useState(Language.EN);
   const [word, setWord] = useState('');
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const handleChangeWord = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let regex = EnglishAlphabetRegex;
-    if (language === Language.RU) regex = RussianAlphabetRegex;
+    const handleChangeWord = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let regex = EnglishAlphabetRegex;
+        if (language === Language.RU) regex = RussianAlphabetRegex;
 
-    if (e.target.value.match(regex) != null) {
-      setWord(e.target.value);
-    }
-  };
+        if (e.target.value.match(regex) != null) {
+            setWord(e.target.value);
+        }
+    };
 
-  const handleChangeLanguage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedLanguage: Language = e.target.value as Language;
+    const handleChangeLanguage = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedLanguage: Language = e.target.value as Language;
 
-    if (language !== selectedLanguage) setWord('');
+        if (language !== selectedLanguage) setWord('');
 
-    setLanguage(selectedLanguage);
-  };
+        setLanguage(selectedLanguage);
+    };
 
-  const handleSubmith = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (word) {
       const game: Game = {
         language: language,
         word: word,
+       
       };
 
       const createdGame = (await dispatch(createGame(game))).payload as Game;
@@ -50,7 +51,7 @@ const GameForm = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmith}>
+    <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <div>
           <Form.Check

@@ -14,7 +14,7 @@ namespace MatrixScrabble.Server.Mappers
             {
                 Id = game.Id,
                 Word = game.Word,
-                IsCompleted = game.IsCompleted,
+                IsCompleted = game.IsCompleted.Value,
 				Language = game.Language,
 				CreatedAt = game.DateCreated
             };
@@ -31,8 +31,8 @@ namespace MatrixScrabble.Server.Mappers
 				Word = gameDto.Word,
 				Language = gameDto.Language,
 				IsCompleted = gameDto.IsCompleted,
-				DateCreated = gameDto.CreatedAt.HasValue ? gameDto.CreatedAt.Value : DateTime.UtcNow,
-				Game1 = ""
+				DateCreated = gameDto.CreatedAt.HasValue ? gameDto.CreatedAt.Value : DateTime.Now,
+				Board = ""
             };
         }
     }

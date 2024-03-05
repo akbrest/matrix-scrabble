@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { RootState, AppDispatch } from '../../redux/store';
 import { fetchSingleGame } from '../../redux/actions/gamesActions';
 import { useSelector, useDispatch } from 'react-redux';
+import GameBoard from './GameBoard';
 
 const SingleGame = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,7 +27,12 @@ const SingleGame = () => {
           <div>
             <h2>SingleGame with id: {game.id}</h2>
             <div>Word: {game.word}</div>
+            <div>
+                 <GameBoard id={game.id} word={game.word} language={game.language} key ="ksadks" />
+            </div>
           </div>
+           
+          
         )
       )}
     </div>

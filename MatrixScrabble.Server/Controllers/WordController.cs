@@ -21,14 +21,13 @@ public class WordController : ControllerBase
 
     [Route("ConfirmGame")]
     [HttpPost]
-    public async Task<ActionResult<Game>> ConfirmGame(GameDto game)
+    public async Task<ActionResult<Board>> ConfirmGame(GameDto game)
     {
         if (game.Id == null)
             throw new ArgumentException($"'{nameof(game.Id)}' cannot be null or whitespace.", nameof(game.Id));
 		
-		var completedGame = await gameService.ConfirmGame(game);
+		var completedGame = await gameService.ConfirmGame(game, new Guid());
 
         return Ok(completedGame);
-
     }
 }

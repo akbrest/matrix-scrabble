@@ -10,7 +10,7 @@ public class Details
 
 public class GameDetailsDto
 {
-    public GameDto Game { get; set; } 
+	public GameDto Game { get; set; }
 
 	public Details Details { get; set; }
 }
