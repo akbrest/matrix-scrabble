@@ -32,16 +32,7 @@ const gamesSlice = createSlice({
     });
     builder.addCase(fetchSingleGame.fulfilled, (state, action) => {
       state.isLoading = false;
-      const index = state.games.findIndex(
-        (game) => game.id === action.payload.id);
-
-        state.currentGame.game = action.payload;
-
-      if (index !== -1) {
-        state.games[index] = action.payload;
-      } else {
-        state.games.push(action.payload);
-      }
+      state.currentGame.game = action.payload;
     });
     builder.addCase(fetchSingleGame.rejected, (state) => {
       state.isLoading = false;
@@ -59,7 +50,6 @@ const gamesSlice = createSlice({
     builder.addCase(updateGame.pending, (state) => {
         state.isLoading = true;
     });
-
     builder.addCase(updateGame.fulfilled, (state, action) => {
         state.isLoading = false;
         state.currentGame.details = action.payload.details;
