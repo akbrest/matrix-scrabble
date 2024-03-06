@@ -1,3 +1,4 @@
+import { GameDetails } from "../slices/gamesSlice";
 import { Game } from "./Game";
 import { GameDetails } from "./GameDetails";
 
