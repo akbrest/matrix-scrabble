@@ -1,4 +1,5 @@
-import { GameBoardModel, GameDetails } from "../slices/gamesSlice";
+import {  GameDetails } from "../slices/gamesSlice";
+import { GameBoardModel } from "./GameBoardModel";
 
 export interface Game {
     id: string;

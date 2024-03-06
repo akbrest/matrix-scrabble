@@ -8,7 +8,6 @@ import Menu from './Menu';
 const AppRouter = () => {
     return (
         <div>
-        <Menu></Menu>
         <Routes>
             <Route path="/" element={<MainLayout />}>
             <Route index element={<Home />} />

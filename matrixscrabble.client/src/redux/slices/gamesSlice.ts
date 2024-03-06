@@ -6,24 +6,7 @@ import {
   updateGame
 } from '../actions/gamesActions';
 import { Game } from '../models/Game';
-
-
-export interface GameModel {
-    game: Game;
-    details: GameDetails
-}
-
-export interface GameBoardModel {
-    id: string;
-    left: string[],
-    right: string[],
-    board: string[][],
-}
-
-export interface GameDetails {
-    confirmations: boolean[],
-    point: string[]
-}
+import { GameModel } from '../models/GameModel';
 
 const gamesSlice = createSlice({
   name: 'games',
