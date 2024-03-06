@@ -21,11 +21,7 @@ namespace MatrixScrabble.Server
 		// This method gets called by runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			//services.Configure<MongoDbSettings>(mongoDbSettings);
-
-			// Add services to the container.
-			//services.AddSingleton<IDbContext, DbContext>();
-
+			
 			services.AddDbContext<ScrabbleContext>(options =>
 			{
 				var sqlConnection = new SqlConnection(Configuration.GetSection("SqlSettings:ConnectionString").Value);
@@ -48,10 +44,11 @@ namespace MatrixScrabble.Server
 				options.AddPolicy(ReactAppOrigins,
 					policy =>
 					{
-						policy.WithOrigins("https://localhost:5173")
-							.AllowAnyHeader()
-							.AllowAnyMethod();
-					});
+						policy
+						 .AllowAnyOrigin()
+						 .AllowAnyMethod()
+						 .AllowAnyHeader();
+					});					
 			});
 		}
 

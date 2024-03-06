@@ -28,3 +28,23 @@ export const createGame = createAsyncThunk<Game, Game>(
     return response.data;
   }
 );
+
+export const updateGame = createAsyncThunk<GameModel, GameBoardModel>(
+    'games/updateGame',
+    async (gameDetails: GameBoardModel) => {
+
+        const response = await axios.put('http://localhost:5032/games', {
+            board: {
+                id: gameDetails.id,
+                Left: gameDetails.left,
+                Right: gameDetails.right,
+                Center: gameDetails.board,
+            },
+            word: '',
+            id: gameDetails.id,
+            language: ""
+        });
+
+        return response.data;
+    }
+);

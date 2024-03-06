@@ -33,7 +33,7 @@ public partial class ScrabbleContext : DbContext
             entity.Property(e => e.DateCreated)
                 .HasColumnType("datetime")
                 .HasColumnName("date_created");
-            entity.Property(e => e.Game1).HasColumnName("game");
+            entity.Property(e => e.Board).HasColumnName("board");
             entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
             entity.Property(e => e.Language).HasColumnName("language");
             entity.Property(e => e.Word)
@@ -50,7 +50,7 @@ public partial class ScrabbleContext : DbContext
             entity.Property(e => e.DateCreated)
                 .HasColumnType("datetime")
                 .HasColumnName("date_created");
-            entity.Property(e => e.Game).HasColumnName("game");
+            entity.Property(e => e.Game).HasColumnName("board");
             entity.Property(e => e.GameId).HasColumnName("game_id");
         });
 

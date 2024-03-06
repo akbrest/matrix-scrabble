@@ -2,9 +2,9 @@
 
 public interface ISqlRepository<T>
 {
-	Task<IEnumerable<T>> GetAllAsync();
-	Task<T> GetAsync(Guid id);
-	Task<T> CreateAsync(T entity, Guid? user_id );
+	Task<IEnumerable<T>> GetAllAsync(Guid userId);
+	Task<T> GetAsync(Guid id, Guid userId);
+	Task<T> CreateAsync(T entity);
 	Task<T> UpdateAsync(T entity);
 	Task DeleteAsync(T entity);
 }

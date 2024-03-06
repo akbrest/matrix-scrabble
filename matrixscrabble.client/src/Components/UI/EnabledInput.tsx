@@ -1,5 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
+import { EnglishAlphabetRegex, RussianAlphabetRegex } from "../../constants";
 
 interface OneLetterEnabledInputProps {
     language: string;
@@ -8,32 +8,38 @@ interface OneLetterEnabledInputProps {
     type: string
 }
 
-const AllowedLetters = {
-    'en': "AaBbCcDdEeFfGgHIihJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz",
-    'ru': "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя"
-}
+const AllowedLetters = [
+    { "en": "AaBbCcDdEeFfGgHIihJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" },
+    { "ru": "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя" }
+]
 
 const EnabledInput: React.FC<OneLetterEnabledInputProps> = ({ row, type, language, UpdateField }) => {
+
     const [lang] = useState(language);
     const [rowValue] = useState(row);
     const [typeX] = useState(type);
     const textInput = React.createRef();
 
-
     function CheckValidity(e: React.KeyboardEvent<HTMLInputElement>): void {
         const elem = e.key;
-        const allowedChars = AllowedLetters[lang];
-        if (allowedChars.indexOf(elem) < 0) 
-        {
+
+        let letters = "";
+        AllowedLetters.map((value, index) => {
+            if (Object.keys(value)[index] == lang) {
+                letters = Object.values(value)[index];
+            }
+        });
+
+        if (letters.indexOf(elem) < 0) {
             if (elem == "Delete" || elem == "Backspace") {
+                    // TODO fix for backspaces and delete 
+            } else {
                 e.preventDefault();
-                return;
             }
         }
 
         return;
     }
-
 
     return <div style={{ width: '100px' }}>
         <input ref={textInput}

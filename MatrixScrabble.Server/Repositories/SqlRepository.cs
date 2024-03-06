@@ -16,17 +16,17 @@ namespace MatrixScrabble.Server.Repositories
 			_context = context;
 		}
 
-		public async Task<T?> GetAsync(Guid id)
+		public async Task<T?> GetAsync(Guid id, Guid userId)
 		{
 			return await _context.Set<T>().FindAsync(id);
 		}
 
-		public async Task<IEnumerable<T>> GetAllAsync()
+		public async Task<IEnumerable<T>> GetAllAsync(Guid userId)
         {
             return await _context.Set<T>().ToListAsync();
         }
 
-        public async Task<T> CreateAsync(T entity, Guid? user_id)
+        public async Task<T> CreateAsync(T entity)
         {
             if (entity is null)
                 throw new ArgumentNullException(nameof(entity));

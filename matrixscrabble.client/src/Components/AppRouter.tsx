@@ -5,15 +5,17 @@ import GamesPage from './GamesPage/GamesPage';
 import SingleGame from './GamesPage/SingleGame';
 
 const AppRouter = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route path="games" element={<GamesPage />} />
-        <Route path="games/:id" element={<SingleGame />} />
-      </Route>
-    </Routes>
-  );
+    return (
+        <div>
+            <Routes>
+                <Route path="/" element={<MainLayout />}>
+                    <Route index element={<Home />} />
+                    <Route path="games" element={<GamesPage />} />
+                    <Route path="games/:id" element={<SingleGame />} />
+                </Route>
+            </Routes>
+        </div>
+    );
 };
 
 export default AppRouter;

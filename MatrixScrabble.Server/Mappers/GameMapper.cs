@@ -32,7 +32,7 @@ namespace MatrixScrabble.Server.Mappers
 				Language = gameDto.Language,
 				IsCompleted = gameDto.IsCompleted,
 				DateCreated = gameDto.CreatedAt.HasValue ? gameDto.CreatedAt.Value : DateTime.UtcNow,
-				Game1 = ""
+				Board = ""
             };
         }
     }

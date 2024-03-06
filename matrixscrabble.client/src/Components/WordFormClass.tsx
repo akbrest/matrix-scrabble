@@ -43,10 +43,10 @@ const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLett
             <OneLetterDisabledInput letter={firstLetter} />
             {items.map(({ }, index) => {
                 return (
-                    <OneLetterEnabledInput 
+                    <OneLetterEnabledInput
                         key={"FooClass" + index}
                         UpdateField={UpdateField}
-                        Language={lang}
+                        language={lang}
                         x={x}
                         y={index}
                     />
