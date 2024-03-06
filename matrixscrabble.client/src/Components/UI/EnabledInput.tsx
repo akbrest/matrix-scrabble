@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
+import { EnglishAlphabetRegex, RussianAlphabetRegex } from "../../constants";
 
 interface OneLetterEnabledInputProps {
     language: string;

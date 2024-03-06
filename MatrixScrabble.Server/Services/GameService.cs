@@ -173,9 +173,14 @@ public class GameService : IGameService
 		GameDetailsDto gameDetailsDto = new GameDetailsDto();
 
 		gameDetailsDto.Game = gameMapper.Map(updatedGame);
+
+		gameDetailsDto.Game.Board = gameDto.Board;
 		gameDetailsDto.Details = new Details();
 		gameDetailsDto.Details.Confirmations = confirmations;
 		gameDetailsDto.Details.Points = points;
+		gameDetailsDto.Game.Language = "";
+		gameDetailsDto.Game.Word = "";
+
 
 		return gameDetailsDto;
 	}

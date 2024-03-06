@@ -33,12 +33,13 @@ export const createGame = createAsyncThunk<Game, Game>(
 export const updateGame = createAsyncThunk<GameModel, GameBoardModel>(
     'games/updateGame',
     async (gameDetails: GameBoardModel) => {
+
         const response = await axios.put('http://localhost:5032/games', {
-            game: {
+            board: {
                 id: gameDetails.id,
                 Left: gameDetails.left,
                 Right: gameDetails.right,
-                Board: gameDetails.board,
+                Center: gameDetails.board,
             },
             word: '',
             id: gameDetails.id,

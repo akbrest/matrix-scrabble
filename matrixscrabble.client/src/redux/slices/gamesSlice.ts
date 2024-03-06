@@ -28,7 +28,8 @@ export interface GameDetails {
 const gamesSlice = createSlice({
   name: 'games',
   initialState: {
-    games: [] as Game[],
+      games: [] as Game[],
+      currentGame: {} as GameModel,
     isLoading: false,
   },
   reducers: {},
@@ -49,8 +50,10 @@ const gamesSlice = createSlice({
     builder.addCase(fetchSingleGame.fulfilled, (state, action) => {
       state.isLoading = false;
       const index = state.games.findIndex(
-        (game) => game.id === action.payload.id
-      );
+        (game) => game.id === action.payload.id);
+
+        state.currentGame.game = action.payload;
+
       if (index !== -1) {
         state.games[index] = action.payload;
       } else {
@@ -76,23 +79,12 @@ const gamesSlice = createSlice({
 
     builder.addCase(updateGame.fulfilled, (state, action) => {
         state.isLoading = false;
-        const index = state.games.findIndex(
-            (game) => game.id === action.payload.game.id
-        );
-
-        if (index !== -1) {
-            state.games[index].id = action.payload.game.id;
-            state.games[index].word = action.payload.game.word;
-            state.games[index].details = action.payload.details;
-        } else {
-            state.games.push(action.payload.game);
-            state.games[0].details = action.payload.details;
-        }
+        state.currentGame.details = action.payload.details;
     });
 
-        builder.addCase(updateGame.rejected, (state) => {
-            state.isLoading = false;
-        });
+    builder.addCase(updateGame.rejected, (state) => {
+        state.isLoading = false;
+    });
     },
 });
 

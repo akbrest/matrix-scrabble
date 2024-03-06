@@ -8,35 +8,33 @@ import GameBoard from './GameBoard';
 const SingleGame = () => {
   const dispatch = useDispatch<AppDispatch>();
   const params = useParams();
-  const id = params.id!;
-  const game = useSelector((state: RootState) =>
-    state.games.games.find((x) => x.id === id)
-  );
-  const isLoading = useSelector((state: RootState) => state.games.isLoading);
+    const id = params.id!;
+
+    const game = useSelector((state: RootState) =>
+        state.games.currentGame.game
+    );
 
   useEffect(() => {
     dispatch(fetchSingleGame(id));
   }, [dispatch, id]);
 
   return (
-    <div>
-      {isLoading ? (
-        <div>Loading...</div>
-      ) : (
-        game && (
-          <div>
-            <h2>SingleGame with id: {game.id}</h2>
-            <div>Word: {game.word}</div>
-            <div>
-                 <GameBoard id={game.id} word={game.word} language={game.language} key ="ksadks" />
-            </div>
-          </div>
-           
-          
-        )
-      )}
-    </div>
-  );
+      <div>
+          {
+              game && (
+                  <div>
+                      <h2>SingleGame with id: {game.id}</h2>
+                      <div>Word: {game.word}</div>
+                      <div>
+                          <GameBoard id={game.id} word={game.word} language={game.language} key="ksadks" />
+                      </div>
+                  </div>
+
+
+              )
+          }
+        </div>
+  )
 };
 
 export default SingleGame;

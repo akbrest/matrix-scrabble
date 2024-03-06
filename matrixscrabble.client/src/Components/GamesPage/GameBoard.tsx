@@ -21,6 +21,7 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
     console.log('rerender')
 
     useEffect(() => {
+        console.log('only 1 time??')
 
         Left = [];
         Right = [];
@@ -38,15 +39,15 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
 
             GameWordField.push(val);
         });
-    }, []);
-
+    },[]);
 
     var currentGame = useSelector((state: RootState) =>
-        state.games.games.find(t => t.id == id)
+        state.games.currentGame
     );
 
     function UpdateField(x: number, y: number, type: string, value: string) {
 
+        
         if (type == "left" || type == "right") {
             if (type == "left") {
                 Left[x] = value;
@@ -57,15 +58,16 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
         } else {
             GameWordField[x][y] = value;
         }
-
+        
         const gameBoard = {
             id: id,
             left: Left,
             right: Right,
             board: GameWordField
         };
-
+      
         dispatch(updateGame(gameBoard));
+          
     };
 
     if (currentGame != undefined) {

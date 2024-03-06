@@ -6,5 +6,5 @@ export interface Game {
     isCompleted?: boolean;
     language: string;
     gameBoard?: GameBoardModel;
-    details?: GameDetails ;
+    details?: GameDetails;
 }
