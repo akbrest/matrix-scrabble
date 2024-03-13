@@ -14,7 +14,7 @@ public class GameMapper : IGameMapper
             {
                 Id = game.Id,
                 Word = game.Word,
-                IsCompleted = game.IsCompleted.Value,
+                IsCompleted = game.IsCompleted,
 				Language = game.Language,
 				CreatedAt = game.DateCreated
             };
