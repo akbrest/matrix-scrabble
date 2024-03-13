@@ -27,6 +27,7 @@ const gamesSlice = createSlice({
     builder.addCase(fetchGames.rejected, (state) => {
       state.isLoading = false;
     });
+
     builder.addCase(fetchSingleGame.pending, (state) => {
       state.isLoading = true;
     });
@@ -37,16 +38,20 @@ const gamesSlice = createSlice({
     builder.addCase(fetchSingleGame.rejected, (state) => {
       state.isLoading = false;
     });
+
     builder.addCase(createGame.pending, (state) => {
       state.isLoading = true;
     });
+
     builder.addCase(createGame.fulfilled, (state, action) => {
       state.isLoading = false;
       state.games.push(action.payload);
     });
+
     builder.addCase(createGame.rejected, (state) => {
       state.isLoading = false;
     });
+
     builder.addCase(updateGame.pending, (state) => {
         state.isLoading = true;
     });

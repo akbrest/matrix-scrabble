@@ -44,9 +44,12 @@ public class GamesController : ControllerBase
 	}
 
 	[HttpPost]
-	public async Task<IActionResult> Create(GameDto game)
+	public async Task<IActionResult> Create(CreateGameDto game)
 	{
 		if (game is null)
+			throw new ArgumentNullException(nameof(game));
+
+		if (string.IsNullOrWhiteSpace(game.Language))
 			throw new ArgumentNullException(nameof(game));
 
 		var createdGame = await gameService.CreateAsync(game, _userId);

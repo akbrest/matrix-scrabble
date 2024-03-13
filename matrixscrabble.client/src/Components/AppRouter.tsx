@@ -6,7 +6,7 @@ import SingleGame from './GamesPage/SingleGame';
 
 const AppRouter = () => {
     return (
-        <div>
+        <div className="inside-container">
             <Routes>
                 <Route path="/" element={<MainLayout />}>
                     <Route index element={<Home />} />

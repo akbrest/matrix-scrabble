@@ -28,18 +28,17 @@ const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLett
         condition++;
     }
 
-    return <div>
-        <div className="game-field-line">
-            <div className="game-field-line-left">
-                <EnabledInput
-                    key={"FooClass_"}
-                    UpdateField={UpdateField}
-                    language={lang}
-                    type={'left'}
-                    row={x}
-                />
-            </div>
-
+    return <div className="game-field-line">
+        <div className="game-field-line-left">
+            <EnabledInput
+                key={"FooClass_"}
+                UpdateField={UpdateField}
+                language={lang}
+                type={'left'}
+                row={x}
+            />
+        </div>
+        <div className="game-field-line-center">
             <OneLetterDisabledInput letter={firstLetter} />
             {items.map(({ }, index) => {
                 return (
@@ -52,25 +51,24 @@ const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLett
                     />
                 );
             })}
-
             <OneLetterDisabledInput letter={lastLetter} />
-            <div className="game-field-line">
-                <EnabledInput
-                    key={"FooClass_"}
-                    UpdateField={UpdateField}
-                    language={lang}
-                    type={'right'}
-                    row={x}
-                />
-                <div className="confirmation-block">
-                    <span >
-                        {confirmation ? (
-                            <FaCheck />
-                        ) : (
-                            <FaBeer />
-                        )}
-                    </span>
-                </div>
+        </div>
+        <div className="game-field-line-right">
+            <EnabledInput
+                key={"FooClass_"}
+                UpdateField={UpdateField}
+                language={lang}
+                type={'right'}
+                row={x}
+            />
+            <div className="confirmation-block">
+                <span >
+                    {confirmation ? (
+                        <FaCheck />
+                    ) : (
+                        <FaBeer />
+                    )}
+                </span>
             </div>
         </div>
     </div>
