@@ -6,6 +6,15 @@ div.board-field {
     margin: 0 auto;
     width: 800px;
 }
+/*
+div.game-field-line-left {
+    display: inline-block;
+    border-right:1px solid green;
+}
+div.game-field-line-right {
+    display: inline-block;
+    border-left: 1px solid yellow;
+}
 
 div.game-field-line div {
 }
@@ -199,7 +208,6 @@ body {
     justify-content: space-between;
     align-items: center;
     height: 100%;
-    width: 800px
 }
 
 .inside-container {
