@@ -39,7 +39,7 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
 
             GameWordField.push(val);
         });
-    },[]);
+    }, []);
 
     var currentGame = useSelector((state: RootState) =>
         state.games.currentGame
@@ -58,14 +58,14 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
         } else {
             GameWordField[x][y] = value;
         }
-        
+
         const gameBoard = {
             id: id,
             left: Left,
             right: Right,
             board: GameWordField
         };
-      
+
         dispatch(updateGame(gameBoard));
 
     };

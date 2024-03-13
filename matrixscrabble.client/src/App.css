@@ -28,7 +28,19 @@ div.game-field-line-left {
     flex: 1; /* Allow boxes to grow to fill remaining space */
     display: flex;
 }
-div.modal-field-first{
+
+div.game-field-line-right {
+    flex: 1; /* Allow boxes to grow to fill remaining space */
+    display: flex;
+}
+
+div.game-field-line-center {
+    flex: 0 0 auto !important; /* Don't allow centered box to grow */
+    display: flex;
+}
+
+
+div.modal-field-first {
     background-color: #b4b4b4
 }
 
@@ -211,6 +223,12 @@ body {
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    width: 800px
+}
+
+.inside-container {
+    margin: 0 auto;
+    width: 600px;
 }
 
 .inside-container {
