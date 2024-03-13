@@ -15,7 +15,6 @@ class GameService {
     }
 
     async PostExample(word: string[][]) {
-
         const dataToSend = JSON.stringify({ "Main": word, "name": "value2" });
         const requestOptions = {
             method: 'POST',

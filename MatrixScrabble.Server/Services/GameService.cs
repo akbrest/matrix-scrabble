@@ -41,12 +41,17 @@ public class GameService : IGameService
 		return gameMapper.Map(game);
 	}
 
-	async Task<GameDto> IGameService.CreateAsync(GameDto gameDto, Guid userId)
+	async Task<GameDto> IGameService.CreateAsync(CreateGameDto createGameDto, Guid userId)
 	{
-		if (gameDto is null)
-			throw new ArgumentNullException(nameof(gameDto));
+		if (createGameDto is null)
+			throw new ArgumentNullException(nameof(createGameDto));
 
-		var game = gameMapper.Map(gameDto);
+		var game = gameMapper.Map(createGameDto);
+
+		if (createGameDto.Random)
+		{
+			game.Word = DictionaryService.SelectRandomWord(createGameDto.Language, createGameDto.Length);
+		}
 
 		// TODO use Factory
 		game.DateCreated = DateTime.UtcNow;

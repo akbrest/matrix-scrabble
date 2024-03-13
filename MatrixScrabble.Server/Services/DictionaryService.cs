@@ -1,21 +1,19 @@
-﻿using Microsoft.AspNetCore.Razor.Hosting;
+﻿namespace MatrixScrabble.Server.Services;
 
-namespace MatrixScrabble.Server.Services;
-    
-public static class DictionaryService 
+public static class DictionaryService
 {
 	private static List<string> _itemsRu;
 	private static List<string> _itemsEn;
 	private static string _basePath;
 
 	static DictionaryService()
-    {
+	{
 		_basePath = System.Environment.CurrentDirectory;
 		GetAllAsync();
-    }
+	}
 
-    private static void GetAllAsync()
-    {
+	private static void GetAllAsync()
+	{
 		if (_itemsRu == null)
 		{
 			_itemsRu = new List<string>();
@@ -48,13 +46,13 @@ public static class DictionaryService
 	{
 		if (language == "ru" || language == "en")
 		{
-			
+
 		}
 		else
 		{
 			throw new Exception("NO LANGUAGE");
 		}
-		
+
 		if (language == "ru")
 		{
 			if (_itemsRu.Contains(word))
@@ -72,5 +70,26 @@ public static class DictionaryService
 		}
 
 		return false;
+	}
+
+	public static string SelectRandomWord(string language, int length)
+	{
+		if (length < 3 || length > 7)
+		{
+			throw new Exception("Length is not correct");
+		}
+		else
+		{
+			List<string> words = new List<string>();
+
+			if (language == "ru")
+				words = _itemsRu.Where(t => t.Length == length).ToList();
+			else
+				words = _itemsEn.Where(t => t.Length == length).ToList();
+
+			var random = new Random();
+			int index = random.Next(words.Count);
+			return words[index];
+		}
 	}
 }
