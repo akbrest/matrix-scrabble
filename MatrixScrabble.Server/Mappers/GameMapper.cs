@@ -1,5 +1,7 @@
 ﻿using MatrixScrabble.Server.Dtos;
+using MatrixScrabble.Server.Models;
 using MatrixScrabble.Server.Models.context;
+using System.Text.Json;
 
 namespace MatrixScrabble.Server.Mappers;
 
@@ -10,15 +12,15 @@ public class GameMapper : IGameMapper
 		if (game is null)
 			throw new ArgumentNullException(nameof(game));
 
-            return new GameDto
-            {
-                Id = game.Id,
-                Word = game.Word,
-                IsCompleted = game.IsCompleted,
-				Language = game.Language,
-				CreatedAt = game.DateCreated
-            };
-        }
+		return new GameDto
+		{
+			Id = game.Id,
+			Word = game.Word,
+			IsCompleted = game.IsCompleted,
+			Language = game.Language,
+			CreatedAt = game.DateCreated,
+		};
+    }
 
 	Game IGameMapper.Map(GameDto gameDto)
 	{
