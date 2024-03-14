@@ -5,7 +5,10 @@ public static class DictionaryService
 	private static List<string> _itemsRu;
 	private static List<string> _itemsEn;
 	private static string _basePath;
-
+	
+	private const int MAXIMUM_WORD_LENGTH = 7;
+	private const int MINIMUM_WORD_LENGTH = 3;
+		
 	static DictionaryService()
 	{
 		_basePath = System.Environment.CurrentDirectory;
@@ -74,7 +77,7 @@ public static class DictionaryService
 
 	public static string SelectRandomWord(string language, int length)
 	{
-		if (length < 3 || length > 7)
+		if (length < MINIMUM_WORD_LENGTH || length > MAXIMUM_WORD_LENGTH)
 		{
 			throw new Exception("Length is not correct");
 		}
