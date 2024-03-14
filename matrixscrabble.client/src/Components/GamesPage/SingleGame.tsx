@@ -26,7 +26,7 @@ const SingleGame = () => {
                         <h2>SingleGame with id: {game.id}</h2>
                         <div>Word: {game.word}</div>
                         <div>
-                            <GameBoard id={game.id} word={game.word} language={game.language} key="ksadks" />
+                            <GameBoard board={game.board} id={game.id} word={game.word} language={game.language} key="ksadks" />
                         </div>
                     </div>
 

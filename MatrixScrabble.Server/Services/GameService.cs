@@ -4,6 +4,7 @@ using MatrixScrabble.Server.Dtos;
 using MatrixScrabble.Server.Repositories;
 using MatrixScrabble.Server.Models.context;
 using System.Text.Json;
+using MatrixScrabble.Server.Models;
 
 namespace MatrixScrabble.Server.Services;
 
@@ -35,10 +36,18 @@ public class GameService : IGameService
 
 		var game = await gameRepository.GetAsync(id, userId);
 
+		Board board = null;
+		if (!string.IsNullOrEmpty(game.Board))
+		{
+			board = JsonSerializer.Deserialize<Board>(game.Board);
+		}
+
 		if (game is null)
 			throw new ResourceNotFoundException();
 
-		return gameMapper.Map(game);
+		var mapped = gameMapper.Map(game);
+		mapped.Board = board;
+		return mapped;
 	}
 
 	async Task<GameDto> IGameService.CreateAsync(CreateGameDto createGameDto, Guid userId)
@@ -173,6 +182,8 @@ public class GameService : IGameService
 				}
 			}
 		}
+
+		existingGame.Board = JsonSerializer.Serialize(gameDto.Board);
 
 		var updatedGame = await gameRepository.UpdateAsync(existingGame);
 		GameDetailsDto gameDetailsDto = new GameDetailsDto();
