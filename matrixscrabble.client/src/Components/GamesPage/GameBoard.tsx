@@ -17,7 +17,7 @@ var GameWordField: string[][] = [];
 
 const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
     const dispatch = useDispatch<AppDispatch>();
-    
+
     console.log('rerender')
 
     useEffect(() => {
@@ -39,7 +39,7 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
 
             GameWordField.push(val);
         });
-    },[]);
+    }, []);
 
     var currentGame = useSelector((state: RootState) =>
         state.games.currentGame
@@ -47,7 +47,7 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
 
     function UpdateField(x: number, y: number, type: string, value: string) {
 
-        
+
         if (type == "left" || type == "right") {
             if (type == "left") {
                 Left[x] = value;
@@ -58,16 +58,16 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
         } else {
             GameWordField[x][y] = value;
         }
-        
+
         const gameBoard = {
             id: id,
             left: Left,
             right: Right,
             board: GameWordField
         };
-      
+
         dispatch(updateGame(gameBoard));
-          
+
     };
 
     if (currentGame != undefined) {
@@ -82,9 +82,7 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
     return (
         <div className="game-field">
             <div className="board-field">
-                <div>
-                    <RectanglePlayground confirmation={Confirmations} language={language} UpdateField={UpdateField} word={word} />
-                </div>
+                <RectanglePlayground confirmation={Confirmations} language={language} UpdateField={UpdateField} word={word} />
             </div>
         </div>
     );

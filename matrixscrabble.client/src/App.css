@@ -1,23 +1,44 @@
 .ml-20 {
-  margin-left: 20px;
+    margin-left: 20px;
 }
 
 div.board-field {
-  margin: 0 auto;
-  width: 800px;
+    margin: 0 auto;
+    width: 800px;
+}
+
+div.game-field-line div {
+}
+
+div.game-field-line {
+    display: flex;
 }
 
 div.game-field-line-left {
-  width: 400px;
-  float: right;
+    justify-content: right;
+    flex: 1; /* Allow boxes to grow to fill remaining space */
+    display: flex;
 }
-div.modal-field-first{
+
+div.game-field-line-right {
+    flex: 1; /* Allow boxes to grow to fill remaining space */
+    display: flex;
+}
+
+div.game-field-line-center {
+    flex: 0 0 auto !important; /* Don't allow centered box to grow */
+    display: flex;
+}
+
+
+div.modal-field-first {
     background-color: #b4b4b4
 }
 
-div.modal-field-last{
+div.modal-field-last {
     background-color: #b4b4b4
 }
+
 div.modal-field {
     float: left;
     border: 1px solid orange;
@@ -28,6 +49,18 @@ div.modal-field {
     font-weight: bold;
     color: #006400;
 }
+
+div.modal-field-empty {
+    float: left;
+    border: none;
+    width: 30px;
+    height: 30px;
+    margin: 2px;
+    text-align: center;
+    font-weight: bold;
+    color: #006400;
+}
+
 div.modal-field-left {
     float: left;
     border: 1px solid orange;
@@ -38,6 +71,7 @@ div.modal-field-left {
     font-weight: bold;
     color: #006400;
 }
+
 div.modal-field-right {
     float: left;
     border: 1px solid orange;
@@ -50,69 +84,106 @@ div.modal-field-right {
 }
 
 div.modal-container {
-  align-items: center;
-  width: 400px;
-  justify-content: center;
+    align-items: center;
+    width: 400px;
+    justify-content: center;
 }
+
 div.modal-block {
     display: flex;
 }
+
 div.modal-field-line {
-  display: flex;
+    display: flex;
 }
+
 div.one-symbol-block {
-  display: block;
-  width: 50px;
-  height: 50px;
+    display: block;
+    width: 50px;
+    height: 50px;
 }
 
 div.one-symbol-enabled-block-left {
-  display: block;
-  width: 50px;
-  height: 50px;
-  float: right;
+    display: block;
+    width: 50px;
+    height: 50px;
+    float: right;
 }
 
 div.one-symbol-enabled-block {
-  display: block;
-  width: 50px;
-  height: 50px;
-  border: 1px solid black;
-  margin: 2px;
-  background-color: white;
+    display: block;
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    margin: 2px;
+    background-color: white;
+    box-shadow: grey 0px 0px 10px 0px;
+    border-radius: 6px;
 }
+
+div.symbols-enabled-block {
+    display: block;
+    width: 50px;
+    height: 50px;
+    border: 1px solid black;
+    margin: 2px;
+    background-color: white;
+}
+
 div.word-block {
-  height: 75px;
-  width: 75px;
-  font-size: 50px;
-  text-align: center;
-  padding-left: 0px;
-  color: rgb(84, 84, 84);
-  border: none;
-  border-radius: 5px;
-  vertical-align: middle;
+    height: 75px;
+    width: 75px;
+    font-size: 50px;
+    text-align: center;
+    padding-left: 0px;
+    color: rgb(84, 84, 84);
+    border: none;
+    border-radius: 5px;
+    vertical-align: middle;
 }
 
 div.one-symbol-input input {
-  border: 0px;
+    border: 0px;
 }
 
 div.game-field {
-  display: block;
-  background-color: #ff9248;
+    display: block;
 }
 
-div.game-field-line {
-  display: flex;
+.confirmation-block {
+    display: block;
+    width: 45px;
+    height: 45px;
+    background-color: white;
+    text-align: center;
+    vertical-align: baseline;
+    font-size: 32px;
+    color: green;
+}
+
+.flex {
+    display: flex
 }
 
 .simpleInput {
-  height: 48px;
-  width: 48px;
-  font-size: 38px;
-  text-align: center;
-  padding-left: 0px;
+    height: 48px;
+    width: 48px;
+    font-size: 38px;
+    text-align: center;
+    padding-left: 0px;
+    border: none;
 }
+
+.form-page-icon-ok {
+    font-size: 26px;
+    color: #089000;
+}
+
+.form-page-icon-err {
+    font-size: 26px;
+    color: red
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -121,22 +192,45 @@ body {
 }
 
 .container {
-    max-width: 1100px;
     margin: 0 auto;
+    max-width: 1100px;
     padding: 0 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 100%;
+    width: 800px
+}
+
+.inside-container {
+    margin: 0 auto;
+    width: 600px;
 }
 
 .navbar {
     height: 60px;
-    background-color: #fef7e5;
     position: relative;
+    margin-bottom: 20px
+}
+
+.bottom {
+    margin-bottom: 10px;
 }
 
 .logo {
+}
+
+.absolute-create-form {
+    position: absolute;
+    right: 7px;
+}
+
+.form-label {
+    margin-left: 8px;
+}
+
+.form-block {
+    margin-bottom: 20px;
 }
 
 .menu-icon {
@@ -215,3 +309,79 @@ body {
                 margin-right: unset;
                 margin-top: 22px;
             }
+}
+
+.form-block-main {
+    display: flex;
+    font-size: 20px;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border-radius: 10px; /* Rounded corners for the form container */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    background-color: #fff; /* Light background color */
+}
+
+.create-form-block-length {
+    display: flex;
+}
+
+.form-create {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    padding: 15px;
+    width: 100%;
+    border-radius: 5px; /* Rounded corners for the form itself */
+    box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1); /* Inner shadow */
+    background-color: #f5f5f5; /* Light gray background */
+}
+
+.create-word {
+    display: flex;
+    position: relative;
+}
+
+.form-create label {
+    margin-bottom: 5px;
+}
+
+.form-create input[type="text"],
+.form-create input[type="number"],
+.form-create select {
+    padding: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px; /* Rounded corners for input fields */
+}
+
+
+.heading {
+    font-size: 34px;
+    margin-bottom: 10px;
+    color: green;
+    border-bottom: 3px solid green;
+    padding-bottom: 20px;
+    border-radius: 8px,
+}
+
+.disabledButton {
+    background-color: gray;
+    color: white;
+    cursor: not-allowed;
+    padding: 15px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0px 0px 10px 0px grey,
+}
+
+.enabledButton {
+    background-color: red;
+    color: white;
+    cursor: pointer;
+    padding: 15px;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0px 0px 10px 0px grey,
+}

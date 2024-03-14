@@ -20,7 +20,7 @@ const RectanglePlayground: React.FC<RectanglePlaygroundInterface> = ({ language,
     const countDisabledLetters = 2;
     const confirmations = confirmation;
     return (
-        <div>
+        <React.Fragment>
             {letters.map((element, index) => {
                 if (index === 0) {
                     return (
@@ -70,7 +70,7 @@ const RectanglePlayground: React.FC<RectanglePlaygroundInterface> = ({ language,
                     );
                 }
             })}
-        </div>
+        </React.Fragment>
     );
 }
 

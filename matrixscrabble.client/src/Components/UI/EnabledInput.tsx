@@ -1,5 +1,4 @@
 ﻿import React, { useState } from "react";
-import { EnglishAlphabetRegex, RussianAlphabetRegex } from "../../constants";
 
 interface OneLetterEnabledInputProps {
     language: string;
@@ -32,7 +31,7 @@ const EnabledInput: React.FC<OneLetterEnabledInputProps> = ({ row, type, languag
 
         if (letters.indexOf(elem) < 0) {
             if (elem == "Delete" || elem == "Backspace") {
-                    // TODO fix for backspaces and delete 
+                // TODO fix for backspaces and delete 
             } else {
                 e.preventDefault();
             }
@@ -41,7 +40,7 @@ const EnabledInput: React.FC<OneLetterEnabledInputProps> = ({ row, type, languag
         return;
     }
 
-    return <div style={{ width: '100px' }}>
+    return <div className="symbols-enabled-block">
         <input ref={textInput}
             onChange={() => UpdateField(rowValue, 0, typeX, textInput.current.value)}
             onKeyDown={(e) => CheckValidity(e)}

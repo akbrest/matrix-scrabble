@@ -1,14 +1,14 @@
 ﻿using MatrixScrabble.Server.Dtos;
 using MatrixScrabble.Server.Models.context;
 
-namespace MatrixScrabble.Server.Mappers
+namespace MatrixScrabble.Server.Mappers;
+
+public class GameMapper : IGameMapper
 {
-    public class GameMapper : IGameMapper
-    {
-        GameDto IGameMapper.Map(Game game)
-        {
-            if (game is null)
-                throw new ArgumentNullException(nameof(game));
+	GameDto IGameMapper.Map(Game game)
+	{
+		if (game is null)
+			throw new ArgumentNullException(nameof(game));
 
             return new GameDto
             {
@@ -20,20 +20,32 @@ namespace MatrixScrabble.Server.Mappers
             };
         }
 
-        Game IGameMapper.Map(GameDto gameDto)
-        {
-            if (gameDto is null)
-                throw new ArgumentNullException(nameof(gameDto));
+	Game IGameMapper.Map(GameDto gameDto)
+	{
+		if (gameDto is null)
+			throw new ArgumentNullException(nameof(gameDto));
 
-			return new Game
-			{
-				Id =  Guid.NewGuid(),
-				Word = gameDto.Word,
-				Language = gameDto.Language,
-				IsCompleted = gameDto.IsCompleted,
-				DateCreated = gameDto.CreatedAt.HasValue ? gameDto.CreatedAt.Value : DateTime.UtcNow,
-				Board = ""
-            };
-        }
-    }
+		return new Game
+		{
+			Id = Guid.NewGuid(),
+			Word = gameDto.Word,
+			Language = gameDto.Language,
+			IsCompleted = gameDto.IsCompleted,
+			DateCreated = gameDto.CreatedAt.HasValue ? gameDto.CreatedAt.Value : DateTime.UtcNow,
+			Board = ""
+		};
+	}
+
+	Game IGameMapper.Map(CreateGameDto gameDto)
+	{
+		if (gameDto is null)
+			throw new ArgumentNullException(nameof(gameDto));
+
+		return new Game
+		{
+			Word = gameDto.Word,
+			Language = gameDto.Language,
+			DateCreated = gameDto.CreatedAt.HasValue ? gameDto.CreatedAt.Value : DateTime.UtcNow,
+		};
+	}
 }

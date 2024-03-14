@@ -3,11 +3,11 @@ import Menu from "./Menu";
 
 function MainLayout() {
     return (
-            <div>
-                  <Menu></Menu>
-                  <Outlet />
-            </div>
-  );
+        <div>
+            <Menu></Menu>
+            <Outlet />
+        </div>
+    );
 }
 
 export default MainLayout;
