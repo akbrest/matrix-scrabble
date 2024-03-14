@@ -201,9 +201,9 @@ const GameForm = () => {
                                 </div></div>
                         ) : (<div></div>)}
 
-                        <Button variant="primary" type="submit" disabled={isButtonDisabled ? true : false} style={isButtonDisabled ? styles.disabledButton : styles.enabledButton}>
+                        <button  type="submit" disabled={isButtonDisabled ? true : false} className={isButtonDisabled ? "disabledButton btn-disabled" :"enabledButton btn-enabled"}>
                             Start Game
-                        </Button>
+                        </button>
                     </form>
                 </div>
             </Form.Group>
@@ -212,38 +212,3 @@ const GameForm = () => {
 };
 
 export default GameForm;
-
-const styles = {
-    container: {
-        textAlign: 'center',
-        margin: 'auto',
-        padding: '20px',
-        width: 400,
-    },
-    heading: {
-        fontSize: '34px',
-        marginBottom: '10px',
-        color: "green",
-        borderBottom: "3px solid green",
-        paddingBottom: 20,
-        borderRadius: "8px",
-    },
-    disabledButton: {
-        backgroundColor: 'gray',
-        color: 'white',
-        cursor: 'not-allowed',
-        padding: 15,
-        borderRadius: "8px",
-        border: "none",
-        boxShadow: "0px 0px 10px 0px grey",
-    },
-    enabledButton: {
-        backgroundColor: 'red',
-        color: 'white',
-        cursor: 'pointer',
-        padding: 15,
-        borderRadius: "8px",
-        border: "none",
-        boxShadow: "0px 0px 10px 0px grey",
-    },
-};
