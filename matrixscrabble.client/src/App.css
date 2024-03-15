@@ -6,21 +6,6 @@ div.board-field {
     margin: 0 auto;
     width: 800px;
 }
-/*
-div.game-field-line-left {
-    display: inline-block;
-    border-right:1px solid green;
-}
-div.game-field-line-right {
-    display: inline-block;
-    border-left: 1px solid yellow;
-}
-
-div.game-field-line-center {
-    display: inline-block;
-    border: 1px solid red;
-}
-*/
 div.game-field-line div {
 }
 
