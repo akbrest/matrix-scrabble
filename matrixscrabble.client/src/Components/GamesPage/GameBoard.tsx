@@ -8,6 +8,7 @@ interface GameBoardInterface {
     word: string;
     language: string;
     id: string;
+    board: any
 };
 
 var Left: string[] = [];
@@ -15,7 +16,7 @@ var Right: string[] = [];
 var Confirmations: boolean[] = [];
 var GameWordField: string[][] = [];
 
-const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
+const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id, board}) => {
     const dispatch = useDispatch<AppDispatch>();
 
     console.log('rerender')
@@ -26,18 +27,30 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
         Left = [];
         Right = [];
         GameWordField = [];
+        Confirmations = []
 
-        word.split("").forEach(() => Left.push(""));
-        word.split("").forEach(() => Confirmations.push(false));
-        word.split("").forEach(() => Right.push(""))
+        if (board) {
+            word.split("").forEach(({ }, index) => Left.push(board.left[index]));
+            word.split("").forEach(() => Confirmations.push(false));
+            word.split("").forEach(({ }, index) => Right.push(board.right[index]))
+        } else {
+            word.split("").forEach(() => Left.push(''));
+            word.split("").forEach(() => Confirmations.push(false));
+            word.split("").forEach(() => Right.push(''))
+        }
 
-        word.split("").forEach(() => {
-            let val: string[] = [];
-            word.substring(0, word.length - 2).split("").forEach(() => {
-                val.push("");
+        word.split("").forEach(({ }, ind) => {
+            let vald: string[] = [];
+            word.substring(0, word.length - 2).split("").forEach(({ }, index) => {
+                if (board) {
+                    vald.push(board.center[ind][index]);
+                } else {
+                    vald.push("");
+                }
+                
             });
 
-            GameWordField.push(val);
+            GameWordField.push(vald);
         });
     }, []);
 
@@ -46,8 +59,6 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
     );
 
     function UpdateField(x: number, y: number, type: string, value: string) {
-
-
         if (type == "left" || type == "right") {
             if (type == "left") {
                 Left[x] = value;
@@ -82,7 +93,7 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id }) => {
     return (
         <div className="game-field">
             <div className="board-field">
-                <RectanglePlayground confirmation={Confirmations} language={language} UpdateField={UpdateField} word={word} />
+                <RectanglePlayground board={board} confirmation={Confirmations} language={language} UpdateField={UpdateField} word={word} />
             </div>
         </div>
     );

@@ -7,14 +7,16 @@ interface RectanglePlaygroundInterface {
     confirmation: boolean[];
     language: string;
     UpdateField: (x: number, y: number, type: string, value: string) => void;
+    board: any
 }
 
-const RectanglePlayground: React.FC<RectanglePlaygroundInterface> = ({ language, word, UpdateField, confirmation }) => {
+const RectanglePlayground: React.FC<RectanglePlaygroundInterface> = ({ language, word, UpdateField, confirmation, board }) => {
     const [lang] = useState(language);
 
     if (word == null) {
         word = "";
     }
+
     const letters = word.toUpperCase().split("");
     const reversedLetters = letters.slice().reverse();
     const countDisabledLetters = 2;
@@ -35,6 +37,7 @@ const RectanglePlayground: React.FC<RectanglePlaygroundInterface> = ({ language,
                             language={lang}
                             word={word}
                             confirmation={confirmations[index]}
+                            board={board}
 
                         />
                     );
@@ -51,6 +54,7 @@ const RectanglePlayground: React.FC<RectanglePlaygroundInterface> = ({ language,
                             language={lang}
                             middleSubwordLength={word.length - countDisabledLetters}
                             confirmation={confirmations[index]}
+                            board={board}
                         />
                     );
                 } else {
@@ -66,6 +70,7 @@ const RectanglePlayground: React.FC<RectanglePlaygroundInterface> = ({ language,
                             language={lang} 
                             middleSubwordLength={word.length - countDisabledLetters}
                             confirmation={confirmations[index]}
+                            board={board}
                         />
                     );
                 }

@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface OneLetterEnabledInputProps {
     language: string;
     UpdateField: (x: number, y: number, type: string, value: string) => void;
     x: number;
     y: number;
+    board: any;
 }
 
 const AllowedLetters = [{
@@ -13,9 +14,20 @@ const AllowedLetters = [{
     "ru": "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя"
 }]
 
-const OneLetterEnabledInput: React.FC<OneLetterEnabledInputProps> = ({ x, y, language, UpdateField }) => {
+const OneLetterEnabledInput: React.FC<OneLetterEnabledInputProps> = ({ x, y, language, UpdateField, board }) => {
     const [lang] = useState(language);
     const [value, setValue] = useState("");
+
+
+    useEffect(() => {
+        if (board != null) {
+            var items = board.center;
+            var item = items[x][y];
+            setValue(item);
+        }
+    }, []); // empty array means only once
+
+    const textInput = React.createRef();
 
     function checkValidity(e: any) {
         const elem = e.key;
@@ -29,26 +41,29 @@ const OneLetterEnabledInput: React.FC<OneLetterEnabledInputProps> = ({ x, y, lan
         });
 
         if (letters.indexOf(elem) < 0) {
+
             if (elem == "Delete" || elem == "Backspace") {
 
             } else {
                 e.preventDefault();
             }
         }
-
-        setValue(elem);
-
+      
+        setValue(elem)
+       
+        UpdateField(x, y, "main", elem);
         return;
     }
 
     return <div className="one-symbol-enabled-block">
-        <input
-            onChange={() => UpdateField(x, y, "main", value)}
+        <input ref={textInput}
+            onChange={() => { }}
             onKeyDown={(e) => checkValidity(e)}
             maxLength={1}
             className="simpleInput"
             type="text"
             size={1}
+            value={value}
         />
     </div>
 

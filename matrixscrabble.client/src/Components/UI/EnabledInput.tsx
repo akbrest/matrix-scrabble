@@ -1,10 +1,11 @@
-﻿import React, { useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 
 interface OneLetterEnabledInputProps {
     language: string;
     UpdateField: (x: number, y: number, type: string, value: string) => void;
     row: number;
-    type: string
+    type: string;
+    board: any
 }
 
 const AllowedLetters = [
@@ -12,16 +13,35 @@ const AllowedLetters = [
     { "ru": "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя" }
 ]
 
-const EnabledInput: React.FC<OneLetterEnabledInputProps> = ({ row, type, language, UpdateField }) => {
+const EnabledInput: React.FC<OneLetterEnabledInputProps> = ({ row, type, language, UpdateField, board }) => {
 
     const [lang] = useState(language);
     const [rowValue] = useState(row);
     const [typeX] = useState(type);
+    const [value, setValue] = useState('');
     const textInput = React.createRef();
+
+
+    useEffect(() => {
+        if (type == 'left' && board != null) {
+            var items = board.left;
+            var item = items[row];
+            setValue(item);
+        } else if (type == 'right' && board != null) {
+            var items = board.right;
+            var item = items[row];
+            setValue(item);
+        }
+    }, []); // empty array means only once
+
+    function Update(): void {
+
+        setValue(textInput.current.value)
+        UpdateField(rowValue, 0, typeX, textInput.current.value)
+    }
 
     function CheckValidity(e: React.KeyboardEvent<HTMLInputElement>): void {
         const elem = e.key;
-
         let letters = "";
         AllowedLetters.map((value, index) => {
             if (Object.keys(value)[index] == lang) {
@@ -35,6 +55,7 @@ const EnabledInput: React.FC<OneLetterEnabledInputProps> = ({ row, type, languag
             } else {
                 e.preventDefault();
             }
+
         }
 
         return;
@@ -42,10 +63,11 @@ const EnabledInput: React.FC<OneLetterEnabledInputProps> = ({ row, type, languag
 
     return <div className="symbols-enabled-block">
         <input ref={textInput}
-            onChange={() => UpdateField(rowValue, 0, typeX, textInput.current.value)}
+            onChange={() => Update()}
             onKeyDown={(e) => CheckValidity(e)}
             className="simpleInput"
             type="text"
+            value={value}
         />
     </div>
 }

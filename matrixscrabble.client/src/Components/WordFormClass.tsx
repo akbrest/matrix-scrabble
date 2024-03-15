@@ -15,9 +15,10 @@ interface WordForm {
     UpdateField: (x: number, y: number, type: string, value: string) => void;
     firstLetter: string;
     lastLetter: string;
+    board: any
 }
 
-const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLetter, lastLetter, middleSubwordLength, confirmation }) => {
+const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLetter, lastLetter, middleSubwordLength, confirmation, board }) => {
     const [lang] = useState(language);
 
     const items = [""];
@@ -36,6 +37,7 @@ const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLett
                 language={lang}
                 type={'left'}
                 row={x}
+                board={board}
             />
         </div>
         <div className="game-field-line-center">
@@ -48,6 +50,7 @@ const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLett
                         language={lang}
                         x={x}
                         y={index}
+                        board={board}
                     />
                 );
             })}
@@ -60,6 +63,7 @@ const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLett
                 language={lang}
                 type={'right'}
                 row={x}
+                board={board}
             />
             <div className="confirmation-block">
                 <span >
