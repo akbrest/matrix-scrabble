@@ -27,27 +27,27 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id, board}) =
         Left = [];
         Right = [];
         GameWordField = [];
-        console.log(board.center)
+        Confirmations = []
+
         if (board) {
-            word.split("").forEach((val, index) => Left.push(board.left[index]));
-            word.split("").forEach((index) => Confirmations.push(false));
-            word.split("").forEach((val, index) => Right.push(board.right[index]))
+            word.split("").forEach(({ }, index) => Left.push(board.left[index]));
+            word.split("").forEach(() => Confirmations.push(false));
+            word.split("").forEach(({ }, index) => Right.push(board.right[index]))
         } else {
-            word.split("").forEach((val, index) => Left.push(''));
-            word.split("").forEach((index) => Confirmations.push(false));
-            word.split("").forEach((val, index) => Right.push(''))
+            word.split("").forEach(() => Left.push(''));
+            word.split("").forEach(() => Confirmations.push(false));
+            word.split("").forEach(() => Right.push(''))
         }
 
-        console.log(Left)
-        console.log(Right)
-        console.log('ddd')
-
-        word.split("").forEach((vala, ind) => {
+        word.split("").forEach(({ }, ind) => {
             let vald: string[] = [];
-            word.substring(0, word.length - 2).split("").forEach((value, index) => {
-                var i = board.center[ind][index];
-
-                vald.push(i);
+            word.substring(0, word.length - 2).split("").forEach(({ }, index) => {
+                if (board) {
+                    vald.push(board.center[ind][index]);
+                } else {
+                    vald.push("");
+                }
+                
             });
 
             GameWordField.push(vald);
@@ -59,8 +59,6 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id, board}) =
     );
 
     function UpdateField(x: number, y: number, type: string, value: string) {
-
-
         if (type == "left" || type == "right") {
             if (type == "left") {
                 Left[x] = value;

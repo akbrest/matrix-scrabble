@@ -63,7 +63,7 @@ const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLett
                 language={lang}
                 type={'right'}
                 row={x}
-                board={board }
+                board={board}
             />
             <div className="confirmation-block">
                 <span >
