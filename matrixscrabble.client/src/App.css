@@ -16,6 +16,11 @@ div.game-field-line-right {
     border-left: 1px solid yellow;
 }
 
+div.game-field-line-center {
+    display: inline-block;
+    border: 1px solid red;
+}
+*/
 div.game-field-line div {
 }
 
@@ -196,6 +201,12 @@ div.game-field {
     text-align: center;
     padding-left: 0px;
     border: none;
+    height: 48px;
+    width: 48px;
+    font-size: 38px;
+    text-align: center;
+    padding-left: 0px;
+    border: none;
 }
 
 .form-page-icon-ok {
@@ -207,7 +218,6 @@ div.game-field {
     font-size: 26px;
     color: red
 }
-
 body {
     margin: 0;
     padding: 0;
