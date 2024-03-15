@@ -201,7 +201,7 @@ const GameForm = () => {
                                 </div></div>
                         ) : (<div></div>)}
 
-                        <button type="submit" disabled={isButtonDisabled ? true : false} className={isButtonDisabled ? "disabledButton btn-disabled" : "enabledButton btn-enabled"}></button>
+                        <button type="submit" disabled={isButtonDisabled ? true : false} className={isButtonDisabled ? "disabledButton btn-disabled" : "enabledButton btn-enabled"}>Start Game</button>
                     </form>
                 </div>
             </Form.Group>

@@ -36,17 +36,21 @@ public class GameService : IGameService
 
 		var game = await gameRepository.GetAsync(id, userId);
 
-		Board board = null;
-		if (!string.IsNullOrEmpty(game.Board))
-		{
-			board = JsonSerializer.Deserialize<Board>(game.Board);
-		}
-
-		if (game is null)
-			throw new ResourceNotFoundException();
+		if (game == null )
+			throw new ArgumentException($"'{nameof(game)}' not exist.", nameof(game));
 
 		var mapped = gameMapper.Map(game);
-		mapped.Board = board;
+
+		if (game.Board == null)
+		{
+			mapped.Board =  null;
+		}
+		else
+		{
+			mapped.Board = JsonSerializer.Deserialize<Board>(game.Board) ?? null;
+
+		}
+
 		return mapped;
 	}
 
