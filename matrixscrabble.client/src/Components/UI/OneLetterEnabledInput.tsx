@@ -23,10 +23,7 @@ const OneLetterEnabledInput: React.FC<OneLetterEnabledInputProps> = ({ x, y, lan
         if (board != null) {
             var items = board.center;
             var item = items[x][y];
-           // console.log(board)
-          //  console.log('OneLetterEnabledInput')
             setValue(item);
-            //textInput.current.value = value;
         }
     }, []); // empty array means only once
 
@@ -60,7 +57,7 @@ const OneLetterEnabledInput: React.FC<OneLetterEnabledInputProps> = ({ x, y, lan
 
     return <div className="one-symbol-enabled-block">
         <input ref={textInput}
-            //onChange={() => UpdateField(x, y, "main", textInput.current.value)}
+            onChange={() => { }}
             onKeyDown={(e) => checkValidity(e)}
             maxLength={1}
             className="simpleInput"
