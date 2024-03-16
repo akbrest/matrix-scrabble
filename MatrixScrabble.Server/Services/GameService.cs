@@ -11,7 +11,6 @@ namespace MatrixScrabble.Server.Services;
 public class GameService : IGameService
 {
 	private readonly ISqlRepository<Game> gameRepository;
-
 	private readonly IGameMapper gameMapper;
 
 	public GameService(ISqlRepository<Game> gameRepository, IGameMapper gameMapper)
@@ -31,25 +30,12 @@ public class GameService : IGameService
 
 	async Task<GameDto?> IGameService.GetAsync(Guid id, Guid userId)
 	{
-		if (id == null)
-			throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
-
-		var game = await gameRepository.GetAsync(id, userId);
-
-		if (game == null )
-			throw new ArgumentException($"'{nameof(game)}' not exist.", nameof(game));
+		var game = await gameRepository.GetAsync(id, userId) ?? throw new ResourceNotFoundException(nameof(Game), id);
 
 		var mapped = gameMapper.Map(game);
 
-		if (game.Board == null)
-		{
-			mapped.Board =  null;
-		}
-		else
-		{
-			mapped.Board = JsonSerializer.Deserialize<Board>(game.Board) ?? null;
-
-		}
+		if (game.Board != null)
+			mapped.Board = JsonSerializer.Deserialize<Board>(game.Board);
 
 		return mapped;
 	}
@@ -62,13 +48,7 @@ public class GameService : IGameService
 		var game = gameMapper.Map(createGameDto);
 
 		if (createGameDto.Random)
-		{
 			game.Word = DictionaryService.SelectRandomWord(createGameDto.Language, createGameDto.Length);
-		}
-
-		// TODO use Factory
-		game.DateCreated = DateTime.UtcNow;
-		game.IsCompleted = false;
 
 		var createdGame = await gameRepository.CreateAsync(game);
 
@@ -80,20 +60,15 @@ public class GameService : IGameService
 		if (gameDto is null)
 			throw new ArgumentNullException(nameof(gameDto));
 
-		if (gameDto.Id is null)
-			throw new ArgumentNullException(nameof(gameDto));
+		var existingGame = await gameRepository.GetAsync(gameDto.Id, userId) ?? throw new ResourceNotFoundException(nameof(Game), gameDto.Id);
 
-		var existingGame = await gameRepository.GetAsync(gameDto.Id.Value, userId);
-
-		List<string> wordList = new List<string>();
-
+		var wordList = new List<string>();
 		int length = existingGame.Word.Length;
-
 		int counter = 0;
 
 		while (counter < length)
 		{
-			wordList.Add(String.Concat(gameDto.Board.Left[counter], existingGame.Word[counter], gameDto.Board.Center[counter], existingGame.Word[existingGame.Word.Length - counter], gameDto.Board.Right[counter]));
+			wordList.Add(string.Concat(gameDto.Board?.Left[counter], existingGame.Word[counter], gameDto.Board?.Center[counter], existingGame.Word[existingGame.Word.Length - counter], gameDto.Board?.Right[counter]));
 			counter++;
 		}
 
@@ -101,9 +76,6 @@ public class GameService : IGameService
 		{
 			throw new SameWordUsedException();
 		}
-
-		if (existingGame is null)
-			throw new ResourceNotFoundException();
 
 		existingGame.IsCompleted = true;
 		existingGame.Board = JsonSerializer.Serialize(gameDto.Board);
@@ -118,17 +90,11 @@ public class GameService : IGameService
 		if (gameDto is null)
 			throw new ArgumentNullException(nameof(gameDto));
 
-		var existingGame = await gameRepository.GetAsync(id, userId);
-
-		if (existingGame is null)
-			throw new ResourceNotFoundException();
+		var existingGame = await gameRepository.GetAsync(id, userId) ?? throw new ResourceNotFoundException(nameof(Game), id);
 
 		var language = existingGame.Language;
-
-		List<string> wordList = new List<string>();
-
+		var wordList = new List<string>();
 		int length = existingGame.Word.Length;
-
 		int counter = 0;
 
 		while (counter < length)
@@ -140,13 +106,12 @@ public class GameService : IGameService
 				center += itm;
 			}
 
-			wordList.Add(String.Concat(gameDto.Board.Left[counter], existingGame.Word[counter], center, existingGame.Word[existingGame.Word.Length - 1 - counter], gameDto.Board.Right[counter]));
+			wordList.Add(string.Concat(gameDto.Board.Left[counter], existingGame.Word[counter], center, existingGame.Word[existingGame.Word.Length - 1 - counter], gameDto.Board.Right[counter]));
 			counter++;
 		}
 
-		List<bool> confirmations = new List<bool>();
-		List<int> points = new List<int>();
-
+		var confirmations = new List<bool>();
+		var points = new List<int>();
 		int looper = 0;
 
 		foreach (var item in wordList)
@@ -166,7 +131,7 @@ public class GameService : IGameService
 				}
 				else
 				{
-					points.Add(((length - word.Length) + left.Length + right.Length) * -1);
+					points.Add((length - word.Length + left.Length + right.Length) * -1);
 				}
 			}
 			else
@@ -181,7 +146,7 @@ public class GameService : IGameService
 					if (DictionaryService.WordExists(item, language)) confirmations.Add(true);
 					else confirmations.Add(false);
 
-					points.Add(((length - word.Length) + left.Length + right.Length) * -1);
+					points.Add((length - word.Length + left.Length + right.Length) * -1);
 
 				}
 			}
@@ -190,17 +155,19 @@ public class GameService : IGameService
 		existingGame.Board = JsonSerializer.Serialize(gameDto.Board);
 
 		var updatedGame = await gameRepository.UpdateAsync(existingGame);
-		GameDetailsDto gameDetailsDto = new GameDetailsDto();
-
-		gameDetailsDto.Game = gameMapper.Map(updatedGame);
+		var gameDetailsDto = new GameDetailsDto
+		{
+			Game = gameMapper.Map(updatedGame)
+		};
 
 		gameDetailsDto.Game.Board = gameDto.Board;
-		gameDetailsDto.Details = new Details();
-		gameDetailsDto.Details.Confirmations = confirmations;
-		gameDetailsDto.Details.Points = points;
-		gameDetailsDto.Game.Language = "";
-		gameDetailsDto.Game.Word = "";
-
+		gameDetailsDto.Details = new Details
+		{
+			Confirmations = confirmations,
+			Points = points
+		};
+		gameDetailsDto.Game.Language = string.Empty;
+		gameDetailsDto.Game.Word = string.Empty;
 
 		return gameDetailsDto;
 	}
@@ -210,10 +177,7 @@ public class GameService : IGameService
 		if (string.IsNullOrWhiteSpace(id.ToString()))
 			throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
 
-		var existingGame = await gameRepository.GetAsync(id, userId);
-
-		if (existingGame is null)
-			throw new ResourceNotFoundException();
+		var existingGame = await gameRepository.GetAsync(id, userId) ?? throw new ResourceNotFoundException(nameof(Game), id);
 
 		await gameRepository.DeleteAsync(existingGame);
 	}

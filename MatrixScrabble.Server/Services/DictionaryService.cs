@@ -5,13 +5,13 @@ public static class DictionaryService
 	private static List<string> _itemsRu;
 	private static List<string> _itemsEn;
 	private static string _basePath;
-	
+
 	private const int MAXIMUM_WORD_LENGTH = 7;
 	private const int MINIMUM_WORD_LENGTH = 3;
-		
+
 	static DictionaryService()
 	{
-		_basePath = System.Environment.CurrentDirectory;
+		_basePath = Environment.CurrentDirectory;
 		GetAllAsync();
 	}
 
@@ -19,7 +19,7 @@ public static class DictionaryService
 	{
 		if (_itemsRu == null)
 		{
-			_itemsRu = new List<string>();
+			_itemsRu = [];
 			using (var streamReader = File.OpenText($"{_basePath}\\Dictionary\\dictionary.ru.txt"))
 			{
 				var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
@@ -32,15 +32,13 @@ public static class DictionaryService
 
 		if (_itemsEn == null)
 		{
-			_itemsEn = new List<string>();
+			_itemsEn = [];
 
-			using (var streamReader = File.OpenText($"{_basePath}\\Dictionary\\dictionary.en.txt"))
+			using var streamReader = File.OpenText($"{_basePath}\\Dictionary\\dictionary.en.txt");
+			var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+			foreach (var line in lines)
 			{
-				var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-				foreach (var line in lines)
-				{
-					_itemsEn.Add(line.Trim());
-				}
+				_itemsEn.Add(line.Trim());
 			}
 		}
 	}
@@ -83,7 +81,7 @@ public static class DictionaryService
 		}
 		else
 		{
-			List<string> words = new List<string>();
+			var words = new List<string>();
 
 			if (language == "ru")
 				words = _itemsRu.Where(t => t.Length == length).ToList();

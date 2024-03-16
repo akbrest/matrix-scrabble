@@ -1,7 +1,5 @@
 ﻿using MatrixScrabble.Server.Dtos;
-using MatrixScrabble.Server.Models;
 using MatrixScrabble.Server.Models.context;
-using System.Text.Json;
 
 namespace MatrixScrabble.Server.Mappers;
 
@@ -34,7 +32,7 @@ public class GameMapper : IGameMapper
 			Language = gameDto.Language,
 			IsCompleted = gameDto.IsCompleted,
 			DateCreated = gameDto.CreatedAt.HasValue ? gameDto.CreatedAt.Value : DateTime.UtcNow,
-			Board = ""
+			Board = string.Empty
 		};
 	}
 
@@ -47,7 +45,8 @@ public class GameMapper : IGameMapper
 		{
 			Word = gameDto.Word,
 			Language = gameDto.Language,
-			DateCreated = gameDto.CreatedAt.HasValue ? gameDto.CreatedAt.Value : DateTime.UtcNow,
+			DateCreated = DateTime.UtcNow,
+			IsCompleted = false
 		};
 	}
 }
