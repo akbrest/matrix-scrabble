@@ -6,13 +6,8 @@
         {
         }
 
-        public ResourceNotFoundException(string message)
-          : base(message)
-        {
-        }
-
         public ResourceNotFoundException(string resourceName, object resourceId)
-          : base($"Resource {resourceName}:{resourceId} not found")
+          : base($"Resource {resourceName}: {resourceId} not found")
         {
         }
     }

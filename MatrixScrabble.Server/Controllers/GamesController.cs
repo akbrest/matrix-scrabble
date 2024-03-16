@@ -48,7 +48,6 @@ public class GamesController : ControllerBase
 	{
 		if (game is null)
 			throw new ArgumentNullException(nameof(game));
-
 		if (string.IsNullOrWhiteSpace(game.Language))
 			throw new ArgumentNullException(nameof(game));
 
@@ -63,7 +62,7 @@ public class GamesController : ControllerBase
 		if (updatedGame is null)
 			throw new ArgumentNullException(nameof(updatedGame));
 
-		GameDetailsDto gameDetails = await gameService.UpdateAsync(updatedGame.Id.Value, updatedGame, _userId);
+		var gameDetails = await gameService.UpdateAsync(updatedGame.Id, updatedGame, _userId);
 
 		return Ok(gameDetails);
 	}
