@@ -1,4 +1,4 @@
-﻿using MatrixScrabble.Server.Models.context;
+﻿using MatrixScrabble.Server.Models.Сontext;
 using Microsoft.EntityFrameworkCore;
 
 namespace MatrixScrabble.Server.Repositories

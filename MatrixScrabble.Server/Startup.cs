@@ -3,7 +3,9 @@ using MatrixScrabble.Server.Mappers;
 using MatrixScrabble.Server.Repositories;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using MatrixScrabble.Server.Models.context;
+using MatrixScrabble.Server.Models.Сontext;
+using MatrixScrabble.Server.Helpers;
+using System.Text.Json.Serialization;
 
 namespace MatrixScrabble.Server
 {
@@ -21,7 +23,7 @@ namespace MatrixScrabble.Server
 		// This method gets called by runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
-			
+
 			services.AddDbContext<ScrabbleContext>(options =>
 			{
 				var sqlConnection = new SqlConnection(Configuration.GetSection("SqlSettings:ConnectionString").Value);
@@ -31,10 +33,13 @@ namespace MatrixScrabble.Server
 
 			services.AddScoped(typeof(ISqlRepository<>), typeof(SqlRepository<>));
 			services.AddScoped<IGameService, GameService>();
-
 			services.AddScoped<IGameMapper, GameMapper>();
+			services.AddSingleton<IDictionaryHelper, DictionaryHelper>();
 
-			services.AddControllers();
+			services.AddControllers().AddJsonOptions(options =>
+			{
+				options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+			});
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			services.AddEndpointsApiExplorer();
 			services.AddSwaggerGen();
@@ -48,7 +53,7 @@ namespace MatrixScrabble.Server
 						 .AllowAnyOrigin()
 						 .AllowAnyMethod()
 						 .AllowAnyHeader();
-					});					
+					});
 			});
 		}
 

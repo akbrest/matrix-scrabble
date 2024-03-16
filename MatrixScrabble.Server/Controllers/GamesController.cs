@@ -32,12 +32,9 @@ public class GamesController : ControllerBase
 		return Ok(games);
 	}
 
-	[HttpGet("{id}")]
+	[HttpGet("{id:length(36)}")]
 	public async Task<ActionResult<GameDto>> Get(Guid id)
 	{
-		if (string.IsNullOrWhiteSpace(id.ToString()))
-			throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
-
 		var game = await gameService.GetAsync(id, _userId);
 
 		return Ok(game);
@@ -47,8 +44,6 @@ public class GamesController : ControllerBase
 	public async Task<IActionResult> Create(CreateGameDto game)
 	{
 		if (game is null)
-			throw new ArgumentNullException(nameof(game));
-		if (string.IsNullOrWhiteSpace(game.Language))
 			throw new ArgumentNullException(nameof(game));
 
 		var createdGame = await gameService.CreateAsync(game, _userId);
@@ -70,9 +65,6 @@ public class GamesController : ControllerBase
 	[HttpDelete("{id:length(36)}")]
 	public async Task<IActionResult> Delete(Guid id)
 	{
-		if (string.IsNullOrWhiteSpace(id.ToString()))
-			throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
-
 		await gameService.RemoveAsync(id, _userId);
 
 		return NoContent();
