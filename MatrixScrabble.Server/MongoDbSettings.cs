@@ -1,8 +1,7 @@
-﻿namespace MatrixScrabble.Server
+﻿namespace MatrixScrabble.Server;
+
+public class MongoDbSettings
 {
-    public class MongoDbSettings
-    {
-        public string ConnectionString { get; set; } = null!;
-        public string DatabaseName { get; set; } = null!;
-    }
+	public string ConnectionString { get; set; } = null!;
+	public string DatabaseName { get; set; } = null!;
 }

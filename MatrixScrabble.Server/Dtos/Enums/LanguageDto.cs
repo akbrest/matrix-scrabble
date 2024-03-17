@@ -1,8 +1,7 @@
-﻿namespace MatrixScrabble.Server.Dtos.Enums
+﻿namespace MatrixScrabble.Server.Dtos.Enums;
+
+public enum LanguageDto
 {
-	public enum LanguageDto
-	{
-		En = 1,
-		Ru = 2
-	}
+	En = 1,
+	Ru = 2
 }

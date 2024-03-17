@@ -49,23 +49,23 @@ public class DictionaryHelper : IDictionaryHelper
 	{
 		using var streamReader = File.OpenText($"{Environment.CurrentDirectory}\\Dictionary\\dictionary.ru.txt");
 		var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-		var dictionaty = new List<string>();
+		var dictionary = new List<string>();
 
 		foreach (var line in lines)
-			dictionaty.Add(line.Trim());
+			dictionary.Add(line.Trim());
 		
-		return dictionaty;
+		return dictionary;
 	}
 
 	private static List<string> GetEnglishDictionary()
 	{
 		using var streamReader = File.OpenText($"{Environment.CurrentDirectory}\\Dictionary\\dictionary.en.txt");
 		var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-		var dictionaty = new List<string>();
+		var dictionary = new List<string>();
 
 		foreach (var line in lines)
-			dictionaty.Add(line.Trim());
+			dictionary.Add(line.Trim());
 
-		return dictionaty;
+		return dictionary;
 	}
 }

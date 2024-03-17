@@ -12,7 +12,7 @@ public class GameMapper : IGameMapper
 			throw new ArgumentNullException(nameof(game));
 
 		if (!Enum.TryParse<LanguageDto>(game.Language, true, out var language))
-			throw new Exception(Constants.ErrorMessage.InvalidLangugage);
+			throw new Exception(Constants.ErrorMessage.InvalidLanguage);
 
 		return new GameDto
 		{
