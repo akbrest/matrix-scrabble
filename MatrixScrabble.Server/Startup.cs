@@ -39,9 +39,10 @@ public class Startup
 
 		services.AddSingleton<IDictionaryHelper, DictionaryHelper>();
 		services.AddScoped<IJsonSerializerHelper, JsonSerializerHelper>();
+		services.AddScoped<IScoreCalculationHelper, ScoreCalculationHelper>();
 
 		services.AddScoped<IGameBoardFactory, GameBoardFactory>();
-
+		services.AddScoped<IAnswerFactory, AnswerFactory>();
 
 		services.AddControllers().AddJsonOptions(options =>
 		{

@@ -16,9 +16,12 @@ public class GameService : IGameService
 	private readonly IDictionaryHelper _dictionaryHelper;
 	private readonly IGameBoardFactory _gameBoardFactory;
 	private readonly IJsonSerializerHelper _jsonSerializerHelper;
+	private readonly IScoreCalculationHelper _scoreCalculationHelper;
+	private readonly IAnswerFactory _answerFactory;
 
 	public GameService(ISqlRepository<Game> gameRepository, IGameMapper gameMapper, IDictionaryHelper dictionaryHelper,
-		IGameBoardFactory gameBoardFactory, IJsonSerializerHelper jsonSerializerHelper)
+		IGameBoardFactory gameBoardFactory, IJsonSerializerHelper jsonSerializerHelper, IScoreCalculationHelper scoreCalculationHelper,
+		IAnswerFactory answerFactory)
 	{
 		_gameRepository = gameRepository
 			?? throw new ArgumentNullException(nameof(gameRepository));
@@ -30,6 +33,9 @@ public class GameService : IGameService
 			?? throw new ArgumentNullException(nameof(gameBoardFactory));
 		_jsonSerializerHelper = jsonSerializerHelper
 			?? throw new ArgumentNullException(nameof(jsonSerializerHelper));
+		_scoreCalculationHelper = scoreCalculationHelper
+			?? throw new ArgumentNullException(nameof(scoreCalculationHelper));
+		_answerFactory = answerFactory ?? throw new ArgumentNullException(nameof(answerFactory));
 	}
 
 	public async Task<IEnumerable<GameDto>> GetAllAsync(Guid userId)
@@ -201,5 +207,35 @@ public class GameService : IGameService
 		var existingGame = await _gameRepository.GetAsync(id, userId) ?? throw new ResourceNotFoundException(nameof(Game), id);
 
 		await _gameRepository.DeleteAsync(existingGame);
+	}
+
+	public async Task<AnswerWordDto> ConfirmWord(Guid id, int wordOrderId, AnswerWordDto answerWordDto, Guid userId)
+	{
+		if (wordOrderId < Constants.Game.GameBoardIndexStartsFrom)
+			throw new ArgumentOutOfRangeException(nameof(wordOrderId));
+		if (answerWordDto is null)
+			throw new ArgumentNullException(nameof(answerWordDto));
+
+		var existingGame = await _gameRepository.GetAsync(id, userId) ?? throw new ResourceNotFoundException(nameof(Game), id);
+
+		var existingGameDto = _gameMapper.Map(existingGame);
+		existingGameDto.GameBoard = JsonSerializer.Deserialize<Dictionary<int, AnswerWordDto>>(existingGame.Board!)!;
+
+		//TODO add validation
+		if (existingGameDto.Difficulty < answerWordDto.Center.Length)
+			throw new GeneralException($"Center could not be longer than {existingGameDto.Difficulty}.");
+
+		var answer = _answerFactory.Create(answerWordDto, wordOrderId, existingGameDto.Word);
+
+		if (!_dictionaryHelper.IsWordExists(answer, existingGameDto.Language))
+			throw new GeneralException($"Word '{answer}' does not exist.");
+
+		answerWordDto.Score = _scoreCalculationHelper.Calcucate(answerWordDto);
+		existingGameDto.GameBoard[wordOrderId] = answerWordDto;
+		existingGame.Board = JsonSerializer.Serialize(existingGameDto.GameBoard);
+
+		await _gameRepository.UpdateAsync(existingGame);
+
+		return answerWordDto;
 	}
 }

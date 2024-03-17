@@ -31,7 +31,7 @@ public class GameMapper : IGameMapper
 
 		return new Game
 		{
-			Id = Guid.NewGuid(),
+			Id = gameDto.Id,
 			Word = gameDto.Word,
 			Language = gameDto.Language.ToString(),
 			IsCompleted = gameDto.IsCompleted,

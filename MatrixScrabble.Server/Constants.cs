@@ -13,5 +13,6 @@ public static class Constants
 	{
 		public const int DefaultFixedLetters = 2;
 		public const int MinimumWordLength = 3;
+		public const int GameBoardIndexStartsFrom = 1;
 	}
 }
