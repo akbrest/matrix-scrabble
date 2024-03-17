@@ -20,9 +20,9 @@ public class GameMapper : IGameMapper
 			Word = game.Word,
 			IsCompleted = game.IsCompleted,
 			Language = language,
-			CreatedAt = game.DateCreated,
+			CreatedAt = game.DateCreated
 		};
-    }
+	}
 
 	Game IGameMapper.Map(GameDto gameDto)
 	{
@@ -51,6 +51,7 @@ public class GameMapper : IGameMapper
 			Language = gameDto.Language.ToString(),
 			DateCreated = DateTime.UtcNow,
 			IsCompleted = false
+			//TODO add property IsRandom to DB for statistic?
 		};
 	}
 }

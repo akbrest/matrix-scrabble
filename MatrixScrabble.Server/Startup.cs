@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using MatrixScrabble.Server.Models.Сontext;
 using MatrixScrabble.Server.Helpers;
 using System.Text.Json.Serialization;
+using MatrixScrabble.Server.Factories;
 
 namespace MatrixScrabble.Server;
 public class Startup
@@ -31,9 +32,24 @@ public class Startup
 		}, ServiceLifetime.Transient);
 
 		services.AddScoped(typeof(ISqlRepository<>), typeof(SqlRepository<>));
+
+		#region Services
 		services.AddScoped<IGameService, GameService>();
+		#endregion
+
+		#region Mappers
 		services.AddScoped<IGameMapper, GameMapper>();
+		#endregion
+
+		#region Helpers
 		services.AddSingleton<IDictionaryHelper, DictionaryHelper>();
+		services.AddScoped<IJsonSerializerHelper, JsonSerializerHelper>();
+		#endregion
+
+		#region Factories
+		services.AddScoped<IGameBoardFactory, GameBoardFactory>();
+		#endregion
+
 
 		services.AddControllers().AddJsonOptions(options =>
 		{

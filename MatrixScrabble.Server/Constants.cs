@@ -8,4 +8,10 @@ public static class Constants
 		public const string LengthIsNotCorrect = "Length is not correct.";
 		public const string GameHasAlreadyConfirmed = "The game has already confirmed.";
 	}
+
+	public static class Game
+	{
+		public const int DefaultFixedLetters = 2;
+		public const int MinimumWordLength = 3;
+	}
 }

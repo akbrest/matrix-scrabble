@@ -7,7 +7,6 @@ public class DictionaryHelper : IDictionaryHelper
 	private readonly List<string> _itemsRu;
 	private readonly List<string> _itemsEn;
 
-	private const int _minimumRandomWordLength = 3;
 	private const int _maximumRandomWordLength = 7;
 
 	public DictionaryHelper()
@@ -29,7 +28,7 @@ public class DictionaryHelper : IDictionaryHelper
 
 	public string GetRandomWord(LanguageDto language, int length)
 	{
-		if (length < _minimumRandomWordLength || length > _maximumRandomWordLength)
+		if (length < Constants.Game.MinimumWordLength || length > _maximumRandomWordLength)
 			throw new Exception(Constants.ErrorMessage.LengthIsNotCorrect);
 
 		var words = new List<string>();
