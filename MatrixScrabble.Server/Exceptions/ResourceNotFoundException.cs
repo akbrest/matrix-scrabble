@@ -1,14 +1,12 @@
-﻿namespace MatrixScrabble.Server.Exceptions
+﻿namespace MatrixScrabble.Server.Exceptions;
+public class ResourceNotFoundException : Exception
 {
-    public class ResourceNotFoundException : Exception
-    {
-        public ResourceNotFoundException()
-        {
-        }
+	public ResourceNotFoundException()
+	{
+	}
 
-        public ResourceNotFoundException(string resourceName, object resourceId)
-          : base($"Resource {resourceName}: {resourceId} not found")
-        {
-        }
-    }
+	public ResourceNotFoundException(string resourceName, object resourceId)
+	  : base($"Resource {resourceName}: {resourceId} not found")
+	{
+	}
 }

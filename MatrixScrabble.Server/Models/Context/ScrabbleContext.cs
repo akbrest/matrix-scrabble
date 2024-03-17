@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace MatrixScrabble.Server.Models.context;
+namespace MatrixScrabble.Server.Models.Сontext;
 
 public partial class ScrabbleContext : DbContext
 {

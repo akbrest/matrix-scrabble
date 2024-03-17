@@ -1,4 +1,4 @@
-﻿namespace MatrixScrabble.Server.Models.context;
+﻿namespace MatrixScrabble.Server.Models.Сontext;
 
 public partial class Game
 {

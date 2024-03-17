@@ -1,5 +1,6 @@
 ﻿using MatrixScrabble.Server.Dtos;
-using MatrixScrabble.Server.Models.context;
+using MatrixScrabble.Server.Dtos.Enums;
+using MatrixScrabble.Server.Models.Сontext;
 
 namespace MatrixScrabble.Server.Mappers;
 
@@ -10,12 +11,15 @@ public class GameMapper : IGameMapper
 		if (game is null)
 			throw new ArgumentNullException(nameof(game));
 
+		if (!Enum.TryParse<LanguageDto>(game.Language, true, out var language))
+			throw new Exception(Constants.ErrorMessage.InvalidLanguage);
+
 		return new GameDto
 		{
 			Id = game.Id,
 			Word = game.Word,
 			IsCompleted = game.IsCompleted,
-			Language = game.Language,
+			Language = language,
 			CreatedAt = game.DateCreated,
 		};
     }
@@ -29,7 +33,7 @@ public class GameMapper : IGameMapper
 		{
 			Id = Guid.NewGuid(),
 			Word = gameDto.Word,
-			Language = gameDto.Language,
+			Language = gameDto.Language.ToString(),
 			IsCompleted = gameDto.IsCompleted,
 			DateCreated = gameDto.CreatedAt.HasValue ? gameDto.CreatedAt.Value : DateTime.UtcNow,
 			Board = string.Empty
@@ -44,7 +48,7 @@ public class GameMapper : IGameMapper
 		return new Game
 		{
 			Word = gameDto.Word,
-			Language = gameDto.Language,
+			Language = gameDto.Language.ToString(),
 			DateCreated = DateTime.UtcNow,
 			IsCompleted = false
 		};

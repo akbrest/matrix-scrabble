@@ -3,7 +3,6 @@ import MainLayout from './MainLayout';
 import Home from './Home';
 import GamesPage from './GamesPage/GamesPage';
 import SingleGame from './GamesPage/SingleGame';
-import Menu from './Menu';
 
 const AppRouter = () => {
     return (

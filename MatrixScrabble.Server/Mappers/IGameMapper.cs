@@ -1,5 +1,5 @@
 ﻿using MatrixScrabble.Server.Dtos;
-using MatrixScrabble.Server.Models.context;
+using MatrixScrabble.Server.Models.Сontext;
 
 namespace MatrixScrabble.Server.Mappers;
 
