@@ -51,7 +51,6 @@ public class GameMapper : IGameMapper
 			Language = gameDto.Language.ToString(),
 			DateCreated = DateTime.UtcNow,
 			IsCompleted = false
-			//TODO add property IsRandom to DB for statistic?
 		};
 	}
 }

@@ -33,22 +33,14 @@ public class Startup
 
 		services.AddScoped(typeof(ISqlRepository<>), typeof(SqlRepository<>));
 
-		#region Services
 		services.AddScoped<IGameService, GameService>();
-		#endregion
 
-		#region Mappers
 		services.AddScoped<IGameMapper, GameMapper>();
-		#endregion
 
-		#region Helpers
 		services.AddSingleton<IDictionaryHelper, DictionaryHelper>();
 		services.AddScoped<IJsonSerializerHelper, JsonSerializerHelper>();
-		#endregion
 
-		#region Factories
 		services.AddScoped<IGameBoardFactory, GameBoardFactory>();
-		#endregion
 
 
 		services.AddControllers().AddJsonOptions(options =>
