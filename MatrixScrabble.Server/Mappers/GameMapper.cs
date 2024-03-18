@@ -20,9 +20,9 @@ public class GameMapper : IGameMapper
 			Word = game.Word,
 			IsCompleted = game.IsCompleted,
 			Language = language,
-			CreatedAt = game.DateCreated,
+			CreatedAt = game.DateCreated
 		};
-    }
+	}
 
 	Game IGameMapper.Map(GameDto gameDto)
 	{

@@ -10,4 +10,6 @@ public class GameDto
 	public bool IsCompleted { get; set; }
 	public DateTime? CreatedAt { get; set; }
 	public BoardDto? Board { get; set; }
+	public Dictionary<int, AnswerWordDto>? GameBoard { get; set; }
+	public int Difficulty => Word.Length - Constants.Game.DefaultFixedLetters;
 }

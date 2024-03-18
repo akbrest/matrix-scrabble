@@ -5,6 +5,7 @@ using MatrixScrabble.Server.Repositories;
 using MatrixScrabble.Server.Models.Сontext;
 using System.Text.Json;
 using MatrixScrabble.Server.Helpers;
+using MatrixScrabble.Server.Factories;
 
 namespace MatrixScrabble.Server.Services;
 
@@ -13,8 +14,11 @@ public class GameService : IGameService
 	private readonly ISqlRepository<Game> _gameRepository;
 	private readonly IGameMapper _gameMapper;
 	private readonly IDictionaryHelper _dictionaryHelper;
+	private readonly IGameBoardFactory _gameBoardFactory;
+	private readonly IJsonSerializerHelper _jsonSerializerHelper;
 
-	public GameService(ISqlRepository<Game> gameRepository, IGameMapper gameMapper, IDictionaryHelper dictionaryHelper)
+	public GameService(ISqlRepository<Game> gameRepository, IGameMapper gameMapper, IDictionaryHelper dictionaryHelper,
+		IGameBoardFactory gameBoardFactory, IJsonSerializerHelper jsonSerializerHelper)
 	{
 		_gameRepository = gameRepository
 			?? throw new ArgumentNullException(nameof(gameRepository));
@@ -22,43 +26,58 @@ public class GameService : IGameService
 			?? throw new ArgumentNullException(nameof(gameMapper));
 		_dictionaryHelper = dictionaryHelper
 			?? throw new ArgumentNullException(nameof(dictionaryHelper));
+		_gameBoardFactory = gameBoardFactory
+			?? throw new ArgumentNullException(nameof(gameBoardFactory));
+		_jsonSerializerHelper = jsonSerializerHelper
+			?? throw new ArgumentNullException(nameof(jsonSerializerHelper));
 	}
 
-	async Task<IEnumerable<GameDto>> IGameService.GetAllAsync(Guid userId)
+	public async Task<IEnumerable<GameDto>> GetAllAsync(Guid userId)
 	{
 		var games = await _gameRepository.GetAllAsync(userId);
 
 		return games.Select(_gameMapper.Map);
 	}
 
-	async Task<GameDto?> IGameService.GetAsync(Guid id, Guid userId)
+	public async Task<GameDto?> GetAsync(Guid id, Guid userId)
 	{
 		var game = await _gameRepository.GetAsync(id, userId) ?? throw new ResourceNotFoundException(nameof(Game), id);
 
 		var mapped = _gameMapper.Map(game);
 
-		if (game.Board != null)
-			mapped.Board = JsonSerializer.Deserialize<BoardDto>(game.Board);
+		if (game.Board == null)
+			return mapped;
+
+		if (_jsonSerializerHelper.TryDeserialize<BoardDto>(game.Board, out var boardDto))
+			mapped.Board = boardDto;
+		else if (_jsonSerializerHelper.TryDeserialize<Dictionary<int, AnswerWordDto>>(game.Board, out var gameBoardDto))
+			mapped.GameBoard = gameBoardDto;
 
 		return mapped;
 	}
 
-	async Task<GameDto> IGameService.CreateAsync(CreateGameDto createGameDto, Guid userId)
+	public async Task<GameDto> CreateAsync(CreateGameDto createGameDto, Guid userId)
 	{
 		if (createGameDto is null)
 			throw new ArgumentNullException(nameof(createGameDto));
 
-		var game = _gameMapper.Map(createGameDto);
-
 		if (createGameDto.Random)
-			game.Word = _dictionaryHelper.GetRandomWord(createGameDto.Language, createGameDto.Length);
+			createGameDto.Word = _dictionaryHelper.GetRandomWord(createGameDto.Language, createGameDto.Length);
+
+		var gameBoard = _gameBoardFactory.CreateEmptyGameBoard(createGameDto.Word.Length);
+
+		var game = _gameMapper.Map(createGameDto);
+		game.Board = JsonSerializer.Serialize(gameBoard);
 
 		var createdGame = await _gameRepository.CreateAsync(game);
 
-		return _gameMapper.Map(createdGame);
+		var gameDto = _gameMapper.Map(createdGame);
+		gameDto.GameBoard = gameBoard;
+
+		return gameDto;
 	}
 
-	async Task<GameDto> IGameService.ConfirmGame(GameDto gameDto, Guid userId)
+	public async Task<GameDto> ConfirmGame(GameDto gameDto, Guid userId)
 	{
 		if (gameDto is null)
 			throw new ArgumentNullException(nameof(gameDto));
@@ -81,9 +100,7 @@ public class GameService : IGameService
 			}
 
 			if (wordList.Contains(existingGame.Word))
-			{
 				throw new SameWordUsedException();
-			}
 		}
 
 		existingGame.IsCompleted = true;
@@ -94,7 +111,7 @@ public class GameService : IGameService
 		return _gameMapper.Map(updatedGame);
 	}
 
-	async Task<GameDetailsDto> IGameService.UpdateAsync(Guid id, GameDto gameDto, Guid userId)
+	public async Task<GameDetailsDto> UpdateAsync(Guid id, GameDto gameDto, Guid userId)
 	{
 		if (gameDto is null)
 			throw new ArgumentNullException(nameof(gameDto));
@@ -112,9 +129,7 @@ public class GameService : IGameService
 			var center = "";
 
 			foreach (var itm in gameDto.Board.Center[counter])
-			{
 				center += itm;
-			}
 
 			wordList.Add(string.Concat(gameDto.Board.Left[counter], existingGameDto.Word[counter], center, existingGameDto.Word[existingGameDto.Word.Length - 1 - counter], gameDto.Board.Right[counter]));
 			counter++;
@@ -138,31 +153,22 @@ public class GameService : IGameService
 					confirmations.Add(false);
 
 				if (left.Length == 0 && right.Length == 0 && item.Length == length)
-				{
 					points.Add(0);
-				}
 				else
-				{
 					points.Add((length - word.Length + left.Length + right.Length) * -1);
-				}
+			}
+			else if (word == item)
+			{
+				confirmations.Add(true);
+				points.Add(length - 2);
 			}
 			else
 			{
-				if (word == item)
-				{
+				if (_dictionaryHelper.IsWordExists(item, existingGameDto.Language))
 					confirmations.Add(true);
-					points.Add(length - 2);
-				}
 				else
-				{
-					if (_dictionaryHelper.IsWordExists(item, existingGameDto.Language))
-						confirmations.Add(true);
-					else
-						confirmations.Add(false);
-
-					points.Add((length - word.Length + left.Length + right.Length) * -1);
-
-				}
+					confirmations.Add(false);
+				points.Add((length - word.Length + left.Length + right.Length) * -1);
 			}
 		}
 
@@ -187,7 +193,7 @@ public class GameService : IGameService
 		return gameDetailsDto;
 	}
 
-	async Task IGameService.RemoveAsync(Guid id, Guid userId)
+	public async Task RemoveAsync(Guid id, Guid userId)
 	{
 		if (string.IsNullOrWhiteSpace(id.ToString()))
 			throw new ArgumentException($"'{nameof(id)}' cannot be null or whitespace.", nameof(id));
