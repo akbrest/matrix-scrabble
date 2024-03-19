@@ -82,8 +82,9 @@ namespace MatrixScrabble.Server.Attributes
             return code == HttpStatusCode.BadRequest
                 ? new ObjectResult(new
                 {
-                    message = exception.Message
-                })
+                    errorMessage = exception.Message,
+                    errorType = "errorType"
+				})
                 : new EmptyResult();
         }
 

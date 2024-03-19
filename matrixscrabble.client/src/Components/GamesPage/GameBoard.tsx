@@ -20,7 +20,7 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id, board}) =
     const dispatch = useDispatch<AppDispatch>();
 
     console.log('rerender')
-
+    
     useEffect(() => {
         console.log('only 1 time??')
 
@@ -69,12 +69,14 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id, board}) =
         } else {
             GameWordField[x][y] = value;
         }
-
+        
         const gameBoard = {
             id: id,
             left: Left,
             right: Right,
-            board: GameWordField
+            board: GameWordField,
+            language: language,
+            word: word
         };
 
         dispatch(updateGame(gameBoard));

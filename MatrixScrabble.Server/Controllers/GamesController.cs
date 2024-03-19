@@ -9,6 +9,7 @@ namespace MatrixScrabble.Server.Controllers;
 [ApiController]
 [Route("[controller]")]
 [NotFoundOnException(typeof(ResourceNotFoundException))]
+[GeneralExceptionOnException(typeof(GeneralException))]
 public class GamesController : ControllerBase
 {
 	private readonly IGameService gameService;
