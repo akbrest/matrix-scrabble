@@ -9,9 +9,9 @@ interface OneLetterEnabledInputProps {
 }
 
 const AllowedLetters = [{
-    "en": "AaBbCcDdEeFfGgHIihJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
+    "En": "AaBbCcDdEeFfGgHIihJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz"
 }, {
-    "ru": "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя"
+    "Ru": "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфХхЦцЧчШшЩщЪъЫыЬьЭэЮюЯя"
 }]
 
 const OneLetterEnabledInput: React.FC<OneLetterEnabledInputProps> = ({ x, y, language, UpdateField, board }) => {
@@ -56,7 +56,7 @@ const OneLetterEnabledInput: React.FC<OneLetterEnabledInputProps> = ({ x, y, lan
     }
 
     return <div className="one-symbol-enabled-block">
-        <input ref={textInput}
+        <input ref={textInput} 
             onChange={() => { }}
             onKeyDown={(e) => checkValidity(e)}
             maxLength={1}

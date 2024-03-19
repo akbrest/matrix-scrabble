@@ -4,6 +4,7 @@ import { Game } from '../models/Game';
 import { GameBoardModel } from '../models/GameBoardModel';
 import { GameModel } from '../models/GameModel';
 import { CreateGame } from '../models/CreateGame';
+import { clearError, setError } from '../slices/errorSlice';
 // import { setError } from '../slices/errorSlice';
 
 //TODO move to env variables
@@ -34,9 +35,13 @@ export const createGame = createAsyncThunk<Game, CreateGame>(
         try {
             const response = await axios.post(apiUrl + '/games', game);
             return response.data;
-        } catch (error) {
-            //thunkAPI.dispatch(setError("Create Game Error Occured"));
-            //return thunkAPI.rejectWithValue("Create Game Error Occured");
+        } catch (error ) {
+            var data = error.response.data;
+
+            var message = data.errorMessage;
+            thunkAPI.dispatch(setError("Error Occured" + message));
+
+            return thunkAPI.rejectWithValue(message);
         }
     }
 );
@@ -52,9 +57,9 @@ export const updateGame = createAsyncThunk<GameModel, GameBoardModel>(
                 Right: gameDetails.right,
                 Center: gameDetails.board,
             },
-            word: '',
+            word: "",
             id: gameDetails.id,
-            language: ""
+            language: gameDetails.language //TODO  fix this 
         });
 
         return response.data;

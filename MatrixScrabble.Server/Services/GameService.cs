@@ -37,7 +37,7 @@ public class GameService : IGameService
 
 		var mapped = _gameMapper.Map(game);
 
-		if (game.Board != null)
+		if (game.Board != null && game.Board != "")
 			mapped.Board = JsonSerializer.Deserialize<BoardDto>(game.Board);
 
 		return mapped;
