@@ -4,5 +4,5 @@ namespace MatrixScrabble.Server.Factories;
 
 public interface IAnswerFactory
 {
-	string Create(AnswerWordDto answerWordDto, int wordOrderId, string gameWord);
+    string Create(AnswerWordDto answerWordDto, int wordOrderId, string gameWord);
 }

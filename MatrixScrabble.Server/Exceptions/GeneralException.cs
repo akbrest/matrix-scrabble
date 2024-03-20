@@ -2,11 +2,11 @@
 
 public class GeneralException : Exception
 {
-	public string ErrorMessage { get; set; }
+    public string ErrorMessage { get; set; }
 
-	public GeneralException(string message)
-	  : base(message)
-	{
-		ErrorMessage = message;
-	}
+    public GeneralException(string message)
+      : base(message)
+    {
+        ErrorMessage = message;
+    }
 }
