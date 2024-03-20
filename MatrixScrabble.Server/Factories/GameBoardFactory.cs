@@ -11,7 +11,7 @@ public class GameBoardFactory : IGameBoardFactory
 
 		var gameBoard = new Dictionary<int, AnswerWordDto>();
 
-		for (int i = 1; i <= wordLength; i++)
+		for (int i = Constants.Game.GameBoardIndexStartsFrom; i <= wordLength; i++)
 			gameBoard.Add(i, new AnswerWordDto(string.Empty, string.Empty, string.Empty));
 
 		return gameBoard;

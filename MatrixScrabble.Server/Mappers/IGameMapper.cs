@@ -7,5 +7,5 @@ public interface IGameMapper
 {
     GameDto Map(Game game);
     Game Map(GameDto gameDto);
-	Game Map(CreateGameDto gameDto);
+    Game Map(CreateGameDto gameDto);
 }

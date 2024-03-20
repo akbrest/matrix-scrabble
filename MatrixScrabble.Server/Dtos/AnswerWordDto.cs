@@ -12,4 +12,5 @@ public class AnswerWordDto
 	public string Left { get; set; }
 	public string Center { get; set; }
 	public string Right { get; set; }
+	public int Score { get; set; }
 }
