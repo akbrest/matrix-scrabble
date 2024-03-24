@@ -16,8 +16,6 @@ var Right: string[] = [];
 var Confirmations: boolean[] = [];
 var GameWordField: string[][] = [];
 
-
-
 const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id, board}) => {
     const dispatch = useDispatch<AppDispatch>();
     const [value, setValue] = useState('');
@@ -26,7 +24,7 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id, board}) =
     
     useEffect(() => {
         console.log('only 1 time??')
-        console.log(board)
+
         Left = [];
         Right = [];
         GameWordField = [];
@@ -98,7 +96,7 @@ const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id, board}) =
     return (
         <div className="game-field">
             <div className="board-field">
-                <RectanglePlayground board={board} confirmation={Confirmations} language={language} UpdateField={UpdateField} word={word} value={value} />
+                <RectanglePlayground board={board} confirmation={Confirmations} language={language} UpdateField={UpdateField} word={word} />
             </div>
         </div>
     );

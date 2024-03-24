@@ -2,7 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 //TODO move to env variables
-const apiUrl = 'https://172.29.192.1:5173';
+const apiUrl = 'https://localhost:5032';
 
 export interface CheckWord {
     word: string;
