@@ -30,7 +30,7 @@ public class DictionaryHelper : IDictionaryHelper
 
     public int GetSamePatternWordCount(LanguageDto language, string word)
     {
-        if (word == null || word.Length < Constants.Game.MinimumWordLength || word.Length > _maximumRandomWordLength)
+        if (string.IsNullOrWhiteSpace(word) || word.Length < Constants.Game.MinimumWordLength || word.Length > _maximumRandomWordLength)
             throw new Exception(Constants.ErrorMessage.LengthIsNotCorrect);
 
         List<string> words = new List<string>();
@@ -51,7 +51,6 @@ public class DictionaryHelper : IDictionaryHelper
         }
 
         return count;
-
     }
 
     public string GetRandomWord(LanguageDto language, int length)
