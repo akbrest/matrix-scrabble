@@ -44,7 +44,7 @@ div.game-field-line-center {
 }
 
 div.modal-field-first {
-  background-color: #b4b4b4;
+    background-color: #b4b4b4;
 }
 
 div.modal-field-last {
@@ -59,7 +59,6 @@ div.modal-field {
   margin: 2px;
   text-align: center;
   font-weight: bold;
-  color: #006400;
 }
 
 div.modal-field-empty {
@@ -81,7 +80,6 @@ div.modal-field-left {
   margin: 2px;
   text-align: center;
   font-weight: bold;
-  color: #006400;
 }
 
 div.modal-field-right {
@@ -92,21 +90,54 @@ div.modal-field-right {
   margin: 2px;
   text-align: center;
   font-weight: bold;
-  color: #006400;
+}
+
+div.modal-field-right-point {
+    float: left;
+    color: green;
+    width: 30px;
+    height: 30px;
+    margin: 2px;
+    text-align: center;
+    font-weight: bold;
+    color: #006400;
+
 }
 
 div.modal-container {
   align-items: center;
-  width: 400px;
   justify-content: center;
+  width: 600px;
+  justify-content: space-between;
+}
+
+.highlighted-green {
+    color:green;
+    font-weight:bold
+}
+
+.highlighted-red {
+    color: red !important;
+    font-weight: bold
 }
 
 div.modal-block {
   display: flex;
+  justify-content: center;
 }
 
 div.modal-field-line {
   display: flex;
+}
+
+div.modal-field-line-highlighted-red {
+    display: flex;
+    color: red;
+}
+
+div.modal-field-line-highlighted-green {
+    display: flex;
+    color: green;
 }
 
 div.one-symbol-block {
@@ -218,13 +249,9 @@ body {
 }
 
 .inside-container {
-  margin: 0 auto;
-  width: 600px;
-}
-
-.inside-container {
-  margin: 0 auto;
-  width: 600px;
+    margin: 0 auto;
+    width: 600px;
+    text-align: center;
 }
 
 .navbar {
