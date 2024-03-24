@@ -28,31 +28,6 @@ public class DictionaryHelper : IDictionaryHelper
         return false;
     }
 
-    public int GetSamePatternWordCount(LanguageDto language, string word)
-    {
-        if (string.IsNullOrWhiteSpace(word) || word.Length < Constants.Game.MinimumWordLength || word.Length > _maximumRandomWordLength)
-            throw new Exception(Constants.ErrorMessage.LengthIsNotCorrect);
-
-        List<string> words = new List<string>();
-
-        if (language == LanguageDto.Ru)
-            words = _itemsRu.Where(t => t.Length == word.Length).ToList();
-        else
-            words = _itemsEn.Where(t => t.Length == word.Length).ToList();
-
-        int count = 0;
-
-        foreach (var item in words)
-        {
-            if (item[0] == word[0] && item[word.Length - 1] == word[word.Length - 1])
-            {
-                count++;
-            }
-        }
-
-        return count;
-    }
-
     public string GetRandomWord(LanguageDto language, int length)
     {
         if (length < Constants.Game.MinimumWordLength || length > _maximumRandomWordLength)
