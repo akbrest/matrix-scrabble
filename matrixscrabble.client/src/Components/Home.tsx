@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const wordList_1 = ["   ", "rai", "   "];
-const wordList_2 = ["ton", "   ", "   "];
-const wordList_3 = ["   ", " ow", "   "];
-const wordList_4 = ["   ", "   ", "utb"];
-const wordList_5 = ["lic", "ow ", "kkk"];
-const wordList_6 = ["   ", "tor", "utl"];
+const wordList_1 = ["   ", "rai", "   ", "   ", "   "];
+const wordList_2 = ["ton", "   ", "   ", "   ", "   "];
+const wordList_3 = ["   ", " ow", "   ", "   ", "   "];
+const wordList_4 = ["   ", "   ", "utb", "   ", "   "];
+const wordList_5 = ["lic", "ow ", "kkk", "   ", "   "];
+const wordList_6 = ["   ", "tor", "utl", "   ", "   "];
 
 const generateGameWordField = (wordList: string[]) => {
     const GameWordField: string[][] = [];
@@ -61,11 +61,11 @@ const Home = () => {
                         }
                     </div>
                 </div>
-                {index = -1}
+            <span className="invisible">{index = -1}</span>
                 <div>You can not use the initial word in any line. </div>
                 <div className="modal-block" key="222">
                     <div key="help_2">
-                        {
+                        { 
                             Object.keys(Field2).map(keyOuter => {
                                 index++;
                                 return <div className={index === 0 ? "modal-field-line-highlighted-red" : "modal-field-line"}>
@@ -87,7 +87,7 @@ const Home = () => {
                         }
                     </div>
                 </div>
-                {index = -1}
+                <span className="invisible">{index = -1}</span>
                 <div>
                     You can skip cells inside the matrix. 
                 </div>
@@ -116,7 +116,7 @@ const Home = () => {
                         }
                     </div>
                 </div>
-                {index = -1}
+                <span className="invisible">{index = -1}</span>
                 <div>
                     You can use cells outside the matrix. 
                 </div>
@@ -147,12 +147,12 @@ const Home = () => {
             </div>
         <h2>Scoring System</h2>
             <div className="modal-container">
-                {index = -1}
+                <span className="invisible">{index = -1}</span>
                 <div>
                     You earn points only for valid words.
                 </div>
                 <div>
-                    Every filled cell inside the matrix <span className="highlighted-green">brings</span> 1 point.
+                    Every filled cell inside the matrix <span className="highlighted-green">brings</span> 2 point.
                 </div>
                 <div className="modal-block" key="555">
                     
@@ -161,7 +161,6 @@ const Home = () => {
                             Object.keys(Field5).map(keyOuter => {
                                 index++;
                                 return <div className={(index === 0 || index == 1) ? "modal-field-line-highlighted-green" : (index === 2 ? "modal-field-line-highlighted-red" : "modal-field-line")}>
-                                    <div className="modal-field-left">&nbsp;</div>
                                     <div className="modal-field-left">&nbsp;</div>
                                     <div className="modal-field-first modal-field">{word[index]}</div>
                                     {Object.keys(Field5[keyOuter]).map(keyInner => {
@@ -172,16 +171,16 @@ const Home = () => {
                                     })}
                                     <div className="modal-field-last modal-field">{word[word.length - 1 - index]}</div>
                                     <div className="modal-field-right">&nbsp;</div>
-                                    <div className="modal-field-right-point">{index == 0 ? "+5" : ""}{index == 1 ? "+4" : ""}{index == 2 ? "0" : ""}</div>
+                                    <div className="modal-field-right-point">{index == 0 ? "+10" : ""}{index == 1 ? "+8" : ""}{index == 2 ? "0" : ""}</div>
                                 </div>
                             })
 
                         }
                     </div>
                 </div>
-                {index = -1}
+                <span className="invisible">{index = -1}</span>
                 <div>
-                    Every used cell outside the matrix <span className="highlighted-red">deducts</span> 0.5 point.
+                    Every used cell outside the matrix <span className="highlighted-red">deducts</span> 1 point.
                 </div>
                 <div className="modal-block" key="666">
 
@@ -202,15 +201,13 @@ const Home = () => {
                                     <div className="modal-field-last modal-field">{word[word.length - 1 - index]}</div>
                                     <div className="modal-field-right">{index == 2 ? "O" : ""}</div>
                                     <div className="modal-field-right">{index == 2 ? "K" : ""}</div>
-                                    <div className="modal-field-right">&nbsp;</div>
-                                    <div className="modal-field-right-point">{index == 1 ? "+4.5" : ""}{index == 2 ? "+4" : ""}</div>
+                                    <div className="modal-field-right-point">{index == 1 ? "+9" : ""}{index == 2 ? "+8" : ""}</div>
                                 </div>
                             })
 
                         }
                     </div>
                 </div>
-                {index = -1}
                 <div>
                     Hurry up! Your speed also counts. 
                 </div>
@@ -219,39 +216,5 @@ const Home = () => {
         </div>
     );
 }
-
-
-/* your old code
-Object.keys(Field4).map(keyOuter => {
-                                index++;
-                                var b = false
-                                if (index == 1) { b = true }
-                                return <div className="modal-field-line">
-
-                                    {b ? (<React.Fragment>
-                                        <div className="modal-field-empty">&nbsp;</div>
-                                        <div className="modal-field-left">&nbsp;</div>
-                                    </React.Fragment>
-
-                                    ) : (
-                                        <React.Fragment>                                          <div className="modal-field-left">&nbsp;</div>
-
-                                            <div className="modal-field-left">&nbsp;</div>
-                                        </React.Fragment>
-
-                                    )}
-                                    <div className="modal-field-left">&nbsp;</div>
-                                    <div className="modal-field-first modal-field">{word[index]}</div>
-                                    {Object.keys(GameWordField[keyOuter]).map(keyInner => {
-                                        return (
-                                            <div className="modal-field" key={`${keyInner}-${keyOuter}`}>{GameWordField[keyOuter][keyInner]}</div>
-                                        );
-
-                                    })}
-                                    <div className="modal-field-last modal-field">{word[word.length - 1 - index]}</div>
-                                    <div className="modal-field-right">&nbsp;</div>
-                                </div>
-                            })
-*/
 
 export default Home;

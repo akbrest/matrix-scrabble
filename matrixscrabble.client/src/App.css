@@ -124,6 +124,7 @@ div.modal-container {
 div.modal-block {
   display: flex;
   justify-content: center;
+  margin-bottom: 20px;
 }
 
 div.modal-field-line {
@@ -430,4 +431,8 @@ body {
   border-radius: 8px;
   border: none;
   box-shadow: 0px 0px 10px 0px grey;
+}
+
+.invisible {
+  display: none; 
 }
