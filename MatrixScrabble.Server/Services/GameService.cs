@@ -141,8 +141,6 @@ public class GameService : IGameService
             counter++;
         }
 
-
-
         var confirmations = new List<bool>();
         var points = new List<int>();
         int looper = 0;
