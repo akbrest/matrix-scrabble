@@ -8,7 +8,7 @@
     <InvariantGlobalization>false</InvariantGlobalization>
     <SpaRoot>..\matrixscrabble.client</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
-    <SpaProxyServerUrl>https://localhost:5173</SpaProxyServerUrl>
+    <SpaProxyServerUrl>https://192.168.1.66:5173</SpaProxyServerUrl>
   </PropertyGroup>
 
   <ItemGroup>
