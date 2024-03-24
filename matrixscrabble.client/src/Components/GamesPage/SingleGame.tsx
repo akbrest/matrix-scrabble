@@ -16,7 +16,6 @@ const SingleGame = () => {
     dispatch(fetchSingleGame(id));
   }, [dispatch, id]);
 
-  console.log(game);
   return (
     <div>
       {game && (
