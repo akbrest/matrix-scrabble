@@ -2,8 +2,8 @@ import EnabledInput from "./UI/EnabledInput";
 import OneLetterDisabledInput from "./UI/OneLetterDisabledInput";
 import OneLetterEnabledInput from "./UI/OneLetterEnabledInput";
 import React, { useState } from "react";
-import { FaCheck } from 'react-icons/fa';
-import { FaBeer } from 'react-icons/fa';
+import { FaCheck } from "react-icons/fa";
+import { FaBeer } from "react-icons/fa";
 
 interface WordForm {
     middleSubwordLength: number;
@@ -18,64 +18,70 @@ interface WordForm {
     board: any
 }
 
-const WordFormClass: React.FC<WordForm> = ({ x, language, UpdateField, firstLetter, lastLetter, middleSubwordLength, confirmation, board }) => {
-    const [lang] = useState(language);
+const WordFormClass: React.FC<WordForm> = ({
+  x,
+  language,
+  UpdateField,
+  firstLetter,
+  lastLetter,
+  middleSubwordLength,
+  confirmation,
+  board
 
-    const items = [""];
+}) => {
+  const [lang] = useState(language);
 
-    let condition = 0;
-    while (condition < middleSubwordLength - 1) {
-        items.push("");
-        condition++;
-    }
+  const items = [""];
 
-    return <div className="game-field-line">
-        <div className="game-field-line-left">
-            <EnabledInput
-                key={"FooClass_"}
-                UpdateField={UpdateField}
-                language={lang}
-                type={'left'}
-                row={x}
-                board={board}
+  let condition = 0;
+  while (condition < middleSubwordLength - 1) {
+    items.push("");
+    condition++;
+  }
+
+  return (
+    <div className="game-field-line">
+      <div className="game-field-line-left">
+        <EnabledInput
+          key={"FooClass_"}
+          UpdateField={UpdateField}
+          language={lang}
+          type={"left"}
+          row={x}
+          board={board}
+        />
+      </div>
+      <div className="game-field-line-center">
+        <OneLetterDisabledInput letter={firstLetter} />
+        {items.map(({}, index) => {
+          return (
+            <OneLetterEnabledInput
+              key={"FooClass" + index}
+              UpdateField={UpdateField}
+              language={lang}
+              x={x}
+              y={index}
+              board={board}
             />
+          );
+        })}
+        <OneLetterDisabledInput letter={lastLetter} />
+      </div>
+      <div className="game-field-line-right">
+        <EnabledInput
+          key={"FooClass_"}
+          UpdateField={UpdateField}
+          language={lang}
+          type={"right"}
+          row={x}
+          board={board}
+        />
+        <div className="confirmation-block">
+          <span>{confirmation ? <FaCheck /> : <FaBeer />}</span>
         </div>
-        <div className="game-field-line-center">
-            <OneLetterDisabledInput letter={firstLetter} />
-            {items.map(({ }, index) => {
-                return (
-                    <OneLetterEnabledInput
-                        key={"FooClass" + index}
-                        UpdateField={UpdateField}
-                        language={lang}
-                        x={x}
-                        y={index}
-                        board={board}
-                    />
-                );
-            })}
-            <OneLetterDisabledInput letter={lastLetter} />
-        </div>
-        <div className="game-field-line-right">
-            <EnabledInput
-                key={"FooClass_"}
-                UpdateField={UpdateField}
-                language={lang}
-                type={'right'}
-                row={x}
-                board={board}
-            />
-            <div className="confirmation-block">
-                <span >
-                    {confirmation ? (
-                        <FaCheck />
-                    ) : (
-                        <FaBeer />
-                    )}
-                </span>
-            </div>
-        </div>
+      </div>
     </div>
+  );
 };
 
 export default WordFormClass;
