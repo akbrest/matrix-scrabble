@@ -4,6 +4,6 @@ namespace MatrixScrabble.Server.Helpers;
 
 public interface IDictionaryHelper
 {
-	bool IsWordExists(string word, LanguageDto language);
-	string GetRandomWord(LanguageDto language, int length);
+    bool IsWordExists(string word, LanguageDto language);
+    string GetRandomWord(LanguageDto language, int length);
 }

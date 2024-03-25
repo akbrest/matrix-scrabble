@@ -3,13 +3,13 @@ import Menu from "./Menu";
 import ErrorToast from "./ErrorToast";
 
 function MainLayout() {
-    return (
-        <div>
-            <ErrorToast />
-            <Menu></Menu>
-            <Outlet />
-        </div>
-    );
+  return (
+    <div>
+      <ErrorToast />
+      <Menu></Menu>
+      <Outlet />
+    </div>
+  );
 }
 
 export default MainLayout;

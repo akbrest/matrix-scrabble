@@ -1,70 +1,72 @@
 ﻿using MatrixScrabble.Server.Dtos.Enums;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace MatrixScrabble.Server.Helpers;
 
 public class DictionaryHelper : IDictionaryHelper
 {
-	private readonly List<string> _itemsRu;
-	private readonly List<string> _itemsEn;
+    private readonly List<string> _itemsRu;
+    private readonly List<string> _itemsEn;
 
-	private const int _maximumRandomWordLength = 7;
+    private const int _maximumRandomWordLength = 7;
 
-	public DictionaryHelper()
-	{
-		_itemsRu = GetRussianDictionary();
-		_itemsEn = GetEnglishDictionary();
-	}
+    public DictionaryHelper()
+    {
+        _itemsRu = GetRussianDictionary();
+        _itemsEn = GetEnglishDictionary();
+    }
 
-	public bool IsWordExists(string word, LanguageDto language)
-	{
-		if (language == LanguageDto.Ru && _itemsRu.Contains(word))
-			return true;
-		
-		if (language == LanguageDto.En && _itemsEn.Contains(word))
-			return true;
+    public bool IsWordExists(string word, LanguageDto language)
+    {
+        if (language == LanguageDto.Ru && _itemsRu.Contains(word))
+            return true;
 
-		return false;
-	}
+        if (language == LanguageDto.En && _itemsEn.Contains(word))
+            return true;
 
-	public string GetRandomWord(LanguageDto language, int length)
-	{
-		if (length < Constants.Game.MinimumWordLength || length > _maximumRandomWordLength)
-			throw new Exception(Constants.ErrorMessage.LengthIsNotCorrect);
+        return false;
+    }
 
-		var words = new List<string>();
+    public string GetRandomWord(LanguageDto language, int length)
+    {
+        if (length < Constants.Game.MinimumWordLength || length > _maximumRandomWordLength)
+            throw new Exception(Constants.ErrorMessage.LengthIsNotCorrect);
 
-		if (language == LanguageDto.Ru)
-			words = _itemsRu.Where(t => t.Length == length).ToList();
-		else
-			words = _itemsEn.Where(t => t.Length == length).ToList();
+        var words = new List<string>();
 
-		var random = new Random();
-		var index = random.Next(words.Count);
+        if (language == LanguageDto.Ru)
+            words = _itemsRu.Where(t => t.Length == length).ToList();
+        else
+            words = _itemsEn.Where(t => t.Length == length).ToList();
 
-		return words[index];
-	}
+        var random = new Random();
+        var index = random.Next(words.Count);
 
-	private static List<string> GetRussianDictionary()
-	{
-		using var streamReader = File.OpenText($"{Environment.CurrentDirectory}\\Dictionary\\dictionary.ru.txt");
-		var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-		var dictionary = new List<string>();
+        return words[index];
+    }
 
-		foreach (var line in lines)
-			dictionary.Add(line.Trim());
-		
-		return dictionary;
-	}
+    private static List<string> GetRussianDictionary()
+    {
+        using var streamReader = File.OpenText($"{Environment.CurrentDirectory}\\Dictionary\\dictionary.ru.txt");
+        var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+        var dictionary = new List<string>();
 
-	private static List<string> GetEnglishDictionary()
-	{
-		using var streamReader = File.OpenText($"{Environment.CurrentDirectory}\\Dictionary\\dictionary.en.txt");
-		var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
-		var dictionary = new List<string>();
+        foreach (var line in lines)
+            dictionary.Add(line.Trim());
 
-		foreach (var line in lines)
-			dictionary.Add(line.Trim());
+        return dictionary;
+    }
 
-		return dictionary;
-	}
+    private static List<string> GetEnglishDictionary()
+    {
+        using var streamReader = File.OpenText($"{Environment.CurrentDirectory}\\Dictionary\\dictionary.en.txt");
+        var lines = streamReader.ReadToEnd().Split("\r\n".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
+        var dictionary = new List<string>();
+
+        foreach (var line in lines)
+            dictionary.Add(line.Trim());
+
+        return dictionary;
+    }
 }

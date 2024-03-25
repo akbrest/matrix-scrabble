@@ -1,4 +1,4 @@
-﻿import React, { useEffect } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import RectanglePlayground from "../RectanglePlayground";
 import { updateGame } from '../../redux/actions/gamesActions';
@@ -18,6 +18,7 @@ var GameWordField: string[][] = [];
 
 const GameBoard: React.FC<GameBoardInterface> = ({ word, language, id, board}) => {
     const dispatch = useDispatch<AppDispatch>();
+    const [value, setValue] = useState('');
 
     console.log('rerender')
     

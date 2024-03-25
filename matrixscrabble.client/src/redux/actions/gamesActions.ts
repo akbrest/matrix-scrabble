@@ -25,6 +25,7 @@ export const fetchSingleGame = createAsyncThunk<Game, string>(
             const response = await axios.get(apiUrl + '/games/' + id);
             return response.data;
         } catch (error) {
+            console.log(error)
         }
     }
 );
@@ -36,9 +37,9 @@ export const createGame = createAsyncThunk<Game, CreateGame>(
             const response = await axios.post(apiUrl + '/games', game);
             return response.data;
         } catch (error ) {
-            var data = error.response.data;
+            const data = error.response.data;
 
-            var message = data.errorMessage;
+            let message = data.errorMessage;
             thunkAPI.dispatch(setError("Error Occured" + message));
 
             return thunkAPI.rejectWithValue(message);
@@ -50,7 +51,7 @@ export const updateGame = createAsyncThunk<GameModel, GameBoardModel>(
     'games/updateGame',
     async (gameDetails: GameBoardModel) => {
 
-        const response = await axios.put('http://localhost:5032/games', {
+        const response = await axios.put(apiUrl+ '/games', {
             board: {
                 id: gameDetails.id,
                 Left: gameDetails.left,
