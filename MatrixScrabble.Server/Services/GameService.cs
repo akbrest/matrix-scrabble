@@ -230,7 +230,7 @@ public class GameService : IGameService
         if (!_dictionaryHelper.IsWordExists(answer, existingGameDto.Language))
             throw new GeneralException($"Word '{answer}' does not exist.");
 
-        answerWordDto.Score = _scoreCalculationHelper.Calcucate(answerWordDto);
+        answerWordDto.Score = _scoreCalculationHelper.Calculate(answerWordDto);
         existingGameDto.GameBoard[wordOrderId] = answerWordDto;
         existingGame.Board = JsonSerializer.Serialize(existingGameDto.GameBoard);
 
