@@ -2,6 +2,12 @@ export const EnglishAlphabetRegex = /^[a-zA-Z]*$/;
 export const RussianAlphabetRegex = /^[а-яА-Я]*$/;
 
 export enum Language {
-  EN = 'en',
-  RU = 'ru',
+  En = "En",
+  Ru = "Ru",
+}
+
+export enum AnswerField {
+  Left = "Left",
+  Center = "Center",
+  Right = "Right",
 }

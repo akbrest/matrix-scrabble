@@ -1,40 +1,23 @@
-﻿import React from 'react';
-import { useEffect, useState } from 'react';
-import Toast from 'react-bootstrap/Toast';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearError, selectErrorMessage } from '../redux/slices/errorSlice';
-import { AppDispatch } from '../redux/store';
+﻿import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { clearError } from "../redux/slices/errorSlice";
+import { AppDispatch } from "../redux/store";
+import { selectErrorMessage } from "../redux/slices/errorSlice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ErrorToast: React.FC = () => {
-    const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch<AppDispatch>();
+  const errorMessage = useSelector(selectErrorMessage);
 
-    const [show, setShow] = useState(false);
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+      dispatch(clearError());
+    }
+  }, [errorMessage, dispatch]);
 
-    const errorMessage = useSelector(selectErrorMessage);
-    console.log(errorMessage);
-
-    useEffect(() => {
-        console.log(errorMessage);
-        if (errorMessage) {
-            setShow(true);
-            setTimeout(() => { dispatch(clearError()) }, 3000)
-
-        }
-    }, [errorMessage, dispatch]);
-
-
-    return (<React.Fragment>
-        {(<React.Fragment>
-            <Toast bg="warning" show={show} delay={3000} onClose={() => setShow(false)} autohide>
-                <Toast.Header>
-                    Errror
-                </Toast.Header>
-                <Toast.Body>Woohoo, you're reading Errorr ! {errorMessage}</Toast.Body>
-            </Toast>
-        </React.Fragment>
-        )}
-    </React.Fragment>
-    )
+  return <ToastContainer position="top-right" autoClose={2000} />;
 };
 
 export default ErrorToast;
