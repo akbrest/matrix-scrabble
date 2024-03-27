@@ -4,5 +4,5 @@ namespace MatrixScrabble.Server.Helpers;
 
 public interface IScoreCalculationHelper
 {
-    int Calcucate(AnswerWordDto answerWord);
+    int Calculate(AnswerWordDto answerWord);
 }

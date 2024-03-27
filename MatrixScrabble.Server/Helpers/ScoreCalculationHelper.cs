@@ -7,7 +7,7 @@ public class ScoreCalculationHelper : IScoreCalculationHelper
     private const int _centerPoints = 2;
     private const int _leftRightPoints = -1;
 
-    public int Calcucate(AnswerWordDto answerWord)
+    public int Calculate(AnswerWordDto answerWord)
     {
         if (answerWord is null)
             throw new ArgumentNullException(nameof(answerWord));

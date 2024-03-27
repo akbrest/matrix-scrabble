@@ -5,9 +5,9 @@ import ErrorToast from "./ErrorToast";
 function MainLayout() {
   return (
     <div>
-      <ErrorToast />
-      <Menu></Menu>
+      <Menu />
       <Outlet />
+      <ErrorToast />
     </div>
   );
 }
